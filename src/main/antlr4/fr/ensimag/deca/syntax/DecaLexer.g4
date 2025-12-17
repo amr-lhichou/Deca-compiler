@@ -13,17 +13,60 @@ options {
 
 // Deca lexer rules.
 
+// Symboles spéciaux
+
 PLUS : '+';
 MINUS: '-';
 EOL : '\n' {skip();};
 TIMES : '*' ;
+OR : '||';
+AND : '&&';
+COMMA : ',';
+EQEQ : '==';
+NEQ : '!=';
+LEQ : '<=';
+GEQ : '>=';
+LT : '<';
+GT : '>';
+SLASH : '/';
+PERCENT : '%';
+EXCLAM : '!';
+DOT : '.';
 
 // Identificateurs
 DIGIT : '0' .. '9';
 LETTER : 'a' .. 'z' | 'A' .. 'Z';
 
-// à ajouter les mots réservés p 53
+// Mots réservés
+OBRACE : '{';
+CBRACE : '}';
+SEMI : ';';
+EQUALS : '=';
+OPARENT : '(';
+CPARENT : ')';
+ASM : 'asm';
+CLASS : 'class';
+EXTENDS : 'extends';
+ELSE : 'else';
+FALSE : 'false';
+IF : 'if';
+INSTANCEOF : 'instanceof';
+NEW : 'new';
+NULL  : 'null';
+READINT : 'readInt';
+READFLOAT : 'readFloat';
+PRINTLNX : 'printlnx';
 PRINTLN : 'println';
+PRINTX : 'printx';
+PRINT : 'print';
+PROTECTED : 'protected';
+RETURN : 'return';
+THIS : 'this';
+TRUE : 'true';
+WHILE : 'while';
+
+SPACE : ' ' { skip(); };
+
 IDENT : (LETTER | '$' | '_') (LETTER | DIGIT | '$' | '_')*;
 
 // Littéraux entiers
@@ -42,14 +85,6 @@ FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f');
 FLOAT : FLOATDEC | FLOATHEX;
 
 // Chaine de caractères
-OBRACE : '{';
-CBRACE : '}';
-SEMI : ';';
-EQUALS : '=';
-OPARENT : '(';
-CPARENT : ')';
-
-SPACE : ' ';
 STRING_CAR : ~["\\] ;
 STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
@@ -57,8 +92,6 @@ MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 // Inclusion de fichier
 
 FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
-
-
 
 
 // Ignore spaces, tabs, newlines and whitespaces
