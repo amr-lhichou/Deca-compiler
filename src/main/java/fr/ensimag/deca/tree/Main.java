@@ -7,6 +7,12 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+// Classes necessaires
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.EnvironmentExp;
+
 /**
  * @author gl53
  * @date 01/01/2026
@@ -30,8 +36,14 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
+        EnvironmentExp envExp = new EnvironmentExp(null);
+        ClassDefinition currentClass = null;
+        Type returnType = compiler.environmentType.VOID;
+
+        declVariables.verifyListDeclVariable(compiler, envExp, currentClass);
+        insts.verifyListInst(compiler, envExp, currentClass, returnType);
         LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
