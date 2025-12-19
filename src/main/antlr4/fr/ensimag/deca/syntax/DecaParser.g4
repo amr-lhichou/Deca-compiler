@@ -337,10 +337,10 @@ primary_expr returns[AbstractExpr tree]
             assert($ident.tree != null);
             $tree = $ident.tree; // pour gerer println(i)
         }
-    | m=ident OPARENT args=list_expr CPARENT {
+    /*| m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-        }
+        }*/
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
         }
@@ -389,8 +389,9 @@ literal returns[AbstractExpr tree]
     ;
 
 ident returns[AbstractIdentifier tree]
-    : IDENT {
-        // $tree = new Identifier($IDENT);
+    : i=IDENT {
+        $tree = new Identifier(getDecacCompiler().createSymbol($i.getText()));
+        setLocation($tree, $i);
         }
     ;
 
