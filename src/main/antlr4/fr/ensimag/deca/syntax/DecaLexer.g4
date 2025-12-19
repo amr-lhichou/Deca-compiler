@@ -34,8 +34,8 @@ EXCLAM : '!';
 DOT : '.';
 
 // Identificateurs
-DIGIT : '0' .. '9';
-LETTER : 'a' .. 'z' | 'A' .. 'Z';
+fragment DIGIT : '0' .. '9';
+fragment LETTER : 'a' .. 'z' | 'A' .. 'Z';
 
 // Mots réservés
 OBRACE : '{';
@@ -70,7 +70,7 @@ SPACE : ' ' { skip(); };
 IDENT : (LETTER | '$' | '_') (LETTER | DIGIT | '$' | '_')*;
 
 // Littéraux entiers
-POSITIVE_DIGIT : '1' .. '9';
+fragment POSITIVE_DIGIT : '1' .. '9';
 INT : '0' | POSITIVE_DIGIT* DIGIT;
 
 // Littéraux flottants
