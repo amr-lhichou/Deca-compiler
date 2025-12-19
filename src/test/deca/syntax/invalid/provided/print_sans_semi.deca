@@ -1,0 +1,4 @@
+//lexique passe
+//synt ne passe pas : problème de ";" qui manque
+
+{println("ana_m9awed")}

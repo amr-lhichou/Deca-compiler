@@ -88,11 +88,15 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
         }
     : i=ident {
+    // cRéer un DeclVar sans initialization
+    $tree = new DeclVar($t, $i.tree, new NoInitialization());
         }
       (EQUALS e=expr {
+      // si on lit le "=" on doit remplacer le tree avec une tree initialisé
+      $tree = new DeclVar($t, $i.tree, new Initialization($e.tree));
+
         }
-      )? {
-        }
+      )?
     ;
 
 list_inst returns[ListInst tree]
@@ -114,17 +118,25 @@ inst returns[AbstractInst tree]
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Print(false, $list_expr.tree);
+            setLocation($tree, $PRINT);
 
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree); //false pour println ;
+            setLocation($tree, $PRINTLN);
+
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Print(true, $list_expr.tree);
+            setLocation($tree, $PRINTX);
         }
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Println(true, $list_expr.tree);
+            setLocation($tree, $PRINTLNX);
         }
     | if_then_else {
             assert($if_then_else.tree != null);
@@ -323,6 +335,7 @@ select_expr returns[AbstractExpr tree]
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree; // pour gerer println(i)
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -351,16 +364,19 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree=$ident.tree;
         }
     ;
 
 literal returns[AbstractExpr tree]
     : INT {
+     $tree = new IntLiteral(Integer.parseInt($INT.getText()));
         }
-    | fd=FLOAT {
+    | FLOAT {
         }
     | STRING {
         $tree = new StringLiteral($STRING.getText());
+        setLocation($tree, $STRING);
         }
     | TRUE {
         }
@@ -374,6 +390,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        // $tree = new Identifier($IDENT);
         }
     ;
 

@@ -1,0 +1,5 @@
+// lexical: token print non reconnu . Donc print reconnu comme STRING
+
+// syntaxe: marche pas + il y a pas de regle specifique
+// pour {String...
+{ Print(" hhh mn nytek ");}

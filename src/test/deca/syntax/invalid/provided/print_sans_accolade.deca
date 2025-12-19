@@ -1,0 +1,4 @@
+//lexical: bon
+//syntaxe: manque le "}"
+
+{print("game_of_thrones");
