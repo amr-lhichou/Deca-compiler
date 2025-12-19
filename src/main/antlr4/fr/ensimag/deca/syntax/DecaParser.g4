@@ -373,14 +373,17 @@ literal returns[AbstractExpr tree]
      $tree = new IntLiteral(Integer.parseInt($INT.getText()));
         }
     | FLOAT {
+    $tree = new FloatLiteral(Float.parseFloat($FLOAT.getText()));
         }
     | STRING {
         $tree = new StringLiteral($STRING.getText());
         setLocation($tree, $STRING);
         }
     | TRUE {
+    $tree = new BooleanLiteral(true);
         }
     | FALSE {
+    $tree = new BooleanLiteral(false);
         }
     | THIS {
         }

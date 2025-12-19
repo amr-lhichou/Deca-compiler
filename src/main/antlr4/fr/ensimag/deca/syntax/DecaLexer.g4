@@ -73,15 +73,18 @@ IDENT : (LETTER | '$' | '_') (LETTER | DIGIT | '$' | '_')*;
 fragment POSITIVE_DIGIT : '1' .. '9';
 INT : '0' | POSITIVE_DIGIT* DIGIT;
 
+// j ai ajouter trop de fragment pour empécher les jetons intermédiaire (ex : DEC ... )
+// que le Parser ne connait pas . seul float est exposé
+// car sinon il affiche erreur , il reconnait par exemple 1.8 comme un DEC pas comme un FLOAT
 // Littéraux flottants
-NUM : DIGIT+;
-SIGN : (PLUS | MINUS) ;
-EXP : ('E' | 'e') SIGN? NUM;
-DEC : NUM '.' NUM;
-FLOATDEC : (DEC | DEC EXP) ('F' | 'f');
-DIGITHEX : '0' .. '9' | 'A' .. 'F' | 'a' .. 'f';
-NUMHEX : DIGITHEX+;
-FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f');
+fragment NUM : DIGIT+;
+fragment SIGN : (PLUS | MINUS) ;
+fragment EXP : ('E' | 'e') SIGN? NUM;
+fragment DEC : NUM '.' NUM;
+fragment FLOATDEC : (DEC | DEC EXP | NUM EXP) ('F' | 'f')?;
+fragment DIGITHEX : '0' .. '9' | 'A' .. 'F' | 'a' .. 'f';
+fragment NUMHEX : DIGITHEX+;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f')?;
 FLOAT : FLOATDEC | FLOATHEX;
 
 // Chaine de caractères
