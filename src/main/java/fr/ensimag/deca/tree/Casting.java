@@ -9,10 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-/**
- * Explicit cast conversion.
- * Example: (float) 3
- */
+
 public class Casting extends AbstractExpr {
     private  AbstractIdentifier type; // Le type vers lequel on convertit
     private  AbstractExpr operand;    // expression a convertir
