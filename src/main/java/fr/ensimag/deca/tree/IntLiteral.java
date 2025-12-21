@@ -6,6 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
+
+
 import java.io.PrintStream;
 
 /**
@@ -30,7 +35,19 @@ public class IntLiteral extends AbstractExpr {
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
+        compiler.addInstruction(new WINT());
+    }
+    @Override
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        // Version hexadécimale pour printx(5) par exemple
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
+        // Casting et conversion
+        compiler.addInstruction(new FLOAT(Register.R1, Register.R1));
+        compiler.addInstruction(new WFLOATX());
+    }
 
     @Override
     String prettyPrintNode() {

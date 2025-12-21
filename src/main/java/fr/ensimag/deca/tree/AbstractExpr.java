@@ -116,6 +116,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenPrint(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        //un printHex revient à faire un print normal pour les string
+        codeGenPrint(compiler);
+    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

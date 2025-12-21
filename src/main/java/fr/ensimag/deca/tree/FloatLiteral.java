@@ -7,6 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -35,6 +40,20 @@ public class FloatLiteral extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");        
+    }
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        //charger la valeur
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
+        //Afficher
+        compiler.addInstruction(new WFLOAT());
+    }
+
+    @Override
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
+        // afficher
+        compiler.addInstruction(new WFLOATX());
     }
 
 
