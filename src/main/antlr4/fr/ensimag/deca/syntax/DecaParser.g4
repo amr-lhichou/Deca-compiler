@@ -462,18 +462,24 @@ list_classes returns[ListDeclClass tree]
 
 class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
-            $tree = null;
+            $tree = new DeclClass($name.tree,$superclass.tree,$class_body.fields,$class_body.methods);
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+        $tree = $ident.tree;
         }
     | /* epsilon */ {
+        $tree = new Identifier(getDecacCompiler().createSymbol("Object"));
         }
     ;
 
-class_body
+class_body returns[ListChamps fields,ListeMethod methods]
+@init{
+$fields= new ListChamps();
+$methods = new ListeMethod();
+}
     : (m=decl_method {
         }
       | decl_field_set
