@@ -94,8 +94,10 @@ MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 
 // Inclusion de fichier
 
-FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
-
+//FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
+//  j ai commenté token FILENAME , car il y a un '.' dedans , le lexer croyait que "this.numero"
+//c etait un seul mots (noms de fichier ), du coup le parser ne capte pas le token DOT
+// en servirar pas de tt façcon car les STRING font largement le taf pour les noms des fichier
 
 // Ignore spaces, tabs, newlines and whitespaces
 WS  :   ( ' '

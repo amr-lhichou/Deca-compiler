@@ -1,0 +1,21 @@
+class Joueur {
+    protected int numero;
+
+    void initialiser(int n) {
+        // Test de 'this' pour l'auto-référence
+        this.numero = n;
+    }
+
+    void quitterClub() {
+        // Test de 'null' (libération symbolique)
+        println("Le joueur part du club.");
+    }
+}
+
+{
+    // Test de 'new' pour recruter un nouveau joueur
+    Joueur messi = new Joueur();
+    Joueur nouveauRecrue = null;
+
+    println("Transfert prêt.");
+}

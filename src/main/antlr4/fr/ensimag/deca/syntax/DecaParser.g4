@@ -285,12 +285,12 @@ inequality_expr returns[AbstractExpr tree]
             $tree = new Lower($e1.tree, $e2.tree);
             setLocation($tree, $LT);
         }
-    | e1=inequality_expr INSTANCEOF type {
-            assert($e1.tree != null);
+    /* | e1=inequality_expr INSTANCEOF type {
+           assert($e1.tree != null);
             assert($type.tree != null);
-            //$tree = new InstanceOf($e1.tree, $type.tree); // a implementer
+            $tree = new InstanceOf($e1.tree, $type.tree);
             setLocation($tree, $INSTANCEOF);
-        }
+        }*/ //  selon le projet on doit pas faire du casting ni du innstance of ...
     ;
 
 
@@ -366,10 +366,11 @@ select_expr returns[AbstractExpr tree]
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
-            assert($args.tree != null);
+            $tree = new AppelMethode($e1.tree,$i.tree,$args.tree);
         }
         | /* epsilon */ {
             // we matched "e.i"
+            $tree = new AccesChamp($e1.tree,$i.tree);
         }
         )
     ;
@@ -394,7 +395,8 @@ primary_expr returns[AbstractExpr tree]
     $tree = new ReadFloat();
     setLocation($tree, $READFLOAT);
         }
-    | NEW ident OPARENT CPARENT {
+    | NEW n=ident OPARENT CPARENT {
+            $tree = new New($n.tree);
             assert($ident.tree != null);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
@@ -438,10 +440,10 @@ literal returns[AbstractExpr tree]
         setLocation($tree, $FALSE);
         }
     | THIS {
-
+            $tree = new This();
         }
     | NULL {
-
+            $tree = new Null();
         }
     ;
 
