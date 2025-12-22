@@ -57,14 +57,34 @@ public class ClassType extends Type {
         if (otherType == null) {
             return false;
         }
-        return otherType.isClass();
+
+        return otherType.isClass() &&
+               ((ClassType) otherType).definition == this.definition;
+    }
+
+    // Si A est sous Classe de B alors A est sous Type de B
+    @Override
+    public boolean isSubTypeOf(Type otherType){
+
+        if (!otherType.isClass()) return false;
+
+        ClassType supperClass = (ClassType) otherType;
+
+        return this.isSubClassOf(supperClass);
+
     }
 
     /**
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        ClassDefinition currentDef = this.definition;
+        while (currentDef != null){
+            if (currentDef == potentialSuperClass.definition) return true;
+            currentDef = currentDef.getSuperClass();
+        }
+        return false;
 
     }
 

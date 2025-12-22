@@ -21,6 +21,14 @@ public class NullType extends Type {
         return otherType.isNull();
     }
 
+    // Pour toute classe A, null est un sous-type de type_class(A).
+    @Override
+    public boolean isSubTypeOf(Type otherType){
+
+        return otherType.isClass();
+
+    }
+
     @Override
     public boolean isNull() {
         return true;

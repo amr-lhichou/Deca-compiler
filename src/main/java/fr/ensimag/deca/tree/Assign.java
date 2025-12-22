@@ -29,7 +29,25 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        
+
+        if (!rightType.isCompatible(leftType)){
+            throw new ContextualError(
+                "Affectation impossible d'une expression de Type " + rightType 
+                + " à une expression de type " + leftType,
+                getLocation()
+            );
+        }
+
+
+        setType(leftType);
+        return leftType;
+
     }
 
 

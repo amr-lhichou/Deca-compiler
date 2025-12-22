@@ -21,6 +21,28 @@ public abstract class Type {
      */
     public abstract boolean sameType(Type otherType);
 
+    // Par défaut on pose A est sous type de B s'ils sont de même Type
+    public boolean isSubTypeOf(Type otherType){
+
+        return this.sameType(otherType);
+
+    }
+
+    public boolean isCompatible(Type otherType){
+        if (this.isFloat() && otherType.isInt()) {
+            return true;
+        }
+
+        return otherType.isSubTypeOf(this);
+    }
+
+    public boolean isCastCompatible(Type otherType){
+        if (this.isVoid()){
+            return false;
+        }
+        return this.isCompatible(otherType) || otherType.isCompatible(this);
+    }
+
     private final Symbol name;
 
     public Type(Symbol name) {
