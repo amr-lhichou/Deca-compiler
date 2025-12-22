@@ -1,0 +1,6 @@
+class h{
+int k = 19;
+protected float h;
+protected boolean jj = true;
+int x,z= 0;
+}

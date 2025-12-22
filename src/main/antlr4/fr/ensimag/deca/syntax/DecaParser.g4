@@ -461,8 +461,8 @@ list_classes returns[ListDeclClass tree]
     ;
 
 class_decl returns[AbstractDeclClass tree]
-    : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
-            $tree = new DeclClass($name.tree,$superclass.tree,$class_body.fields,$class_body.methods);
+    : CLASS name=ident superclass=class_extension OBRACE b=class_body CBRACE {
+            $tree = new DeclClass($name.tree,$superclass.tree,$b.fields,$b.methods);
         }
     ;
 
@@ -482,32 +482,32 @@ $methods = new ListeMethod();
 }
     : (m=decl_method {
         }
-      | decl_field_set
+      | decl_field_set[$fields]
       )*
     ;
 
-decl_field_set
-    : v=visibility t=type list_decl_field
+decl_field_set[ListChamps list]
+    : v=visibility t=type list_decl_field[$list,$t.tree,$v.valeur]
       SEMI
     ;
 
-visibility
-    : /* epsilon */ {
-        }
-    | PROTECTED {
-        }
+visibility returns[Visibility valeur]
+    : /* epsilon */ {$valeur = Visibility.PUBLIC;}
+    | PROTECTED {$valeur = Visibility.PROTECTED;}
     ;
 
-list_decl_field
-    : dv1=decl_field
-        (COMMA dv2=decl_field
+list_decl_field[ListChamps l,AbstractIdentifier t,Visibility v]
+    : dv1=decl_field[$t,$v]{$l.add($dv1.tree);}
+        (COMMA dv2=decl_field[$t,$v]{$l.add($dv2.tree);}
       )*
     ;
 
-decl_field
+decl_field[AbstractIdentifier t,Visibility v] returns[AbstractDeclField tree]
     : i=ident {
+          $tree = new DeclField($v,$t,$i.tree,new NoInitialization());
         }
       (EQUALS e=expr {
+      $tree = new DeclField($v,$t,$i.tree,new Initialization($e.tree));
         }
       )? {
         }
