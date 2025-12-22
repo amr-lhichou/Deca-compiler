@@ -1,0 +1,18 @@
+class BlaugranaStats {
+    protected int butsMessi = 672;
+    protected int matchsMessi = 778;
+    protected float budgetTransfert = 150.5;
+
+    float calculerRatioButs() {
+        return butsMessi / matchsMessi;
+    }
+
+    int calculerBudgetFinal(int revenuSponsors, int salaires, float taxeLigue) {
+        float totalCharge = salaires + (salaires * taxeLigue);
+        return revenuSponsors - totalCharge;
+    }
+
+    void nouveauBut() {
+        butsMessi = butsMessi + 1;
+    }
+}

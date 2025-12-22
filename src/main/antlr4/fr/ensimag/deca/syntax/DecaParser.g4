@@ -107,8 +107,9 @@ list_inst returns[ListInst tree]
 $tree = new ListInst();
 }
     : (inst {
+    if ($inst.tree !=null){
             $tree.add($inst.tree);
-        }
+        }}
       )*
     ;
 
@@ -117,6 +118,7 @@ inst returns[AbstractInst tree]
             assert($e1.tree != null);
         }
     | SEMI {
+    $tree = null;
 
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
@@ -142,7 +144,7 @@ inst returns[AbstractInst tree]
             setLocation($tree, $PRINTLNX);
         }
     | if_then_else {
-            assert($if_then_else.tree != null);
+            $tree = $if_then_else.tree;
         }
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
@@ -151,6 +153,7 @@ inst returns[AbstractInst tree]
             setLocation($tree, $WHILE);
         }
     | RETURN expr SEMI {
+
             assert($expr.tree != null);
         }
     ;
@@ -160,6 +163,7 @@ if_then_else returns[IfThenElse tree]
 //ListInst list = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+    $tree = new IfThenElse($condition.tree,$li_if.tree,new ListInst());
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
         }
@@ -513,20 +517,25 @@ decl_field[AbstractIdentifier t,Visibility v] returns[AbstractDeclField tree]
         }
     ;
 
-decl_method
+decl_method returns[AbstractDeclMeth tree]
 @init {
 }
-    : type ident OPARENT params=list_params CPARENT (block {
+    : t=type i=ident OPARENT params=list_params CPARENT (bl=block {
+    $tree = new Method($t.tree,$i.tree,$params.tree,$bl.decls,$bl.insts);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+      $tree = new MethodASM($t.tree,$i.tree,$params.tree,new StringLiteral($code.text));
         }
       ) {
         }
     ;
 
-list_params
+list_params returns[ListDeclPara tree]
+ @init{$tree = new ListDeclPara();}
     : (p1=param {
+   $tree.add($p1.tree);
         } (COMMA p2=param {
+        $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -542,7 +551,8 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
-    : type ident {
+param returns[AbstractDeclPara tree]
+    : t=type ii=ident {
+    $tree = new DeclPara($t.tree,$ii.tree);
         }
     ;
