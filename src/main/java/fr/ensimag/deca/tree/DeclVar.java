@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -33,6 +34,29 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        System.out.println("Declaration de la variable " + varName.getName());
+        Type varType = type.verifyType(compiler);
+        if (varType.isVoid()){
+            throw new ContextualError("Variables de type void non acceptées.", 
+            getLocation());
+        }
+
+        VariableDefinition varDef = new VariableDefinition(varType, varName.getLocation());
+
+        try {
+            localEnv.declare(varName.getName(), varDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError(
+                "Variable " + varName.getName() + " déjà définie",
+                varName.getLocation()
+            );
+        }
+
+        varName.setDefinition(varDef);
+
+        initialization.verifyInitialization(
+            compiler, varType, localEnv, currentClass
+        );
     }
 
     

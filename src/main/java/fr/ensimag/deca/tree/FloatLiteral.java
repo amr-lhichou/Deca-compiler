@@ -39,7 +39,10 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");        
+        // throw new UnsupportedOperationException("not yet implemented");   
+        Type floatType = compiler.environmentType.FLOAT;
+        setType(floatType);
+        return floatType;
     }
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {

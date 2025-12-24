@@ -115,7 +115,8 @@ $tree = new ListInst();
 
 inst returns[AbstractInst tree]
     : e1=expr SEMI {
-            assert($e1.tree != null);
+            $tree = $e1.tree;
+            setLocation($tree, $e1.start);
         }
     | SEMI {
     $tree = null;
@@ -388,23 +389,25 @@ primary_expr returns[AbstractExpr tree]
             $tree = $expr.tree;
         }
     | READINT OPARENT CPARENT {
-    $tree = new ReadInt();
-    setLocation($tree, $READINT);
+            $tree = new ReadInt();
+            setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
     $tree = new ReadFloat();
     setLocation($tree, $READFLOAT);
         }
-    | NEW n=ident OPARENT CPARENT {
-            $tree = new New($n.tree);
-            assert($ident.tree != null);
-        }
-    | cast=OPARENT type CPARENT OPARENT expr CPARENT {
-            assert($type.tree != null);
-            assert($expr.tree != null);
-            $tree = new Casting($type.tree, $expr.tree);
-            setLocation($tree, $OPARENT);
-        }
+
+    // On a pas encore besoin de ça pour SansObjet  
+    
+    // | NEW ident OPARENT CPARENT {
+    //         assert($ident.tree != null);
+    //     }
+    // | cast=OPARENT type CPARENT OPARENT expr CPARENT {
+    //         assert($type.tree != null);
+    //         assert($expr.tree != null);
+    //         $tree = new Casting($type.tree, $expr.tree);
+    //         setLocation($tree, $OPARENT);
+    //     }
     | literal {
             assert($literal.tree != null);
             $tree = $literal.tree;
