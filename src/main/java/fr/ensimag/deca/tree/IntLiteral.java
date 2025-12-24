@@ -39,17 +39,9 @@ public class IntLiteral extends AbstractExpr {
         return expType;
     }
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
-        compiler.addInstruction(new WINT());
-    }
-    @Override
-    protected void codeGenPrintHex(DecacCompiler compiler) {
-        // Version hexadécimale pour printx(5) par exemple
-        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
-        // Casting et conversion
-        compiler.addInstruction(new FLOAT(Register.R1, Register.R1));
-        compiler.addInstruction(new WFLOATX());
+    protected void codeGenInst(DecacCompiler compiler) {
+        // fait le load
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.getR(2)));
     }
 
     @Override

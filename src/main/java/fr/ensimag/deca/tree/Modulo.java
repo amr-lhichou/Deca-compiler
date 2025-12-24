@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
  *
@@ -21,6 +23,10 @@ public class Modulo extends AbstractOpArith {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+    @Override
+    protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {
+        compiler.addInstruction(new REM(op1, op2));
     }
 
 
