@@ -41,7 +41,7 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler) {
         compiler.addInstruction(new WSTR(new ImmediateString(value)));
     }
 

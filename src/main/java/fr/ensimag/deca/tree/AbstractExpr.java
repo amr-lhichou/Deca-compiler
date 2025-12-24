@@ -7,8 +7,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -114,13 +118,33 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
+
+        // si STRING : on a pas de calcul on affiche directement
+        if (getType().isString()) {
+            this.codeGenInst(compiler);
+        }
+        // Tous les instance passe par codeGenInst.
+        // le calcul est stocké dans  R2
+        this.codeGenInst(compiler);
+
+        // charge R2 dans R1 pour laffichage
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
+
+        // on affiche Selon le type
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
+        else if (getType().isFloat()) {
+            if (printHex) {
+                compiler.addInstruction(new WFLOATX()); // en Hexa
+            } else {
+                compiler.addInstruction(new WFLOAT());  // en Décimal
+            }
+        }
     }
-    protected void codeGenPrintHex(DecacCompiler compiler) {
-        //un printHex revient à faire un print normal pour les string
-        codeGenPrint(compiler);
-    }
+
+
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

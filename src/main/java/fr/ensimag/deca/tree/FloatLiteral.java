@@ -45,19 +45,12 @@ public class FloatLiteral extends AbstractExpr {
         return floatType;
     }
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        //charger la valeur
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
-        //Afficher
-        compiler.addInstruction(new WFLOAT());
+    protected void codeGenInst(DecacCompiler compiler) {
+        //tous passe par codegenInst
+        // Charge la valeur
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.getR(2)));
     }
 
-    @Override
-    protected void codeGenPrintHex(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
-        // afficher
-        compiler.addInstruction(new WFLOATX());
-    }
 
 
     @Override
