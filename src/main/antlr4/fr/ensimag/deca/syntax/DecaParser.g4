@@ -95,7 +95,10 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
       (EQUALS e=expr {
       // si on lit le "=" on doit remplacer le tree avec une tree initialisé
-      $tree = new DeclVar(t, $i.tree, new Initialization($e.tree));
+      Initialization init = new Initialization($e.tree);
+      // On lui donne la location du symbole "="
+      setLocation(init, $EQUALS);
+      $tree = new DeclVar(t, $i.tree, init);
       setLocation($tree, $i.start);
 
         }
