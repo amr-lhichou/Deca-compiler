@@ -4,7 +4,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 /**
  * List of declarations (e.g. int x; float y,z).
@@ -33,9 +36,24 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        // on ajoute un index à incrémenter pour augmenter la pile
+        int index=1;
         for (AbstractDeclVar decVar : this.getList()){
             decVar.verifyDeclVar(compiler, localEnv, currentClass);
+            ExpDefinition def = decVar.getVarName().getExpDefinition();
+            // On calcule l'adresse avec GB/LB
+            // pour le Main :Registre GB
+            def.setOperand(new RegisterOffset(index, Register.GB));
+            // Incrémenter pour la prochaine variable
+            index++;
         }
+    }
+    // ajout de methode de gencode pour les declVar
+    public void codeGenListDeclVarInst(DecacCompiler compiler){
+        for(AbstractDeclVar decVar : this.getList()){
+            decVar.codegenDeclVar(compiler);
+        }
+
     }
 
 
