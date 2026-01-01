@@ -40,7 +40,7 @@ public class IntLiteral extends AbstractExpr {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // fait le load
+        // fait le load dans R2 comme tjrs
         compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.getR(2)));
     }
 

@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -55,5 +58,22 @@ public class Assign extends AbstractBinaryExpr {
     protected String getOperatorName() {
         return "=";
     }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // On génère le code de la partie droite
+        // stocké dans R2
+        getRightOperand().codeGenInst(compiler);
 
+
+        // On récupère la valeur de l expression a gauche
+        AbstractLValue leftOp = getLeftOperand();
+
+        // On récupère l'adresse calculée lors de l'étape de déclaration
+        DAddr addr = leftOp.getExpDefinition().getOperand();
+
+        // On store dans Adresse
+        compiler.addInstruction(new STORE(Register.getR(2), addr));
+    }
 }
+
+

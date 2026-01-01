@@ -15,6 +15,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -176,8 +180,9 @@ public class Identifier extends AbstractIdentifier {
                 getLocation()
             );
         }
-        
+
         this.setDefinition(expDef);
+        this.setType(expDef.getType());
         return expDef.getType();
     }
 
@@ -235,6 +240,14 @@ public class Identifier extends AbstractIdentifier {
             s.print(d);
             s.println();
         }
+    }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // On récupère la définition pour savoir où est stockée la variable
+        DAddr addr = getExpDefinition().getOperand();
+
+        // On charge l'adresse dans R2
+        compiler.addInstruction(new LOAD(addr, Register.getR(2)));
     }
 
 }

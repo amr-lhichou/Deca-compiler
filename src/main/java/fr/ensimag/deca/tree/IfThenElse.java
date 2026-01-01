@@ -7,6 +7,13 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -29,6 +36,20 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
+    // on ajoute les méthodes d'accés public
+    // pour travailler proprement peut etre on aura besoin après
+
+    public AbstractExpr getCondition() {
+        return condition;
+    }
+
+    public ListInst getThenBranch() {
+        return thenBranch;
+    }
+
+    public ListInst getElseBranch() {
+        return elseBranch;
+    }
     
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -38,7 +59,28 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Label elseLabel = new Label("else_if" );
+        Label finIfLabel = new Label("end_if" );
+
+        getCondition().codeGenInst(compiler);
+
+        // tester si faux : egalite avec 0
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.getR(2)));
+
+        //SI false: on saute au  bloc ELSE
+        compiler.addInstruction(new BEQ(elseLabel));
+
+        // bloc THEN
+        getThenBranch().codeGenListInst(compiler);
+        // Saut direct à la fin . Else n'est pas traité
+        compiler.addInstruction(new BRA(finIfLabel));
+
+        // Bloc else
+        compiler.addLabel(elseLabel);
+        getElseBranch().codeGenListInst(compiler);
+
+        compiler.addLabel(finIfLabel);
     }
 
     @Override

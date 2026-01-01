@@ -6,8 +6,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -36,7 +40,27 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        Label start= new Label("debut de la boucle While");
+        Label end = new Label("fin de notre boucle while");
+        compiler.addLabel(start);
+        // on ajoute la generation du code de la condition stockée dans R2
+
+        getCondition().codeGenInst(compiler);
+
+        // On compare R2 avec 0 (Faux)
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.getR(2)));
+
+        // if egalité : on sort de la boucle
+        compiler.addInstruction(new BEQ(end));
+
+        // execution du body
+        getBody().codeGenListInst(compiler);
+
+        // On reteste  la condition : satrt
+        compiler.addInstruction(new BRA(start));
+
+        compiler.addLabel(end);
     }
 
     @Override

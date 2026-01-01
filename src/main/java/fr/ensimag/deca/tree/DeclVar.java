@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DAddr;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -15,11 +17,13 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2026
  */
 public class DeclVar extends AbstractDeclVar {
-
-    
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
+
+    public AbstractIdentifier getVarName() {
+        return varName;
+    }
 
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);
@@ -59,7 +63,17 @@ public class DeclVar extends AbstractDeclVar {
         );
     }
 
-    
+    @Override
+    public void codegenDeclVar(DecacCompiler compiler) {
+        // on calcule l'adresse
+        DAddr addr = varName.getExpDefinition().getOperand();
+        // on calcule le type
+        Type type = varName.getExpDefinition().getType();
+        // on genere le code de l'initialisation ou la non initialisation
+        initialization.codeGenInit(compiler, addr, type);
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");

@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.SEQ;
 
 /**
  *
@@ -15,6 +19,12 @@ public class Not extends AbstractUnaryExpr {
 
     public Not(AbstractExpr operand) {
         super(operand);
+    }
+
+    @Override
+    protected void codeGenUnaryOp(DecacCompiler compiler, GPRegister op) {
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), op));
+        compiler.addInstruction(new SEQ(op));
     }
 
     @Override
