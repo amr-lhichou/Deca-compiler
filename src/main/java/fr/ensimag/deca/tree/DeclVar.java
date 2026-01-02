@@ -58,9 +58,9 @@ public class DeclVar extends AbstractDeclVar {
 
         varName.setDefinition(varDef);
 
-        //initialization.verifyInitialization(
-        //compiler, varType, localEnv, currentClass
-        //);
+        initialization.verifyInitialization(
+        compiler, varType, localEnv, currentClass
+        );
     }
 
     @Override

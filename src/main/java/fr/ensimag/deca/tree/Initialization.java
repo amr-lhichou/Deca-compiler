@@ -39,6 +39,13 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        Type typeExpr = this.expression.verifyExpr(compiler, localEnv, currentClass);
+
+        if (!typeExpr.isCompatible(t)){
+            throw new ContextualError("Initialisation incompatible : le type " + typeExpr + 
+            " est incompatible avec le type " + t
+            , getLocation());
+        }
     }
 
     @Override
