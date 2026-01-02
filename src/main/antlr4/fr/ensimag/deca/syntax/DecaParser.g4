@@ -289,12 +289,12 @@ inequality_expr returns[AbstractExpr tree]
             $tree = new Lower($e1.tree, $e2.tree);
             setLocation($tree, $LT);
         }
-    /* | e1=inequality_expr INSTANCEOF type {
+     | e1=inequality_expr INSTANCEOF type {
            assert($e1.tree != null);
             assert($type.tree != null);
-            $tree = new InstanceOf($e1.tree, $type.tree);
+            $tree = new TestType($e1.tree, $type.tree);
             setLocation($tree, $INSTANCEOF);
-        }*/ //  selon le projet on doit pas faire du casting ni du innstance of ...
+        }
     ;
 
 
@@ -400,17 +400,18 @@ primary_expr returns[AbstractExpr tree]
     setLocation($tree, $READFLOAT);
         }
 
-    // On a pas encore besoin de ça pour SansObjet  
+
     
-    // | NEW ident OPARENT CPARENT {
-    //         assert($ident.tree != null);
-    //     }
-    // | cast=OPARENT type CPARENT OPARENT expr CPARENT {
-    //         assert($type.tree != null);
-    //         assert($expr.tree != null);
-    //         $tree = new Casting($type.tree, $expr.tree);
-    //         setLocation($tree, $OPARENT);
-    //     }
+    | NEW n=ident OPARENT CPARENT {
+             assert($ident.tree != null);
+             $tree = new New($n.tree);
+        }
+     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
+            assert($type.tree != null);
+             assert($expr.tree != null);
+             $tree = new Conversion($type.tree, $expr.tree);
+             setLocation($tree, $OPARENT);
+         }
     | literal {
             assert($literal.tree != null);
             $tree = $literal.tree;
