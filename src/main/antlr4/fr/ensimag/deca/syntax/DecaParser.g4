@@ -494,6 +494,7 @@ $fields= new ListChamps();
 $methods = new ListeMethod();
 }
     : (m=decl_method {
+    $methods.add($m.tree);
         }
       | decl_field_set[$fields]
       )*
