@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
+import fr.ensimag.deca.context.ContextualError;
+
 /**
  * Conversion of an int into a float. Used for implicit conversions.
  * 
@@ -25,8 +27,19 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass) throws ContextualError{
+        // throw new UnsupportedOperationException("not yet implemented");
+        Type oldType = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        if (!oldType.isInt()){
+            throw new ContextualError("On ne peut convertir en Float le Type " +
+            oldType + " mais seulement le Type INT ", getLocation());
+        }
+
+        Type floatType = compiler.environmentType.FLOAT;
+        setType(floatType);
+        return floatType;
+
     }
 
 

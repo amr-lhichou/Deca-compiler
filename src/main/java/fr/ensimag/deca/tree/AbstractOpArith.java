@@ -30,16 +30,39 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type leftType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
+        // L'addition est arithmétique seulement
         if (!(leftType.isInt() || leftType.isFloat()) || !(rightType.isInt() || rightType.isFloat())){
             throw new ContextualError("Opération interdite entre " + leftType + " et " + rightType, getLocation());
         }
 
         Type expType;
-        if (leftType.isFloat() || rightType.isFloat()){
+
+        // int + float (convertir le int en float)
+        if (leftType.isInt() && rightType.isFloat()){
+            this.setLeftOperand(new ConvFloat(getLeftOperand()));
             expType = compiler.environmentType.FLOAT;
-        } else {
-            expType = compiler.environmentType.INT;
+            setType(expType);
+            return expType;
         }
+
+        // float + int (convertir le int en float)
+        if (rightType.isInt() && leftType.isFloat()){
+
+            this.setRightOperand(new ConvFloat(getRightOperand()));
+            expType = compiler.environmentType.FLOAT;
+            setType(expType);
+            return expType;
+        }
+
+        // int + int
+        if (leftType.isInt() && rightType.isInt()){
+            expType = compiler.environmentType.INT;
+            setType(expType);
+            return expType;
+        }
+
+        // float + float
+        expType = compiler.environmentType.FLOAT;
         setType(expType);
         return expType;
     }
