@@ -29,12 +29,15 @@ public class IfThenElse extends AbstractInst {
     private ListInst elseBranch;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
+        
         Validate.notNull(condition);
         Validate.notNull(thenBranch);
         Validate.notNull(elseBranch);
         this.condition = condition;
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
+
+        this.setLocation(condition.getLocation());
     }
     // on ajoute les méthodes d'accés public
     // pour travailler proprement peut etre on aura besoin après
@@ -55,6 +58,17 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        
+        Type condType = this.condition.verifyExpr(compiler, localEnv, currentClass);
+        
+        if (!condType.isBoolean()){
+            throw new ContextualError("La condition doit ếtre de Type Boolean non pas de Type " + 
+            condType, getLocation());
+        }
+
+        this.thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+
+        this.elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
