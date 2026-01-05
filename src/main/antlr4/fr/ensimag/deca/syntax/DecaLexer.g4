@@ -66,12 +66,14 @@ TRUE : 'true';
 WHILE : 'while';
 
 SPACE : ' ' { skip(); };
-
+// les types
+TYPE_INT : 'int';
+TYPE_FLOAT : 'float';
+VOID : 'void';
 IDENT : (LETTER | '$' | '_') (LETTER | DIGIT | '$' | '_')*;
-
 // Littéraux entiers
 fragment POSITIVE_DIGIT : '1' .. '9';
-INT : '0' | POSITIVE_DIGIT* DIGIT;
+INT : '0' | POSITIVE_DIGIT DIGIT*;
 
 // j ai ajouter trop de fragment pour empécher les jetons intermédiaire (ex : DEC ... )
 // que le Parser ne connait pas . seul float est exposé
@@ -119,4 +121,5 @@ MULTI_LINE_COMMENT : '/*' .*? '*/'{
               skip();
           }
         ;
+
 

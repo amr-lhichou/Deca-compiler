@@ -419,11 +419,13 @@ primary_expr returns[AbstractExpr tree]
     ;
 
 type returns[AbstractIdentifier tree]
-    : ident {
-            assert($ident.tree != null);
-            $tree=$ident.tree;
+    : ident { $tree = $ident.tree; }
+        | t=(TYPE_INT | TYPE_FLOAT | VOID) {
+                $tree = new Identifier(getDecacCompiler().createSymbol($t.text));
+                setLocation($tree, $t);
+
         }
-    ;
+        ;
 
 literal returns[AbstractExpr tree]
     : INT {
