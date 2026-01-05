@@ -157,7 +157,7 @@ inst returns[AbstractInst tree]
             setLocation($tree, $WHILE);
         }
     | RETURN expr SEMI {
-
+            $tree = new Return($expr.tree);
             assert($expr.tree != null);
         }
     ;

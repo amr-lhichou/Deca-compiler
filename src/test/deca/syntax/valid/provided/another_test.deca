@@ -1,0 +1,5 @@
+class addition{
+int print67() {
+return 67;
+}
+}
