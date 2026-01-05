@@ -1,0 +1,6 @@
+
+//Opérateurs booléens et comparaisons
+
+{
+    boolean b = (3 < 4) && (1 != 2) || false ;
+}

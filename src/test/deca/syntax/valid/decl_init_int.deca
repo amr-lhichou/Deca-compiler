@@ -1,0 +1,7 @@
+
+//Déclaration avec initilialisation
+
+{
+    int a = 5;
+    println(a);
+}

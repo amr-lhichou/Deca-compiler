@@ -1,0 +1,6 @@
+
+//Erreur: token ** inconnu 
+
+{
+    int x = 2**3;
+}

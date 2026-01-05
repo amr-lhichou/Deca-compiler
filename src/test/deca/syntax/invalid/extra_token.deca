@@ -1,0 +1,7 @@
+
+//Erreur : token après la fin
+
+{
+    println ("ok");
+}
+}

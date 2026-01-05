@@ -1,0 +1,7 @@
+
+//Changement de priorité avec les parenthèses
+
+{
+    int x = (1 + 2) * 3 ;
+    println(x) ; // doit afficher 9
+}

@@ -1,0 +1,10 @@
+
+{
+    int x = 2;
+    if (x<3){
+        println("small dih");
+    }
+    else{
+        println("big dih");
+    }
+}
