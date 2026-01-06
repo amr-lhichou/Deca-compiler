@@ -6,7 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -89,6 +91,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
         // effectue l operation binaire (+,/,*....)
         codeGenOp(compiler, R3, R2);
+        // Overflow test
+        compiler.addInstruction(new BOV(new Label("arithmetic_overflow_error")));
     }
     protected abstract void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2);
 

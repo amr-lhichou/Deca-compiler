@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -38,7 +40,20 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+    // 2 variables to calculate the stacksize needed for the compilation of each file
+    // they change depending on the file
+    private int currentStackSize = 0;
+    private int maxStackSize = 0;
+
+    public int getStackMaxSize() {
+        return maxStackSize;
+    }
+    // each (if /while..) has its own label number in case there is many
+    private int LabelId=0;
+    public int getLabelId() {
+        LabelId++;
+        return LabelId;
+    }
     /**
      * Portable newline character.
      */
@@ -94,6 +109,18 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction) {
         program.addInstruction(instruction);
+        // Push adds +1 to the pile (sp=sp+1)
+        if( instruction  instanceof PUSH){
+            currentStackSize++;
+            if (currentStackSize>maxStackSize){
+                maxStackSize = currentStackSize;
+            }
+        }
+        //POP does (sp+sp-1)
+        if( instruction  instanceof POP){
+            currentStackSize--;
+        }
+
     }
 
     /**
@@ -199,6 +226,24 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+
+        // Gestion d 'erreur
+        // OVERFLOW of the stack size
+        this.addLabel(new Label("stack_overflow_error"));
+        this.addInstruction(new WSTR("Error: Stack Overflow"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+        //Arithmetic Overflow
+        this.addLabel(new Label("arithmetic_overflow_error"));
+        this.addInstruction(new WSTR("Error: Arithmetic Overflow"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+        // Erreur de lecture entrée/sortie
+        this.addLabel(new Label("io_error"));
+        this.addInstruction(new WSTR("Error: Input/Output error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
@@ -242,6 +287,9 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
     }
 
 }

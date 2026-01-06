@@ -140,21 +140,18 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
 
         // si STRING : on a pas de calcul on affiche directement
-        if (getType().isString()) {
-            this.codeGenInst(compiler);
-        }
+
+        this.codeGenInst(compiler);
         // Tous les instance passe par codeGenInst.
         // le calcul est stocké dans  R2
-        this.codeGenInst(compiler);
-
-        // charge R2 dans R1 pour laffichage
-        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
-
         // on affiche Selon le type
         if (getType().isInt()) {
+            // charge R2 dans R1 pour laffichage
+            compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
             compiler.addInstruction(new WINT());
         }
         else if (getType().isFloat()) {
+            compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
             if (printHex) {
                 compiler.addInstruction(new WFLOATX()); // en Hexa
             } else {

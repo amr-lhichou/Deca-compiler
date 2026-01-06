@@ -4,6 +4,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -54,8 +60,20 @@ public class Main extends AbstractMain {
         declVariables.codeGenListDeclVarInst(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
+        // Stack Size needed for variable declaration
+        int size_var= declVariables.size() ;
+        // Stack size needed for temporary (push)
+        int size_temp =  compiler.getStackMaxSize();
+        // Stack total size
+        int stack_size= size_temp +size_var;
+        compiler.addFirst(new ADDSP(new ImmediateInteger(size_var)));
+        compiler.addFirst(new BOV(new Label("stack_overflow_error")));
+        // we test the size with TSTO
+        compiler.addFirst(new TSTO(new ImmediateInteger(stack_size)));
 
     }
+
+
     
     @Override
     public void decompile(IndentPrintStream s) {
