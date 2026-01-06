@@ -1,0 +1,7 @@
+
+//Syntaxe declaration variable : int x = expr ;
+//attendu : parse OK
+
+{
+    int x = 5 ;
+}

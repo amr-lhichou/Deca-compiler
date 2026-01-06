@@ -1,0 +1,7 @@
+
+//Syntaxe fin d'instruction
+//Attendu : erreur -> missing ; ou  ; expected
+
+{
+    int x = 5
+}

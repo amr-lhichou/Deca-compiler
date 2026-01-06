@@ -1,0 +1,6 @@
+
+// Affectation correcte syntaxiquement
+//Attendu : parser OK
+{
+    x = 1 ;
+}

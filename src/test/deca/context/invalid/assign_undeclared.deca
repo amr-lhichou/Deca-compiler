@@ -1,0 +1,7 @@
+
+//COntextuel : varialble doit être déclaré avant usage
+// Attendu : erreur "x non déclaré"
+
+{
+    x = 5;
+}
