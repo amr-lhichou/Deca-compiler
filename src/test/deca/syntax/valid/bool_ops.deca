@@ -1,4 +1,11 @@
 
+// Description :
+// Opérateurs booléens && ||
+//
+// Resultats :
+// ok
+//
+
 {
     b = true && false || true ;
     c != false ;

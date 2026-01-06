@@ -1,4 +1,11 @@
 
+// Description :
+// Littéraux float: décimal, exponentiel, suffixe f
+//
+// Resultats :
+// ok
+//
+
 {
     f = 2.5 ;
     g = 1.2e3;

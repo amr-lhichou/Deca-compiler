@@ -1,6 +1,11 @@
 
-// Tester toutes les variantes de  print
-//Attendu : parser ok
+// Description :
+// print / println / printx / printlnx / println / println / println / println
+//
+// Resultats :
+// ok
+//
+
 {
     print (1);
     println (2);

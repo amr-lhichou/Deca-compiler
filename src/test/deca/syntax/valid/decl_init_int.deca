@@ -1,6 +1,10 @@
 
-//Syntaxe declaration variable : int x = expr ;
-//attendu : parse OK
+// Description :
+// Déclaration avec initialisation
+//
+// Resultats :
+// ok
+//
 
 {
     int x = 5 ;

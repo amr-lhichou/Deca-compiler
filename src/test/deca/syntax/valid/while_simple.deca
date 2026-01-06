@@ -1,4 +1,11 @@
 
+// Description :
+// Couverture syntaxe : while
+//
+// Resultats :
+// ok
+//
+
 {
     while (x) {
         x = x + 1 ;

@@ -1,6 +1,11 @@
 
-// Affectation correcte syntaxiquement
-//Attendu : parser OK
+// Description :
+// Affectation simple (sera vérifiée en contexte plus tard)
+//
+// Resultats :
+// ok
+//
+
 {
     x = 1 ;
 }

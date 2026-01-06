@@ -1,4 +1,11 @@
 
+// Description :
+// Affectation chaînée via parenthèses
+//
+// Resultats :
+// ok
+//
+
 {
     a = ( b = 3 ) ;
 }

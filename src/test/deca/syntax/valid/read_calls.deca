@@ -1,4 +1,10 @@
 
+// Description :
+// Appels readInt() et readFloat()
+//
+// Resultats :
+// ok
+//
 
 {
     x = readInt();

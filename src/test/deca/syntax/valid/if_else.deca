@@ -1,4 +1,11 @@
 
+// Description :
+// Couverture syntaxe : if/else 
+//
+// Resultats :
+// ok
+//
+
 {
     if (X) {
         x=1;

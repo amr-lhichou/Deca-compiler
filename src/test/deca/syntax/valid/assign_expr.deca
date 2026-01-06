@@ -1,4 +1,10 @@
 
+// Description :
+// Affectation avec expression (priorités +/*)
+//
+// Resultats :
+// ok
+//
 
 {
     x = 1 + 2 * 3 ;
