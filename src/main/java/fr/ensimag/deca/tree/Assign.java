@@ -35,18 +35,11 @@ public class Assign extends AbstractBinaryExpr {
         // throw new UnsupportedOperationException("not yet implemented");
 
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        
+        // On doit utiliser verifyRValue
+        AbstractExpr rightType = getRightOperand().verifyRValue(compiler, localEnv, currentClass, leftType);
 
-        if (!rightType.isCompatible(leftType)){
-            throw new ContextualError(
-                "Affectation impossible d'une expression de Type " + rightType 
-                + " à une expression de type " + leftType,
-                getLocation()
-            );
-        }
-
+        setRightOperand(rightType);
 
         setType(leftType);
         return leftType;

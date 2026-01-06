@@ -41,7 +41,13 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
   
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // pour le not et le unaryMinus on afiche ex: (-x); (!x);
+
+        s.print("(" + getOperatorName());
+        getOperand().decompile(s);
+        s.print(")");
+
     }
 
     @Override

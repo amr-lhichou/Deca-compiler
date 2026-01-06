@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -28,14 +29,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError{
-        // throw new UnsupportedOperationException("not yet implemented");
-        Type oldType = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        if (!oldType.isInt()){
-            throw new ContextualError("On ne peut convertir en Float le Type " +
-            oldType + " mais seulement le Type INT ", getLocation());
-        }
-
+        /* On appelle verifyExp pour ConvFloat lorsquon veut convertir un int en Float,
+           donc on a vérifié l'expression auparavant (no need to redo it) */
         Type floatType = compiler.environmentType.FLOAT;
         setType(floatType);
         return floatType;
@@ -46,6 +42,15 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     protected String getOperatorName() {
         return "/* conv float */";
+    }
+
+    // Comme pour le ConvFloat on doit ecrire ex: (float) x;
+    @Override
+    public void decompile(IndentPrintStream s) {
+
+        s.print("(float)");
+        getOperand().decompile(s);
+
     }
 
 }

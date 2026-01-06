@@ -39,13 +39,23 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         Type typeExpr = this.expression.verifyExpr(compiler, localEnv, currentClass);
 
-        if (!typeExpr.isCompatible(t)){
+        if (!t.isCompatible(typeExpr)){
             throw new ContextualError("Initialisation incompatible : le type " + typeExpr + 
             " est incompatible avec le type " + t
             , getLocation());
         }
+
+        // if we initialize float with int we convert int to float ex : float x =1;
+
+        if (t.isFloat() && typeExpr.isInt()){
+            ConvFloat convInit = new ConvFloat(getExpression());
+            convInit.verifyExpr(compiler, localEnv, currentClass);
+            setExpression(convInit);
+        }
+
     }
 
     @Override
