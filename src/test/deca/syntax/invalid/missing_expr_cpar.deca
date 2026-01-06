@@ -1,4 +1,13 @@
 
+// Description :
+// Expression avec parenthèse ouvrante mais parenthèse fermante manquante.
+// Ici, on teste une affectation contenant une sous-expression parenthésée incomplète.
+//
+// Resultats :
+// Erreur syntaxique
+// Regle : primary_expr -> '(' expr ')'
+//
+
 {
     x =  ( 1 + 2 ;
 }

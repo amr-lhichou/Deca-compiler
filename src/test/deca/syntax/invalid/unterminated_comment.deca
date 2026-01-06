@@ -1,4 +1,12 @@
 
+// Description :
+// Commentaire multi-ligne non fermé
+//
+// Resultats :
+// Erreur lexicale
+// Ligne 6 : token recognition error|EOF
+// Regle : MULTI_LINE_COMMENT : '/*' ... '*/'
+
 {
     x = 1; 
     /*dommage, commentaire non fermé ><

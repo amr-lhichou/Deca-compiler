@@ -1,4 +1,12 @@
 
+// Description :
+// Virgule finale dans print
+//
+// Resultats :
+// Erreur syntaxique
+// mismatched input ')'
+// Regle : list_expr : expr (',' expr)*
+
 {
     print(1,);
 }

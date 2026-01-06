@@ -1,6 +1,11 @@
 
-//Syntaxe fin d'instruction
-//Attendu : erreur -> missing ; ou  ; expected
+// Description :
+// Point-virgule manquant après une déclaration
+//
+// Resultats :
+// Erreur syntaxique
+// Ligne 5 : missing ';'
+// Regle : decl_var_set : type list_decl_var ';'
 
 {
     int x = 5

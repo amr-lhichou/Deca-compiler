@@ -1,4 +1,13 @@
 
+// Description :
+// readInt ne prend pas d'argument
+//
+// Resultats :
+// Erreur syntaxique
+// mismatched input '1'
+// Regle : primary_expr : READINT '(' ')'
+//
+
 {
     x = readInt(1);
 }

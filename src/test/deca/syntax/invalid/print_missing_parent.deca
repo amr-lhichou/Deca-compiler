@@ -1,4 +1,12 @@
 
+// Description :
+// println sans parenthèses
+//
+// Resultats :
+// Erreur syntaxique
+// Ligne 4 : no viable alternative
+// Regle : inst : PRINTLN '(' list_expr ')' ';'
+
 {
-    printx 3;
+    println 3;
 }

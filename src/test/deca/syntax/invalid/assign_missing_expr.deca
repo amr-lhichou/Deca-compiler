@@ -1,4 +1,12 @@
 
+// Description :
+    // Affectation avec expression manquante
+    //
+    // Resultats :
+    // Erreur syntaxique
+    // mismatched input ';'
+    // Regle : assign_expr : or_expr ('=' assign_expr)?
+
 {
     x= ;
 }

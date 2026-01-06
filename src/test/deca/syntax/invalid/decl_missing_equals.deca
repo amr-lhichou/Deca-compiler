@@ -1,6 +1,10 @@
-
-//Syntaxe declaration variable
-//Attendu : erreur token 5 inattendu
+// Description :
+// Signe '=' manquant entre identifiant et expression
+//
+// Resultats :
+// Erreur syntaxique
+// Ligne 4 : no viable alternative
+// Regle : decl_var : ident ('=' expr)?
 
 {
     int x  5 ;

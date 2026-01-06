@@ -1,4 +1,12 @@
 
+// Description :
+// Caractère illégal '@'
+//
+// Resultats :
+// Erreur lexicale
+// Ligne 4 : token recognition error
+// Regle : lexeur : aucun token ne matche '@'
+
 {
   x = 1 @ 2;
 }

@@ -1,4 +1,12 @@
 
+// Description :
+// Affectation sur un littéral (pas une LValue)
+//
+// Resultats :
+// Erreur syntaxique
+// Ligne 4 : InvalidLValue
+// Regle : assign_expr : (LVALUE '=')
+
 {
     1 = 2 ;
 }

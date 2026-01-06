@@ -1,4 +1,12 @@
 
+// Description :
+// Opérateur mal placé '+ *'
+//
+// Resultats :
+// Erreur syntaxique
+// Ligne 4 : mismatched input '*'
+// Regle : mult_expr : mult_expr ('*'|'/'|'%') unary_expr
+
 {
     x = 1 + * 2 ;
 }

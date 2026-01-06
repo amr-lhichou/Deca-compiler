@@ -1,6 +1,11 @@
 
-//Syntaxe expr obligatoire apres =
-//Attendu : erreur sur ;
+// Description :
+// Expression manquante après '=' en déclaration
+//
+// Resultats :
+// Erreur syntaxique
+// mismatched input ';'
+// Regle : decl_var : ident ('=' expr)?
 
 {
     int x = ;

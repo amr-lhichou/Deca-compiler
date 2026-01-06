@@ -1,4 +1,14 @@
 
+// Description :
+// Boucle while sans accolades autour du corps.
+// Dans cette grammaire, while doit être de la forme : while (expr) { list_inst }.
+// On teste donc que l'absence de '{' et '}' est rejetée.
+//
+// Resultats :
+// Erreur syntaxique
+// Regle : inst -> WHILE '(' expr ')' '{' list_inst '}'
+//
+
 {
     while (x)
         x = 1 ;

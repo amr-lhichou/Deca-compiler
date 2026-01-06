@@ -1,7 +1,15 @@
 
+// Description :
+// Instruction if avec parenthèse fermante manquante après la condition.
+// On teste que la syntaxe exige : if '(' expr ')' '{' ... '}'.
+//
+// Resultats :
+// Erreur syntaxique
+// Regle : if_then_else -> IF '(' expr ')' '{' list_inst '}' (ELSE ...)*
+//
 
 {
-    if (x {
+    if (true {
         x = 1 ;
     }
 }

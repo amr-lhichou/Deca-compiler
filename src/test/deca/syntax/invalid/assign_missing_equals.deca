@@ -1,4 +1,13 @@
 
+// Description :
+// Affectation sans signe '='.
+// On teste que la syntaxe impose bien la forme : <lvalue> '=' <expr> ';'.
+//
+// Resultats :
+// Erreur syntaxique
+// Regle : inst -> expr ';'  /  assign_expr -> or_expr ('=' assign_expr)?
+//
+
 {
     x 3 ;
 }
