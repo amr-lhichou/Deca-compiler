@@ -1,0 +1,7 @@
+
+//Syntaxe declaration variable
+//Attendu : erreur token 5 inattendu
+
+{
+    int x  5 ;
+}

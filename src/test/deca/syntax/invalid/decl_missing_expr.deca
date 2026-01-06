@@ -1,0 +1,7 @@
+
+//Syntaxe expr obligatoire apres =
+//Attendu : erreur sur ;
+
+{
+    int x = ;
+}

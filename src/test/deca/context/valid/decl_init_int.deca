@@ -1,0 +1,8 @@
+
+
+//Contextuel declaration variable : int x = expr ;
+//attendu : OK
+
+{
+    int x = 5 ;
+}
