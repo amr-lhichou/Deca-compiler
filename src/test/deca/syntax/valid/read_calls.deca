@@ -1,0 +1,9 @@
+
+
+{
+    x = readInt();
+
+    y = readFloat();
+
+    println(x, y);
+}

@@ -1,0 +1,14 @@
+
+// Tester toutes les variantes de  print
+//Attendu : parser ok
+{
+    print (1);
+    println (2);
+    printx (3);
+    printlnx (4);
+    println("ok");
+    println(true);
+    println(false);
+    println(2.5);
+
+}
