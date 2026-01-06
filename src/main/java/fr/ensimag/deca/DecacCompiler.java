@@ -243,6 +243,11 @@ public class DecacCompiler {
         this.addInstruction(new WSTR("Error: Input/Output error"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
+        // Division by zero error
+        this.addLabel(new Label("division_zero_error"));
+        this.addInstruction(new WSTR("Error: Division by zero error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
 
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
