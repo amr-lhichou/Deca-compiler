@@ -17,7 +17,7 @@ options {
 
 PLUS : '+';
 MINUS: '-';
-EOL : '\n' {skip();};
+//EOL : '\n' {skip();};
 TIMES : '*' ;
 OR : '||';
 AND : '&&';
@@ -65,7 +65,7 @@ THIS : 'this';
 TRUE : 'true';
 WHILE : 'while';
 
-SPACE : ' ' { skip(); };
+//SPACE : ' ' { skip(); };
 // les types
 TYPE_INT : 'int';
 TYPE_FLOAT : 'float';
@@ -90,10 +90,9 @@ fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 
 FLOAT : FLOATDEC | FLOATHEX;
 
 // Chaine de caractères
-STRING_CAR : ~["\\] ;
+fragment STRING_CAR : ~["\\] ;
 STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
-MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
-
+MULTI_LINE_STRING : '"' (STRING_CAR | '\\"' | '\\\\' | '\r'? '\n')* '"' ;
 // Inclusion de fichier
 
 //FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
@@ -106,7 +105,6 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        | '//'
         ) {
               skip(); // avoid producing a token
           }

@@ -41,8 +41,9 @@ public class While extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         //throw new UnsupportedOperationException("not yet implemented");
-        Label start= new Label("debut de la boucle While");
-        Label end = new Label("fin de notre boucle while");
+        int cmp = compiler.getLabelId();
+        Label start= new Label("start_While"+cmp);
+        Label end = new Label("end_while" +cmp);
         compiler.addLabel(start);
         // on ajoute la generation du code de la condition stockée dans R2
 
