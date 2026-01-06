@@ -18,6 +18,10 @@ public class EnvironmentType {
     public EnvironmentType(DecacCompiler compiler) {
         
         envTypes = new HashMap<Symbol, TypeDefinition>();
+
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
+        envTypes.put(nullSymb, new TypeDefinition(NULL, Location.BUILTIN));
         
         Symbol intSymb = compiler.createSymbol("int");
         INT = new IntType(intSymb);
@@ -52,4 +56,5 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final NullType    NULL;
 }

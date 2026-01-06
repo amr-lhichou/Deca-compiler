@@ -20,8 +20,9 @@ public class Null extends AbstractExpr {
 
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        // Obligatoire pour compiler, sera rempli en Partie B par Houssam_Amr
-        throw new UnsupportedOperationException("verifyExpr non implémentée pour New eeeeh attention");
+        Type nullType = compiler.environmentType.NULL;
+        setType(nullType);
+        return nullType;
     }
 
 
