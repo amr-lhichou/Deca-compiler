@@ -15,12 +15,23 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        Type leftType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        // Opération booléenne entre deux booléens
+        if (!leftType.isBoolean() || !rightType.isBoolean()){
+            throw new ContextualError("Opération booléenne interdite entre " + leftType + " et " + rightType, getLocation());
+        }
+
+        setType(leftType);
+        return leftType;
     }
 
 }

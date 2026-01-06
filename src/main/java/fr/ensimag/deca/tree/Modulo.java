@@ -22,7 +22,17 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        Type leftType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        if (!leftType.isInt() || !rightType.isInt()){
+            throw new ContextualError("Le modulo '%' n'est défini que pour les entiers ", 
+            getLocation());
+        }
+
+        setType(leftType);
+        return leftType;
     }
     @Override
     protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {
