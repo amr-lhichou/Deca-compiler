@@ -1,6 +1,0 @@
-
-//Erreur: print sans parenthèses
-
-{
-    println "bankai" ;
-}

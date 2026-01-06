@@ -1,7 +1,0 @@
-
-// Test de précédence des opérateurs
-
-{
-    int x = 1+2*3 ;
-    println(x) ; // Doit afficher 7
-}

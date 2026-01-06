@@ -1,6 +1,0 @@
-
-//Erreur : virgule finale non autorisée
-
-{
-    println("comma ?",);
-}

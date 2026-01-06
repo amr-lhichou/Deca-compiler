@@ -1,7 +1,0 @@
-// Déclaraion - affectation - impression
-
-{
-    int x;
-    x = 21;
-    println(x);
-}
