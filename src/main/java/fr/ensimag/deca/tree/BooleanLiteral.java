@@ -6,6 +6,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 
 /**
@@ -33,6 +37,17 @@ public class BooleanLiteral extends AbstractExpr {
         Type boolType = compiler.environmentType.BOOLEAN;
         setType(boolType);
         return boolType;
+    }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // fait le load dans R2 comme tjrs
+        if(getValue()){
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1), Register.getR(2)));
+        }
+        if( !getValue()){
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.getR(2)));
+        }
+
     }
 
 
