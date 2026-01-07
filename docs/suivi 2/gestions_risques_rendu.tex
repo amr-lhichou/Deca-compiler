@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{amssymb}
+
+\newcommand{\checkbox}{\(\square\)}
+
+\title{Projet GL --- Documentation de validation\\
+Gestion des risques et gestion des rendus}
+\author{Groupe 53 : \textit{Les misérables}}
+\date{\textit{07-Janvier-2026}}
+
+\begin{document}
+\maketitle
+
+\section{Gestion des risques}
+
+\subsection{Objectif}
+Un projet logiciel comporte inévitablement des erreurs (interprétation, implémentation, intégration).
+L'objectif de cette section est de \textbf{prioriser les dangers critiques} (impact élevé sur la qualité du
+projet) et de définir des \textbf{actions concrètes et vérifiables} (réponse oui/non) permettant de réduire
+la probabilité d'occurrence et l'impact de ces risques.
+
+\vspace{0.3em}
+\noindent \textbf{Rappel :} certains bugs peuvent être rares mais coûteux (compilation cassée).
+Nous privilégions donc les risques à \textbf{impact fort}, même si leur correction est ``simple''.
+
+\subsection{Table d'analyse des risques}
+
+% Alignement en haut (p{}) et texte à gauche.
+\renewcommand\theadalign{tl}
+\renewcommand\cellalign{tl}
+
+\begin{longtable}{|p{1.4cm}|p{4.1cm}|p{1.6cm}|p{1.9cm}|p{6.2cm}|}
+\hline
+\textbf{ID} & \textbf{Risque / danger} & \textbf{Impact} & \textbf{Proba.} & \textbf{Actions (concrètes, vérifiables)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{ID} & \textbf{Risque / danger} & \textbf{Impact} & \textbf{Proba.} & \textbf{Actions (concrètes, vérifiables)} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+R1 & Oubli d'une date de suivi ou rendu & Fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Mettre les 4 dates dans un agenda partagé + rappels
+\item Pinner un message ``Deadlines'' dans le canal du groupe.
+\end{itemize}
+\\ \hline
+
+R2 & Dépôt partagé non compilable (oubli \texttt{git add}, conflit, commit cassé). & Très fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Interdire le commit direct sur \texttt{main}
+\item Exiger \texttt{mvn clean} avant merge.
+\item Vérif : on refait un clone dans un dossier vide et ça compile.
+\end{itemize}
+\\ \hline
+
+R3 & Infrastructure de tests incomplète ou trompeuse (faux positifs). & Fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Ajouter 3 tests ``sanity'' (valid+invalid) par passe (syntaxe, contexte).
+\item Exécuter le script \texttt{common-tests.sh} avant rendu.
+\end{itemize}
+\\ \hline
+
+R4 & Régression : une correction casse une fonctionnalité déjà validée. & Fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item MR/PR obligatoire + relecture par 1 personne.
+\item Vérif : le test reproduisant le bug est ajouté au dépôt.
+\end{itemize}
+\\ \hline
+
+R5 & Mauvaise interprétation de la grammaire  & Moyen & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Identifier règles sensibles (priorités opérateurs, assign, conversions).
+\item Créer des tests ciblés (petits) + 1 test ``mixte'' (long).
+\end{itemize}
+\\ \hline
+
+R6 & Problème environnement (Java/Maven/ANTLR/IMA) & Fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Vérifier versions : \texttt{java -version}, \texttt{mvn -v}.
+\item Vérifier IMA : \texttt{ima -v} sur la machine de rendu.
+\item Vérif : exécution d'un exemple minimal end-to-end (compile + test).
+\end{itemize}
+\\ \hline
+
+R7 & Répartition du travail déséquilibrée / blocage d'une personne. & Moyen & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Pair-programming si blocage $>$ 1h.
+\item Vérif : chaque tâche a un owner + une date de fin.
+\end{itemize}
+\\ \hline
+
+R8 & Rendu incomplet : documentation manquante / non à jour. & Fort & Moyen &
+\begin{itemize}[leftmargin=*, nosep]
+\item Gabarit doc de validation + sections obligatoires
+\item Relecture doc la veille du suivi.
+\item Vérif : PDF généré depuis le dépôt
+\end{itemize}
+\\ \hline
+
+\end{longtable}
+
+\subsection{Risques prioritaires}
+Nous considérons comme \textbf{prioritaires} les risques à impact très fort (R1, R2, R3, R6) car ils peuvent
+rendre le compilateur inutilisable ou décrédibiliser le projet (dépôt cassé, tests non fiables, environnement non opérationnel).
+
+\section{Gestion des rendus (Release management process)}
+
+\subsection{Objectif}
+Même avec des tests automatisés, certains contrôles ne sont pas totalement automatisables
+(ex : vérifier que le dépôt partagé fonctionne réellement, ou vérifier l'environnement).
+Nous définissons donc une \textbf{checklist de rendu} : une suite d'actions simples, vérifiables,
+à exécuter avant chaque suivi / rendu.
+
+\subsection{Checklist avant chaque suivi / rendu}
+\subsubsection*{A. Vérification dépôt / état Git}
+\begin{itemize}[leftmargin=*, itemsep=0.2em]
+\item \checkbox\ \texttt{git status} : aucun fichier critique non committé. \textit{(évite l'oubli de fichiers)}
+\item \checkbox\ \texttt{git pull} sur la branche cible et résolution propre des conflits. \textit{(évite divergence)}
+\end{itemize}
+
+\subsubsection*{B. Build + tests automatiques obligatoires}
+\begin{itemize}[leftmargin=*, itemsep=0.2em]
+\item \checkbox\ \texttt{mvn -q clean test} \textit{(compile + exécute tests + common-tests.sh)}
+\item \checkbox\ Lancer au moins 1 test ``sanity'' par passe :
+\begin{itemize}[leftmargin=*, nosep]
+\item \checkbox\ syntaxe valid + invalid
+\item \checkbox\ contexte valid + invalid
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{C. Vérification environnement (si codegen/IMA concerné)}
+\begin{itemize}[leftmargin=*, itemsep=0.2em]
+\item \checkbox\ \texttt{ima -v} fonctionne dans un nouveau terminal. \textit{(vérifie PATH + binaire)}
+\item \checkbox\ Compilation + exécution d'un exemple minimal end-to-end (compile + test). \textit{(preuve que tout marche)}
+\end{itemize}
+
+\subsubsection*{D. Vérification ``dépôt partagé'' (reproductibilité)}
+\begin{itemize}[leftmargin=*, itemsep=0.2em]
+\item \checkbox\ Refaire un clone dans un répertoire vide (ou sur une autre machine). \textit{(pas seulement votre clone local)}
+\item \checkbox\ Refaire : \texttt{mvn -q clean test}. \textit{(garantit le rendu utilisable par l'enseignant)}
+\end{itemize}
+
+\subsubsection*{E. Documentation / livrables}
+\begin{itemize}[leftmargin=*, itemsep=0.2em]
+\item \checkbox\ README à jour (setup + commandes test). \textit{(rendu exploitable)}
+\item \checkbox\ Doc de validation à jour (incluant cette section risques + checklist). \textit{(conforme consignes)}
+\end{itemize}
+
+\subsection{Quand exécuter cette checklist ?}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Avant chaque suivi}
+\item \textbf{La veille + le matin du rendu final} (23/01 soutenance)
+\item \textbf{Avant toute fusion (MR/PR)} : au minimum parties A et B
+\end{itemize}
+
+\end{document}
