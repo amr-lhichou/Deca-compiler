@@ -1,0 +1,13 @@
+
+// Description :
+// Opérateur ! appliqué à un int
+//
+// Resultats :
+// Erreur contextuelle
+// opérateur ! attend un boolean
+//
+
+{
+  boolean b;
+  b = !1;
+}

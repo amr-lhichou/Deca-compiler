@@ -1,0 +1,13 @@
+
+// Description :
+// Opérateur logique appliqué à des int 
+//
+// Resultats :
+// Erreur contextuelle
+// opérateur && attend des boolean
+//
+
+{
+  boolean b;
+  b = 1 && 2;
+}

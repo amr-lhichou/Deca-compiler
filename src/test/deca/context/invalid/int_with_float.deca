@@ -1,0 +1,12 @@
+
+// Description :
+// Initialisation int avec un float
+//
+// Resultats :
+// Erreur contextuelle
+//incompatibilité de type : int <- float
+//
+
+{
+  int x = 2.5;
+}

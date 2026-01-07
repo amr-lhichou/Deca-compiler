@@ -1,6 +1,11 @@
 
-//COntextuel : varialble doit être déclaré avant usage
-// Attendu : erreur "x non déclaré"
+// Description :
+// Utilisation d'une variable non déclarée
+//
+// Resultats :
+// Erreur contextuelle
+// variable 'x' non déclarée
+//
 
 {
     x = 5;

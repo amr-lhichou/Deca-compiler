@@ -1,0 +1,12 @@
+// Description :
+// Opérateurs arithmétique sur boolean 
+//
+// Resultats :
+// Erreur contextuelle
+// opérateur + attend des numériques
+//
+
+{
+  int x;
+  x = true + 1;
+}

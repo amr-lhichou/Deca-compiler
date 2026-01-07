@@ -1,0 +1,13 @@
+
+// Description :
+// Affectation d'une string à un int
+//
+// Resultats :
+// Erreur contextuelle
+// incompatibilité de type : int <- string
+//
+
+{
+  int x;
+  x = "a";
+}

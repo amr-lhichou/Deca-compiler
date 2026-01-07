@@ -1,0 +1,13 @@
+
+// Description :
+// Comparaison == entre int et boolean 
+//
+// Resultats :
+// Erreur contextuelle
+// types incompatibles pour == : int et boolean
+//
+
+{
+  boolean b;
+  b = (1 == true);
+}

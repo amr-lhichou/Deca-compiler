@@ -1,0 +1,12 @@
+// Description :
+// Double déclaration dans le même bloc
+//
+// Resultats :
+// Erreur contextuelle
+// double déclaration de 'x'
+//
+
+{
+  int x;
+  float x;
+}

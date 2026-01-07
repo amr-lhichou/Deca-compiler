@@ -1,0 +1,14 @@
+
+// Description :
+// Condition de while non booléenne 
+//
+// Resultats :
+// Erreur contextuelle
+// condition de while doit être boolean
+//
+
+{
+  while (1) {
+    print(1);
+  }
+}

@@ -1,0 +1,12 @@
+
+// Description :
+// Initialisation boolean avec int
+//
+// Resultats :
+// Erreur contextuelle
+// incompatibilité de type : boolean <- int
+//
+
+{
+  boolean b = 1;
+}

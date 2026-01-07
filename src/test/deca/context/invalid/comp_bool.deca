@@ -1,0 +1,13 @@
+
+// Description :
+// Comparaison < sur boolean 
+//
+// Resultats :
+// Erreur contextuelle
+// opérateur < attend des numériques
+//
+
+{
+  boolean b;
+  b = true < false;
+}

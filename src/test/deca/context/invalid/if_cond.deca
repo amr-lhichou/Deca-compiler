@@ -1,0 +1,14 @@
+
+// Description :
+// Condition de if non booléenne 
+//
+// Resultats :
+// Erreur contextuelle
+//condition de if doit être boolean
+//
+
+{
+  if (1) {
+    println("x");
+  }
+}
