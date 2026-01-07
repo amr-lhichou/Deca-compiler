@@ -1,0 +1,12 @@
+
+// Description :
+// Arithmétique mixte int/float : int converti en float si nécessaire
+//
+// Resultats :
+// ok
+//
+{
+  float f;
+  f = 1 + 2.5;
+  println(f);
+}

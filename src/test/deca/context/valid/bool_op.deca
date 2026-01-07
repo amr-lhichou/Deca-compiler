@@ -1,0 +1,13 @@
+
+// Description :
+// Opérateurs logiques &&, ||, ! sur bool
+//
+// Resultats :
+// ok
+//
+
+{
+  boolean b;
+  b = true && false || !false;
+  println(b);
+}

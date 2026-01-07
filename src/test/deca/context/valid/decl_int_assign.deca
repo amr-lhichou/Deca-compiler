@@ -1,0 +1,12 @@
+
+// Description :
+// Déclaration int et affectation, utilisation en println
+//
+// Resultats :
+// ok
+//
+
+{
+  int x = 5;
+  println(x);
+}

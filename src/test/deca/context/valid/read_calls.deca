@@ -1,0 +1,14 @@
+
+// Description :
+// Types de readInt/readFloat : readInt()->int, readFloat()->float 
+//
+// Resultats :
+// ok
+//
+
+{
+  int x = readInt();
+  float f = readInt();
+  float g = readFloat();
+  println(x, f, g);
+}

@@ -1,0 +1,19 @@
+
+// Description :
+// Condition dans if/else et while
+//
+// Resultats :
+// ok
+//
+
+{
+  boolean b = true;
+  if (b) {
+    println("beee yourself");
+  } else {
+    println("just do it");
+  }
+  while (false) {
+    print(1);
+  }
+}

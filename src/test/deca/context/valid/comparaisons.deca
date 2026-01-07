@@ -1,0 +1,14 @@
+
+// Description :
+// Comparaisons sur int/float
+//
+// Resultats :
+// ok
+//
+{
+  boolean c1;
+  boolean c2;
+  c1 = (1 < 2);
+  c2 = (1.5 >= 2.8);
+  println(c1, c2);
+}
