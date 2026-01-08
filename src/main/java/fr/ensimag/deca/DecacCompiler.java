@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.RegisterAllocater;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -40,6 +41,13 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+    // we added a register allocater for optimization
+    private RegisterAllocater registerAllocater;
+
+    public RegisterAllocater getRegisterAllocater() {
+        return registerAllocater;
+    }
+
     // 2 variables to calculate the stacksize needed for the compilation of each file
     // they change depending on the file
     private int currentStackSize = 0;
@@ -63,6 +71,8 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
+
     }
 
     /**
@@ -116,7 +126,7 @@ public class DecacCompiler {
                 maxStackSize = currentStackSize;
             }
         }
-        //POP does (sp+sp-1)
+        //POP does (sp=sp-1)
         if( instruction  instanceof POP){
             currentStackSize--;
         }
@@ -212,17 +222,22 @@ public class DecacCompiler {
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
-
+        if(this.compilerOptions.getParse()){
+            prog.decompile();
+            return false;
+        }
         if (prog == null) {
             LOG.info("Parsing failed");
             return true;
         }
         assert(prog.checkAllLocations());
 
-
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
-
+        if (this.compilerOptions.getVerification()){
+            // we return with no output
+            return false ;
+        }
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
