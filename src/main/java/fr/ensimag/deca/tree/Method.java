@@ -18,9 +18,17 @@ public class Method extends AbstractDeclMeth {
         this.corpsMethode = corpsMethode;
     }
 
+    @Override
     public void decompile(IndentPrintStream s) {
+        // { r := ’{’.vars.insts.’}’}
+        s.print("{");
+        this.declarationsLocales.decompile(s);
+        this.corpsMethode.decompile(s);
+        s.print("}");
+
     }
 
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         this.signatureType.prettyPrint(s, prefix, false);
         this.nomAppel.prettyPrint(s, prefix, false);
@@ -29,6 +37,7 @@ public class Method extends AbstractDeclMeth {
         this.corpsMethode.prettyPrint(s, prefix, true);
     }
 
+    @Override
     protected void iterChildren(TreeFunction f) {
         this.signatureType.iter(f);
         this.nomAppel.iter(f);

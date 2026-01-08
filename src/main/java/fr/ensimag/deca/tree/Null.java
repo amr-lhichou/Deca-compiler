@@ -12,12 +12,15 @@ import fr.ensimag.deca.DecacCompiler;
 
 public class Null extends AbstractExpr {
 
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print("null");
     }
 
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) { }
 
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         Type nullType = compiler.environmentType.NULL;
@@ -26,5 +29,6 @@ public class Null extends AbstractExpr {
     }
 
 
+    @Override
     protected void iterChildren(TreeFunction f) { }
 }

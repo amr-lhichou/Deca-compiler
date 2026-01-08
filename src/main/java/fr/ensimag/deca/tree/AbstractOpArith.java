@@ -21,8 +21,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass) throws ContextualError {
         Type leftType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 

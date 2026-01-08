@@ -172,7 +172,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         Definition expDef = localEnv.get(this.name);
 
         if (expDef == null) {
@@ -193,7 +193,6 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
         Definition def = compiler.environmentType.defOfType(name);
 
         if (def == null) {

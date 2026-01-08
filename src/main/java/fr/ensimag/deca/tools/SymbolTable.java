@@ -31,7 +31,7 @@ public class SymbolTable {
             this.map.put(name, symbol);
         }
         return symbol;
-        // throw new UnsupportedOperationException("Symbol creation");
+
     }
 
     public static class Symbol {

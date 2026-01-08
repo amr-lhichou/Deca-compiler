@@ -53,7 +53,7 @@ public class ClassType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         if (otherType == null) {
             return false;
         }
@@ -78,7 +78,7 @@ public class ClassType extends Type {
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         ClassDefinition currentDef = this.definition;
         while (currentDef != null){
             if (currentDef == potentialSuperClass.definition) return true;

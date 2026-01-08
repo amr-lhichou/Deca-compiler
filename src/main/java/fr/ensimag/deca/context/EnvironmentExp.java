@@ -44,7 +44,7 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         ExpDefinition expDef = env.get(key);
 
         if (expDef != null){
@@ -72,7 +72,7 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         if (this.env.containsKey(name)){
             throw new DoubleDefException();
         }

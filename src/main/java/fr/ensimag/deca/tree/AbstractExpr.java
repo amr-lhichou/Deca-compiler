@@ -95,7 +95,7 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
+
 
         Type rightType = this.verifyExpr(compiler, localEnv, currentClass);
 
@@ -122,7 +122,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         verifyExpr(compiler, localEnv, currentClass);
     }
 
@@ -138,7 +138,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
+
         Type condType = this.verifyExpr(compiler, localEnv, currentClass);
 
         if (!condType.isBoolean()){

@@ -14,15 +14,20 @@ public class TestType extends AbstractExpr {
         this.typeVise = typeVise;
     }
 
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         return null; // À remplir en Partie B (houssam_amr)
     }
+
+    @Override
     public void decompile(IndentPrintStream s) {
     }
 
+    @Override
     protected void iterChildren(TreeFunction f) {
     }
 
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {}
 
 }

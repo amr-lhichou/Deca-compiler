@@ -19,7 +19,7 @@ public class Return extends AbstractInst {
     }
 
     public void decompile(IndentPrintStream s) {
-        s.print("retrn");
+        s.print("return");
         expression.decompile(s);
     }
 
