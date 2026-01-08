@@ -34,7 +34,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
         // L'addition est arithmétique seulement
         if (!(leftType.isInt() || leftType.isFloat()) || !(rightType.isInt() || rightType.isFloat())){
-            throw new ContextualError("Opération interdite entre " + leftType + " et " + rightType, getLocation());
+            throw new ContextualError("Opération '" + getOperatorName() + "' interdite entre " + leftType + " et " + rightType +
+            " (règle (3.33)", getLocation());
         }
 
         Type expType;

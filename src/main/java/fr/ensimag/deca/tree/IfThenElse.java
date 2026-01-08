@@ -62,8 +62,8 @@ public class IfThenElse extends AbstractInst {
         Type condType = this.condition.verifyExpr(compiler, localEnv, currentClass);
         
         if (!condType.isBoolean()){
-            throw new ContextualError("La condition doit ếtre de Type Boolean non pas de Type " + 
-            condType, getLocation());
+            throw new ContextualError("La condition doit être de Type Boolean non pas de Type " + 
+            condType + " (règle 3.29)", getLocation());
         }
 
         this.thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
@@ -100,7 +100,14 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        s.print("if(");
+        this.getCondition().decompile(s);
+        s.print("){");
+        this.getThenBranch().decompile(s);
+        s.print("} else {");
+        this.getElseBranch().decompile(s);
+        s.print("}");
     }
 
     @Override

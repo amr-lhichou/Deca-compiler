@@ -27,7 +27,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
         // Opération booléenne entre deux booléens
         if (!leftType.isBoolean() || !rightType.isBoolean()){
-            throw new ContextualError("Opération booléenne interdite entre " + leftType + " et " + rightType, getLocation());
+            throw new ContextualError("Opération booléenne '" + getOperatorName() + "' interdite entre " + leftType + " et " +
+            rightType + " (règle 3.33)", getLocation());
         }
 
         setType(leftType);

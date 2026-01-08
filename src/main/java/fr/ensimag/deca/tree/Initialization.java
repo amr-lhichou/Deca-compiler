@@ -1,17 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
-
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import org.apache.commons.lang.Validate;
 
 /**
  * @author gl53
@@ -44,7 +45,7 @@ public class Initialization extends AbstractInitialization {
 
         if (!t.isCompatible(typeExpr)){
             throw new ContextualError("Initialisation incompatible : le type " + typeExpr + 
-            " est incompatible avec le type " + t
+            " est incompatible avec le type " + t + " (règle 3.28)"
             , getLocation());
         }
 
@@ -69,7 +70,10 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        s.print(" = ");
+        this.getExpression().decompile(s);
+
     }
 
     @Override

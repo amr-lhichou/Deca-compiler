@@ -32,8 +32,9 @@ public class UnaryMinus extends AbstractUnaryExpr {
         Type expType = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (!expType.isInt() && !expType.isFloat()){
-            throw new ContextualError("Minus unaire ne peut être appliquée que sur int ou float non pas " 
-            + expType, getLocation());
+            throw new ContextualError("Minus unaire ne peut être appliquée que sur int ou float non pas" +
+            expType + "(règle 3.37)" 
+            , getLocation());
         }
 
         setType(expType);

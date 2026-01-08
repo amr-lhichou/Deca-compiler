@@ -41,7 +41,7 @@ public class DeclVar extends AbstractDeclVar {
         // System.out.println("Declaration de la variable " + varName.getName());
         Type varType = type.verifyType(compiler);
         if (varType.isVoid()){
-            throw new ContextualError("Variables de type void non acceptées.", 
+            throw new ContextualError("Variables de type void non acceptées (règle 3.17)", 
             getLocation());
         }
 
@@ -51,7 +51,7 @@ public class DeclVar extends AbstractDeclVar {
             localEnv.declare(varName.getName(), varDef);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError(
-                "Variable " + varName.getName() + " déjà définie",
+                "Variable " + varName.getName() + " déjà définie (règle 3.17)",
                 varName.getLocation()
             );
         }
@@ -76,7 +76,12 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // { r := type.’ ’.name.init.’;’}
+        this.type.decompile(s);
+        s.print(" ");
+        this.varName.decompile(s);
+        this.initialization.decompile(s);
+        s.print(";");
     }
 
     @Override

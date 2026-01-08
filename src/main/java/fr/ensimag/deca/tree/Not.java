@@ -35,7 +35,7 @@ public class Not extends AbstractUnaryExpr {
 
         if (!expType.isBoolean()){
             throw new ContextualError("Not ne peut être appliquée que sur un boolean non pas " 
-            + expType, getLocation());
+            + expType + " (règle 3.37)", getLocation());
         }
 
         setType(expType);

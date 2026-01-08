@@ -44,11 +44,10 @@ public abstract class AbstractPrint extends AbstractInst {
             // 2- verif de type autorisé 
             if (!(exprType.isInt()
                  ||exprType.isFloat()
-                 ||exprType.isString()
-                 ||exprType.isBoolean())) {
+                 ||exprType.isString())) {
                    
                 throw new ContextualError(
-                    "Type " + exprType + " non autorisé dans une instruction print",
+                    "Type " + exprType + " non autorisé dans une instruction print (règle 3.31)",
                     expr.getLocation()
                 );    
             }
@@ -73,7 +72,12 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+
+        s.print((getPrintHex() ? "print" + getSuffix() + "x" : "print" + getSuffix()) + "(");
+        this.getArguments().decompile(s);
+        s.print(");");
+
     }
 
     @Override

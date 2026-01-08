@@ -176,7 +176,7 @@ public class Identifier extends AbstractIdentifier {
 
         if (expDef == null) {
             throw new ContextualError(
-                "Identifier " + name + " n'est pas défini",
+                "Identifier '" + name + "' n'est pas défini (règle 0.1)",
                 getLocation()
             );
         }
@@ -197,7 +197,7 @@ public class Identifier extends AbstractIdentifier {
 
         if (def == null) {
             throw new ContextualError(
-                "Type " + name + " n'est pas défini",
+                "Type " + name + " n'est pas défini (règle 0.2)",
                 getLocation()
             );
         }

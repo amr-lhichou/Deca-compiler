@@ -73,7 +73,7 @@ public class While extends AbstractInst {
         // while (boolean)
         if (!condType.isBoolean()){
             throw new ContextualError("Condition de while doit être de type boolean non pas " 
-            + condType, condition.getLocation());
+            + condType + " (règle 3.29)", condition.getLocation());
         }
 
         body.verifyListInst(compiler, localEnv, currentClass, returnType);

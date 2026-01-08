@@ -30,7 +30,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type leftOpType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (!(leftOpType.isInt() || leftOpType.isFloat()) || !(rightOpType.isInt() || rightOpType.isFloat())){
-            throw new ContextualError("Les opérands doivent être de Type INT ou FLOAT", getLocation());
+            throw new ContextualError("Les opérands doivent être de Type INT ou FLOAT (règle 3.33)", getLocation());
         }
 
         // Convertion si de different type

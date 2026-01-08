@@ -1,19 +1,21 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
-import org.apache.commons.lang.Validate;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -92,7 +94,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         if (!expectedType.isCompatible(rightType)) {
             throw new ContextualError(
-                rightType + " et " + expectedType + " ne sont pas compatibles",
+                rightType + " et " + expectedType + " ne sont pas compatibles (règle 3.28)",
                 getLocation()
             );
         }
@@ -129,7 +131,14 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        Type condType = this.verifyExpr(compiler, localEnv, currentClass);
+
+        if (!condType.isBoolean()){
+            throw new ContextualError("Condition doit être de type booléen non pas " + condType +
+            " (règle 3.29)",getLocation());
+        }
+
     }
 
     /**

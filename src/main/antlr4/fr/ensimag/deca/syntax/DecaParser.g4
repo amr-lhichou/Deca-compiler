@@ -433,7 +433,7 @@ primary_expr returns[AbstractExpr tree]
 
 type returns[AbstractIdentifier tree]
     : ident { $tree = $ident.tree; }
-        | t=(TYPE_INT | TYPE_FLOAT | VOID) {
+        | t=(TYPE_INT | TYPE_FLOAT | VOID | TYPE_STRING) {
                 $tree = new Identifier(getDecacCompiler().createSymbol($t.text));
                 setLocation($tree, $t);
 
