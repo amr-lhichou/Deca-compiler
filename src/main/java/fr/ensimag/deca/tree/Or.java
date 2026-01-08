@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -23,23 +24,19 @@ public class Or extends AbstractOpBool {
     protected String getOperatorName() {
         return "||";
     }
+
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        // Labels pour gérer le flux
-        Label fin = new Label("Or_fin");
-        //on commence par le left
-        // le calcul est dans R2 comme tjrs
-        getLeftOperand().codeGenInst(compiler);
+    protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {
+    }
 
-        //comparer à 1
-        compiler.addInstruction(new CMP(new ImmediateInteger(1), Register.getR(2)));
-        // si 1 on saute à la fin
-        compiler.addInstruction(new BEQ(fin));
+    @Override
+    protected String get_Name() {
+        return "Or";
+    }
 
-        // sinon on calcule maintenant la droite dans R2
-        getRightOperand().codeGenInst(compiler);
-
-        compiler.addLabel(fin);
+    @Override
+    protected int get_Value() {
+        return 1;
     }
 
 

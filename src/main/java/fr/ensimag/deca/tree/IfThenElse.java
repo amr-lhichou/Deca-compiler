@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -79,9 +80,9 @@ public class IfThenElse extends AbstractInst {
         Label endLabel = new Label("end_if"+cmp);
 
         getCondition().codeGenInst(compiler);
-
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         // tester si faux : egalite avec 0
-        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.getR(2)));
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), R_target));
 
         //SI false: on saute au  bloc ELSE
         compiler.addInstruction(new BEQ(elseLabel));

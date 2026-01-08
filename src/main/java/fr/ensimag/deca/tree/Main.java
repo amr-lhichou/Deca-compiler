@@ -65,9 +65,10 @@ public class Main extends AbstractMain {
         // Stack size needed for temporary (push)
         int size_temp =  compiler.getStackMaxSize();
         // Stack total size
-        int stack_size= size_temp +size_var;
+        int stack_size= size_temp + size_var;
         compiler.addFirst(new ADDSP(new ImmediateInteger(size_var)));
-        compiler.addFirst(new BOV(new Label("stack_overflow_error")));
+        if(!compiler.getCompilerOptions().getNoCheck()){
+        compiler.addFirst(new BOV(new Label("stack_overflow_error")));}
         // we test the size with TSTO
         compiler.addFirst(new TSTO(new ImmediateInteger(stack_size)));
 

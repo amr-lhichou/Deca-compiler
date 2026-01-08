@@ -11,6 +11,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
@@ -61,10 +62,11 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInit(DecacCompiler compiler, DAddr addr, Type t) {
-        // on genere le code de l'expression, elle est calculée dans R2
+        // on genere le code de l'expression
         getExpression().codeGenInst(compiler);
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         // on charge cette valeur dans l 'adresse
-        compiler.addInstruction(new STORE(Register.getR(2), addr));
+        compiler.addInstruction(new STORE(R_target, addr));
     }
 
 

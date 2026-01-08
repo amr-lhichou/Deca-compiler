@@ -42,23 +42,20 @@ public class While extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         //throw new UnsupportedOperationException("not yet implemented");
         int cmp = compiler.getLabelId();
-        Label start= new Label("start_While"+cmp);
-        Label end = new Label("end_while" +cmp);
+        Label start= new Label("start_While_" +cmp);
+        Label end = new Label("end_while_" +cmp);
         compiler.addLabel(start);
-        // on ajoute la generation du code de la condition stockée dans R2
-
         getCondition().codeGenInst(compiler);
-
-        // On compare R2 avec 0 (Faux)
-        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.getR(2)));
-
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        // we compare R_target with 0
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), R_target));
         // if egalité : on sort de la boucle
         compiler.addInstruction(new BEQ(end));
-
+        compiler.getRegisterAllocater().freeRegister();
         // execution du body
         getBody().codeGenListInst(compiler);
 
-        // On reteste  la condition : satrt
+        // On reteste  la condition : start
         compiler.addInstruction(new BRA(start));
 
         compiler.addLabel(end);

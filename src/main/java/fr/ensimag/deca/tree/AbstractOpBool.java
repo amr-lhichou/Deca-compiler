@@ -5,6 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  *
@@ -34,5 +39,31 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         setType(leftType);
         return leftType;
     }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // label
+        int cmp = compiler.getLabelId();
+        String labelName = get_Name() + "_end_" +cmp;
+        Label fin = new Label(labelName);
+
+        // we start with the left
+        getLeftOperand().codeGenInst(compiler);
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+
+        // We stop at a value(1 pour OR, 0 pour AND)
+        compiler.addInstruction(new CMP(new ImmediateInteger(get_Value()), R_target));
+        // if equal we jump to end
+        compiler.addInstruction(new BEQ(fin));
+        // we free the register target
+        compiler.getRegisterAllocater().freeRegister();
+        // if not now we calculate the right
+        getRightOperand().codeGenInst(compiler);
+
+        compiler.addLabel(fin);
+
+    }
+
+    protected abstract String get_Name();
+    protected abstract int get_Value();
 
 }

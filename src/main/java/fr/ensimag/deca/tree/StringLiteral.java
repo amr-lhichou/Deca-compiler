@@ -28,7 +28,13 @@ public class StringLiteral extends AbstractStringLiteral {
 
     public StringLiteral(String value) {
         Validate.notNull(value);
-        this.value = value;
+        // on enlève les ""
+        if (value.length() >= 2) {
+            this.value = value.substring(1, value.length() - 1);
+        } else {
+            this.value = value;
+        }
+
     }
 
     @Override

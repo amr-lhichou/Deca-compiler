@@ -28,9 +28,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         //calcul dans R2
         getOperand().codeGenInst(compiler);
-
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
        // appel de la méthode abstraite
-        codeGenUnaryOp(compiler, Register.getR(2));
+        codeGenUnaryOp(compiler,R_target );
     }
 
     // Nouvelle méthode abstraite

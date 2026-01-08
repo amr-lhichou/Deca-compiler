@@ -48,7 +48,8 @@ public class FloatLiteral extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         //tous passe par codegenInst
         // Charge la valeur
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.getR(2)));
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), R_target));
     }
 
 

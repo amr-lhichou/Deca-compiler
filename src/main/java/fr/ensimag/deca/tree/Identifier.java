@@ -17,6 +17,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
@@ -244,10 +245,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // On récupère la définition pour savoir où est stockée la variable
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         DAddr addr = getExpDefinition().getOperand();
 
         // On charge l'adresse dans R2
-        compiler.addInstruction(new LOAD(addr, Register.getR(2)));
+        compiler.addInstruction(new LOAD(addr, R_target));
     }
 
 }

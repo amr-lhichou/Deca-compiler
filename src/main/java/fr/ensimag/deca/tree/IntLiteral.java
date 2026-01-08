@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -41,7 +42,8 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // fait le load dans R2 comme tjrs
-        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.getR(2)));
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value),R_target ));
     }
 
     @Override

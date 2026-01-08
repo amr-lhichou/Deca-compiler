@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
@@ -53,10 +54,9 @@ public class Assign extends AbstractBinaryExpr {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // On génère le code de la partie droite
-        // stocké dans R2
+        // we generate the code for the right part
         getRightOperand().codeGenInst(compiler);
-
+        GPRegister rightResult = compiler.getRegisterAllocater().getCurrentRegister();
 
         // On récupère la valeur de l expression a gauche
         AbstractLValue leftOp = getLeftOperand();
@@ -65,7 +65,11 @@ public class Assign extends AbstractBinaryExpr {
         DAddr addr = leftOp.getExpDefinition().getOperand();
 
         // On store dans Adresse
-        compiler.addInstruction(new STORE(Register.getR(2), addr));
+        compiler.addInstruction(new STORE(rightResult, addr));
+    }
+
+    @Override
+    protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {
     }
 }
 
