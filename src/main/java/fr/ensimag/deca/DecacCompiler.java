@@ -71,7 +71,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
+        //this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
+        this.registerAllocater = new RegisterAllocater(16);
+
 
     }
 
@@ -223,7 +225,7 @@ public class DecacCompiler {
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
         if(this.compilerOptions.getParse()){
-            prog.decompile();
+            System.out.println(prog.decompile());
             return false;
         }
         if (prog == null) {
