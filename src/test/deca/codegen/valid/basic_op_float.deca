@@ -1,0 +1,15 @@
+// Description :
+//    opérations sur float - addition multiplication soustraction division
+
+
+// Resultats :
+//   2
+
+{
+    float a = 1.0;
+    float b = 1.5;
+    float c = 2.0;
+    float d = 2.5;
+
+    println((a + b) * c / d);
+}

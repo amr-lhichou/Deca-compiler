@@ -1,0 +1,14 @@
+
+// Description :
+//    if/else
+
+// Resultats :
+//    F
+//
+{
+    if (4 < 3) {
+        println("V");
+    } else {
+        println("F");
+    }
+}

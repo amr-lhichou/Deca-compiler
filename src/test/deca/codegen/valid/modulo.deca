@@ -1,0 +1,11 @@
+
+// Description :
+//      modulo
+//    5%2 = 2  
+
+// Resultats :
+//      2
+
+{
+    println(5%2);
+}

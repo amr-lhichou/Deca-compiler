@@ -1,0 +1,13 @@
+
+// Description :
+//Codegen arithmétique int : priorités * avant + et parenthèses.
+
+// Resultats :
+//    7
+//    9
+
+
+{
+    println(1 + 2 * 3);
+    println((1 + 2) * 3);
+}

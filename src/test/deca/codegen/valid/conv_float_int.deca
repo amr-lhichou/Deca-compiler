@@ -1,0 +1,12 @@
+
+// Description :
+//    conversion implicite int à float dans une expression
+
+// Resultats :
+//    1.5
+
+{
+    int a = 1;
+    float b = 0.5;
+    println(a + b);
+}

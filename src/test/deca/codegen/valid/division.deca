@@ -1,0 +1,13 @@
+
+// Description :
+//      division et division entière
+//    1/4 = 0.25  3//2 = 1
+
+// Resultats :
+//    0.25
+//    1
+
+{
+    println(1/4);
+    println(3//2);
+}

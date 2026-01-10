@@ -1,0 +1,10 @@
+// Description :
+//
+//Codegen de hello world : println d'une chaine.
+//
+// Resultats :
+//    Hello, world!
+//
+{
+    println("Hello, world!");
+}

@@ -1,0 +1,10 @@
+// Description :
+//    Vérifie convertion explicite et opérations float 
+
+// Resultats :
+//    1.5
+
+{
+    int x = 3;
+    println((float)(x) / 2.0);
+}
