@@ -1,0 +1,13 @@
+
+// Description :
+// Comparaison entre int et float 
+
+// Resultats :
+// ok
+
+
+{
+  int a = 3;
+  float b = 3.0;
+  boolean c = (a == b);
+}

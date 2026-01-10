@@ -1,0 +1,13 @@
+// Description :
+// Utilisation d'une variable hors de sa portee
+
+// Resultats :
+// erreur contextuelle
+
+
+{
+  if (true) {
+    int x = 3;
+  }
+  println(x);
+}

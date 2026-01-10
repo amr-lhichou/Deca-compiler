@@ -1,0 +1,13 @@
+
+// Description :
+// Conversion implicite int vers float dans une expression
+//
+// Resultats :
+// ok
+//
+
+{
+  int a = 1;
+  float b = a;
+  float c = b + 2.5;
+}
