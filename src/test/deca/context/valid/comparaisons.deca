@@ -8,7 +8,10 @@
 {
   boolean c1;
   boolean c2;
+  boolean c3;
   c1 = (1 < 2);
   c2 = (1.5 >= 2.8);
+  c3 = (1 >= 2.8);
+
 }
 

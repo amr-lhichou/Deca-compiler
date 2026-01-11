@@ -1,0 +1,10 @@
+
+//Description:
+//      déclaration avec un type inconnu
+
+//Résultat:
+//      erreur contextuelle
+
+{
+    foo x;
+}
