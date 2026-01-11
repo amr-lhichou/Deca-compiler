@@ -1,0 +1,17 @@
+// Description :
+// Stress test operations arithmetiques
+
+// Resultats :
+// Termine sans erreur
+
+
+{
+    int i = 0;
+    int x = 12345678;
+
+    while (i < 1000000) {
+        x = (x * 21 + 2004) % 234567;
+        i = i + 1;
+    }
+    println(x);
+}
