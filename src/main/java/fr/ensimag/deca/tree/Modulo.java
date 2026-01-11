@@ -6,6 +6,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
@@ -36,6 +40,8 @@ public class Modulo extends AbstractOpArith {
     }
     @Override
     protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {
+        compiler.addInstruction(new CMP(new ImmediateInteger(0),op1));
+        compiler.addInstruction(new BEQ(new Label("division_zero_error")));
         compiler.addInstruction(new REM(op1, op2));
     }
 
@@ -44,5 +50,6 @@ public class Modulo extends AbstractOpArith {
     protected String getOperatorName() {
         return "%";
     }
+
 
 }
