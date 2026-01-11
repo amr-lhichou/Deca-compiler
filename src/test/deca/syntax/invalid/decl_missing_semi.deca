@@ -4,7 +4,6 @@
 //
 // Resultats :
 // Erreur syntaxique
-// Ligne 5 : missing ';'
 // Regle : decl_var_set : type list_decl_var ';'
 
 {

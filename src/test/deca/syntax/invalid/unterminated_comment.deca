@@ -4,7 +4,6 @@
 //
 // Resultats :
 // Erreur lexicale
-// Ligne 6 : token recognition error|EOF
 // Regle : MULTI_LINE_COMMENT : '/*' ... '*/'
 
 {

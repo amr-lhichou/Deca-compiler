@@ -1,0 +1,10 @@
+// Description :
+// double decalration
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+    boolean float x;
+}

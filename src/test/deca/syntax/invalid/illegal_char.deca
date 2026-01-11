@@ -4,7 +4,6 @@
 //
 // Resultats :
 // Erreur lexicale
-// Ligne 4 : token recognition error
 // Regle : lexeur : aucun token ne matche '@'
 
 {

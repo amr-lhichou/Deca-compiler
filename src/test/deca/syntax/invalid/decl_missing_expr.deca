@@ -4,8 +4,6 @@
 //
 // Resultats :
 // Erreur syntaxique
-// mismatched input ';'
-// Regle : decl_var : ident ('=' expr)?
 
 {
     int x = ;

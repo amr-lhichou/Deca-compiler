@@ -3,7 +3,6 @@
 //
 // Resultats :
 // Erreur syntaxique
-// Ligne 4 : no viable alternative
 // Regle : decl_var : ident ('=' expr)?
 
 {

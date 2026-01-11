@@ -1,0 +1,10 @@
+// Description :
+// double decalration
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+    int boolean x;
+}

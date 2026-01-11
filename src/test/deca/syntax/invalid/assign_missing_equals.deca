@@ -5,7 +5,6 @@
 //
 // Resultats :
 // Erreur syntaxique
-// Regle : inst -> expr ';'  /  assign_expr -> or_expr ('=' assign_expr)?
 //
 
 {
