@@ -1,0 +1,12 @@
+// Description :
+//    overflow entier attendu
+//    2147483647 + 1 dépasse int32.
+
+// Resultats :
+//    -2147483648
+
+
+{
+    int x = 2147483647;
+    println(x + 1);
+}

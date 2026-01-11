@@ -64,6 +64,48 @@ done
 
 
 
+test_codegen_invalide () {
+
+    src="$1"
+
+    dir=$(dirname "$src")
+    base=$(basename "$src" .deca)
+
+    ass="$dir/$base.ass"
+
+    # Nettoyage
+    rm -f "$ass" 2>/dev/null
+
+    # Compilation (doit reussir)
+    decac "$src" || exit 1
+
+    # Si aucun .ass genere → OK (erreur detectee avant execution)
+    if [ ! -f "$ass" ]; then
+        echo "Echec attendu pour $src (pas de .ass)"
+        return
+    fi
+
+    # Execution : DOIT echouer
+    if ima "$ass" >/dev/null 2>&1; then
+        echo "Succes inattendu pour $src"
+        rm -f "$ass"
+        exit 1
+    else
+        echo "Echec attendu pour $src"
+    fi
+
+    rm -f "$ass"
+}
+
+
+for src in src/test/deca/codegen/invalid/*.deca
+do
+    test_codegen_invalide "$src"
+done
+
+
+
+
 #rm -f ./src/test/deca/codegen/valid/provided/cond0.ass 2>/dev/null
 #decac ./src/test/deca/codegen/valid/provided/cond0.deca || exit 1
 #if [ ! -f ./src/test/deca/codegen/valid/provided/cond0.ass ]; then

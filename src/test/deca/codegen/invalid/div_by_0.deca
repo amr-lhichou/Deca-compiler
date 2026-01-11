@@ -1,0 +1,11 @@
+// Description :
+//    erreur d'exécution attendue : division entière par zéro.
+
+// Resultats :
+//    Erreur à l'exécution
+//    division par 0 
+
+{
+    int x = 0;
+    println(1 / x);
+}

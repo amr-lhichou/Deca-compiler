@@ -1,0 +1,10 @@
+// Description :
+//    erreur d'exécution attendue : modulo par zéro.
+
+// Resultats 
+//    Erreur à l'exécution
+
+{
+    int x = 0;
+    println(1 % x);
+}

@@ -1,0 +1,33 @@
+	TSTO #1
+	BOV stack_overflow_error
+	ADDSP #1
+; start main program
+; Main program
+; Beginning of main declarations:
+	LOAD #2147483647, R2
+	STORE R2, 1(GB)
+; Beginning of main instructions:
+	LOAD 1(GB), R2
+	LOAD #1, R3
+	ADD R3, R2
+	LOAD R2, R1
+	WINT
+	WNL
+	HALT
+; end main program
+stack_overflow_error:
+	WSTR "Error: Stack Overflow"
+	WNL
+	ERROR
+arithmetic_overflow_error:
+	WSTR "Error: Arithmetic Overflow"
+	WNL
+	ERROR
+io_error:
+	WSTR "Error: Input/Output error"
+	WNL
+	ERROR
+division_zero_error:
+	WSTR "Error: Division by zero error"
+	WNL
+	ERROR
