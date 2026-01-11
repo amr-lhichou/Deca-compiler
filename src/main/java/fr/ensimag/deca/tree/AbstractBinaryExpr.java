@@ -111,11 +111,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
             // Clean Stack
             // We prefer SUBSP than POP because we don't need another register
-            compiler.addInstruction(new SUBSP(new ImmediateInteger(2)));
+            compiler.addInstruction(new SUBSP(new ImmediateInteger(2)));}
+
             //Overflow test
-            if(!compiler.getCompilerOptions().getNoCheck()) {
+        if(!compiler.getCompilerOptions().getNoCheck()) {
+            if (getType().isFloat()){
                 compiler.addInstruction(new BOV(new Label("arithmetic_overflow_error")));
             }
+        }
 //        //creation des registres
 //        GPRegister R2 = Register.getR(2);
 //        GPRegister R3 = Register.getR(3);
@@ -137,7 +140,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 //        // effectue l operation binaire (+,/,*....)
 //        codeGenOp(compiler, R3, R2);
 
-        }
+        
     }
     protected abstract void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2);
 

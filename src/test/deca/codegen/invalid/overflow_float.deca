@@ -1,0 +1,12 @@
+// Description :
+// Overflow de flottant
+
+// Resultats :
+// Erreur a l'execution
+
+
+{
+    float x;
+    x = 3.4e38 * 10;
+    println(x);
+}
