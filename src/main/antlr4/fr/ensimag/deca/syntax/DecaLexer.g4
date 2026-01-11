@@ -70,6 +70,7 @@ WHILE : 'while';
 TYPE_INT : 'int';
 TYPE_FLOAT : 'float';
 TYPE_STRING : 'string';
+TYPE_BOOLEAN : 'boolean';
 VOID : 'void';
 IDENT : (LETTER | '$' | '_') (LETTER | DIGIT | '$' | '_')*;
 // Littéraux entiers
