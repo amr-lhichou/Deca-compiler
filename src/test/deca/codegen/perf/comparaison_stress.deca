@@ -1,0 +1,13 @@
+
+{
+    int i = 0;
+    int x = 0;
+
+    while (i < 100000) {
+        if (x < i) {
+            x = x+1;
+        }
+        i = i + 1;
+    }
+    println(x);
+}
