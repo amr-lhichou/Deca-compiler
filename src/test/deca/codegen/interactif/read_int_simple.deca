@@ -1,0 +1,12 @@
+// Description :
+// Lecture d'un entier et affichage
+
+// Resultats :
+// Affiche l'entier saisi
+
+
+{
+    int x;
+    x = readInt();
+    println(x);
+}

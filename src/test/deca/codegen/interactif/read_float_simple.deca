@@ -1,0 +1,12 @@
+// Description :
+// Lecture d'un flottant et affichage
+
+// Resultats :
+// Affiche le flottant saisi
+
+
+{
+    float x;
+    x = readFloat();
+    println(x);
+}

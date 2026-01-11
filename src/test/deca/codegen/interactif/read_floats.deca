@@ -1,0 +1,15 @@
+// Description :
+// Lecture de floats et opérations
+
+// Resultats :
+// Affiche la somme
+
+
+{
+    int a, b;
+    a = readFloat();
+    b = readFloat();
+    println(a + b);
+    println(a - b);
+    println(a * b);
+}

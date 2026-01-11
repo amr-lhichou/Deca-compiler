@@ -1,0 +1,15 @@
+// Description :
+// Lecture de plusieurs entiers jusqu'a 0
+
+// Resultats :
+// Affiche chaque valeur lue
+
+
+{
+    int x;
+    x = readInt();
+    while (x != 0) {
+        println(x);
+        x = readInt();
+    }
+}

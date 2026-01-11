@@ -75,7 +75,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        RegisterAllocater allocator = compiler.getRegisterAllocater();
+        RegisterAllocater all ocator = compiler.getRegisterAllocater();
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister leftReg = allocator.getCurrentRegister();

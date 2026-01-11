@@ -1,0 +1,16 @@
+// Description :
+// Lecture d'un float et test conditionnel
+
+// Resultats :
+// Affiche de positif ou negatif
+
+
+{
+    int x;
+    x = readFloat();
+    if (x > 0) {
+        println("positif");
+    } else {
+        println("negatif");
+    }
+}
