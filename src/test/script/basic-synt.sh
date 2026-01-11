@@ -1,27 +1,21 @@
 #! /bin/sh
 
-# Auteur : gl53
-# Version initiale : 01/01/2026
 
-# Test minimaliste de la syntaxe.
-# On lance test_synt sur un fichier valide, et les tests invalides.
-
-# dans le cas du fichier valide, on teste seulement qu'il n'y a pas eu
-# d'erreur. Il faudrait tester que l'arbre donné est bien le bon. Par
-# exemple, en stoquant la valeur attendue quelque part, et en
-# utilisant la commande unix "diff".
-#
-# Il faudrait aussi lancer ces tests sur tous les fichiers deca
-# automatiquement. Un exemple d'automatisation est donné avec une
-# boucle for sur les tests invalides, il faut aller encore plus loin.
+# Script de tests syntaxiques pour le compilateur Deca
+# ----------------------------------------------------
+# - Vérifie que les fichiers INVALIDES échouent bien à l'analyse syntaxique
+# - Vérifie que les fichiers VALIDES passent sans erreur
+# - Le test_synt doit produire une erreur localisée (fichier:ligne:)
+#   pour être considéré comme un échec attendu
 
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
-# exemple de définition d'une fonction
+# Test syntaxique : cas INVALIDES
+# Le test est un succès si test_synt détecte une erreur
+
 test_synt_invalide () {
-    # $1 = premier argument.
     if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
     then
         echo "Echec attendu pour test_synt sur $1."
@@ -40,6 +34,9 @@ for cas_de_test in src/test/deca/syntax/invalid/*.deca
 do
     test_synt_invalide "$cas_de_test"
 done
+
+# Test syntaxique : cas VALIDES
+# Le test est un succès si AUCUNE erreur n'est détectée
 
 test_synt_valide () {
     if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
