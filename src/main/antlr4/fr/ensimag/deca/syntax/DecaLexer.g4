@@ -92,7 +92,7 @@ fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') ('+'|'-')? NUM (
 FLOAT : FLOATDEC | FLOATHEX;
 
 // Chaine de caractères
-fragment STRING_CAR : ~["\\] ;
+fragment STRING_CAR : ~["\\\r\n] ;
 STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | '\\"' | '\\\\' | '\r'? '\n')* '"' ;
 // Inclusion de fichier
