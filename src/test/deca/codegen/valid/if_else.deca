@@ -3,12 +3,12 @@
 //    if/else
 
 // Resultats :
-//    F
-//
+//    Faux
+
 {
     if (4 < 3) {
-        println("V");
+        println("Vrai");
     } else {
-        println("F");
+        println("Faux");
     }
 }

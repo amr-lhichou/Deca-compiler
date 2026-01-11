@@ -1,0 +1,16 @@
+// Description :
+//    Court-circuit ||.
+//    Le 2e opérande contient une division par 0 qui ne doit pas être évaluée.
+//    true || (...) => imprime 'ok'.
+
+// Resultats :
+//    ok
+
+{
+    int x = 0;
+    if (true || (1 / x == 0)) {
+        println("ok");
+    } else {
+        println("bad");
+    }
+}

@@ -1,0 +1,15 @@
+// Description :
+//    affectation chaînée 
+
+// Resultats :
+//    5
+//    5
+
+
+{
+    int x = 0;
+    int y = 0;
+    x = y = 5;
+    println(x);
+    println(y);
+}

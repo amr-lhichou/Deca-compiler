@@ -1,0 +1,17 @@
+// Description :
+//    boucle un peu longue
+//    Calcule somme de 1 à 1000 = 500500.
+
+// Resultats :
+//    500500
+
+
+{
+    int i = 1;
+    int s = 0;
+    while (i <= 1000) {
+        s = s + i;
+        i = i + 1;
+    }
+    println(s);
+}

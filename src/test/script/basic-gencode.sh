@@ -15,44 +15,52 @@ PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 # On ne teste qu'un fichier. Avec une boucle for appropriée, on
 # pourrait faire bien mieux ...
 
-test_codegen_invalide () {
-    # $1 = premier argument.
-    if test_codegen "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
-    then
-        echo "Echec attendu pour test_codegen sur $1."
-    else
-        echo "Succes inattendu de test_codegen sur $1."
-        exit 1
-    fi
-}    
-
-
-#for cas_de_test in src/test/deca/codegen/invalid/*.deca
-#do
-#    test_codegen_invalide "$cas_de_test"
-#done
 
 test_codegen_valide () {
-    if test_codegen "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
-    then
-        echo "Echec inattendu pour test_codegen sur $1."
+    src="$1"
+
+    dir=$(dirname "$src")
+    base=$(basename "$src" .deca)
+
+    ass="$dir/$base.ass"
+    expected="$dir/$base.expected"
+
+    rm -f "$ass" 2>/dev/null
+
+    decac "$src" || exit 1
+
+    if [ ! -f "$ass" ]; then
+        echo "Fichier $ass non généré."
         exit 1
-    else
-        echo "Succes attendu de test_codegen sur $1."
-        
     fi
-}   
 
-for cas_de_test in src/test/deca/codegen/valid/provided/*.deca
+    resultat=$(ima "$ass") || exit 1
+    attendu=$(cat "$expected")
+
+    rm -f "$ass"
+
+    if [ "$resultat" = "$attendu" ]; then
+        echo "Succes attendu pour $src"
+    else
+        echo "Résultat inattendu pour $src"
+        echo "Attendu :"
+        echo "$attendu"
+        echo "Obtenu :"
+        echo "$resultat"
+        exit 1
+    fi
+}
+
+
+for src in src/test/deca/codegen/valid/provided/*.deca
 do
-    test_codegen_valide "$cas_de_test"
+    test_codegen_valide "$src"
 done
 
-for cas_de_test in src/test/deca/codegen/valid/*.deca
+for src in src/test/deca/codegen/valid/*.deca
 do
-    test_codegen_valide "$cas_de_test"
+    test_codegen_valide "$src"
 done
-
 
 
 
@@ -70,9 +78,15 @@ done
 #attendu=ok
 
 #if [ "$resultat" = "$attendu" ]; then
-#   echo "Tout va bien"
+#    echo "Tout va bien"
 #else
 #    echo "Résultat inattendu de ima:"
 #    echo "$resultat"
 #    exit 1
 #fi
+
+
+
+
+
+

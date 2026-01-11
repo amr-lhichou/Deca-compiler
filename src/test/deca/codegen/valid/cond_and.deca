@@ -1,0 +1,15 @@
+// Description :
+//    Le 2e opérande contient une division par 0 qui NE doit PAS être évaluée.
+//    Si && est court-circuité : pas d'erreur
+
+// Resultats :
+//    ok
+
+{
+    int x = 0;
+    if (false && (1 / x == 0)) {
+        println("bad");
+    } else {
+        println("court-circuit ok");
+    }
+}

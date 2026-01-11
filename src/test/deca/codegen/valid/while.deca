@@ -1,0 +1,21 @@
+// Description :
+//    while boucle simple compteur
+
+// Resultats :
+
+//    0
+//    1
+//    2
+//    3
+//    4
+//    to be continued
+
+
+{
+    int i = 0;
+    while (i < 5) {
+        println(i);
+        i = i + 1;
+    }
+    println("to be continued");
+}

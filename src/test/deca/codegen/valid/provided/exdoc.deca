@@ -9,7 +9,7 @@
 
 // Un exemple de programme Deca
 
-class A {
+/* class A {
    protected int x ;
    int getX() {
       return x ;
@@ -24,4 +24,8 @@ class A {
 
    a.setX(1) ;
    println("a.getX() = ", a.getX()) ;
+} */
+
+{
+   print("ok");
 }

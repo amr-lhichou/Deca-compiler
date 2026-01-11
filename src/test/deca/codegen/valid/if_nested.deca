@@ -1,0 +1,15 @@
+// Description :
+//    Vérifie && et ! dans une condition.
+
+// Resultats :
+//    ok
+
+{
+    boolean a = true;
+    boolean b = false;
+    if (a && !b) {
+        println("ok");
+    } else {
+        println("ko");
+    }
+}
