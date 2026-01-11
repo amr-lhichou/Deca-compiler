@@ -1,0 +1,12 @@
+
+// Description :
+// Opérateur logique appliqué à des floats 
+// Resultats :
+// Erreur contextuelle
+// opérateur && attend des boolean
+//
+
+{
+  boolean b;
+  b = 1.5 && 2.5;
+}

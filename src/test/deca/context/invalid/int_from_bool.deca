@@ -1,0 +1,11 @@
+// Description :
+// Affectation d'un booleen a une variable entiere
+
+// Resultats :
+// Erreur contextuelle (types incompatibles)
+
+
+{
+  int x;
+  x = true;
+}

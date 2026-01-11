@@ -1,0 +1,11 @@
+// Description :
+// Cast explicite d'un booleen vers un entier
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+  int x;
+  x = (int) true;
+}

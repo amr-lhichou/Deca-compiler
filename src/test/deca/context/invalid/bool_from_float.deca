@@ -1,0 +1,11 @@
+
+// Description :
+// Initialisation boolean avec float
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+  boolean b = 2.5;
+}

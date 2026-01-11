@@ -1,0 +1,11 @@
+// Description :
+// Cast explicite d'un entier vers un booleen
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+  boolean b;
+  b = (boolean) 1;
+}

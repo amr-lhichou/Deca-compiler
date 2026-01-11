@@ -1,0 +1,11 @@
+// Description :
+// Affectation d'un flottant a un booleen
+
+// Resultats :
+// Erreur contextuelle
+
+
+{
+  boolean b;
+  b = 1.5;
+}
