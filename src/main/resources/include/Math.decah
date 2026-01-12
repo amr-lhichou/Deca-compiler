@@ -103,6 +103,36 @@ class Math {
         }
     }
 
+    // réduction successives pour arriver a [0 ; pi/4]
+
+    float _reduceCosPi(float x, int[] sign) {
+    
+        if (x > PI) {
+            x = 2 * PI - x;
+        }
+    
+        return x;
+    }
+
+    float _reduceCosHalfPi(float x, int[] sign) {
+    
+        if (x > PI / 2) {
+            x = PI - x;
+            sign[0] = -sign[0];
+        }
+    
+    return x;
+    }
+    float _reduceCosQuarterPi(float x) {
+    // ici il faut introduire le sin 
+        if (x > PI / 4) {
+            x = PI / 2 - x;
+        }
+    
+        return x;
+    }
+
+
     
 
 
@@ -110,17 +140,32 @@ class Math {
     // Fonction publique cos(x)
     
 
-    /*
-     * Version simple du cosinus.
-     * Hypothèse : x est déjà dans [0 ; 2pi]
-     */
     float cos(float x) {
 
-    
-    x = _normalizeAngle(x);
-    x = _reduceSymmetry(x);
-    return _cosinePoly(x);
-}
+        int[] sign = new int[1];
+        sign[0] = 1;
+
+        // 1. Périodicité
+        x = _normalizeAngle(x);
+
+        // 2. Symétrie
+        if (x < 0) {
+            x = -x;
+        }
+
+        // 3. Réduction vers [0 ; PI]
+        x = _reduceCosPi(x, sign);
+
+        // 4. Réduction vers [0 ; PI/2] + signe
+        x = _reduceCosHalfPi(x, sign);
+
+        // 5. Réduction finale vers [0 ; PI/4]
+        x = _reduceCosQuarterPi(x);
+
+        // 6. Polynôme
+        return sign[0] * _cosinePoly(x);
+    }
+
 
 
 
