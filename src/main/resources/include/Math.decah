@@ -1,23 +1,94 @@
 // Grenoble INP - Ensimag projet GL -*- mode: java -*-
 // Library for class Math of Deca, coded in Deca
 
+
 class Math {
-    float sin(float f) {
-        println("sin(f) not yet implemented");
+
+    
+    // Constantes mathématiques
+    
+    float PI = 3.14159265358979323846;
+    float QUARTER_PI = 0.7853981633974483; // π / 4
+
+
+    
+    // Fonctions internes utilitaires
+    
+
+    // Valeur absolue
+    float _abs(float x) {
+        if (x < 0) {
+            return -x;
+        } else {
+            return x;
+        }
     }
-    float cos(float f) {
-        println("cos(f) not yet implemented");
+
+    // Puissance entière simple : x^n (n >= 0)
+    float _pow(float x, int n) {
+        float result = 1;
+        int i = 0;
+
+        while (i < n) {
+            result = result * x;
+            i = i + 1;
+        }
+        return result;
     }
-    float asin(float f) {
-        println("asin(f) not yet implemented");
+
+    // Factorielle simple : n!
+    int _fact(int n) {
+        int result = 1;
+        int i = 1;
+
+        if (n < 0) {
+            n = -n;
+        }
+
+        if (n == 0) {
+            return 1;
+        }
+
+        while (i <= n) {
+            result = result * i;
+            i = i + 1;
+        }
+        return result;
     }
-    float atan(float f) {
-        println("atan(f) not yet implemented");
+
+
+    
+    // Polynôme de Taylor du cosinus
+    
+
+    /*
+     * cos(x) ≈ 1 − x²/2! + x⁴/4!
+     * Valide pour x ∈ [−π/4 ; π/4]
+     */
+    float _cosinePoly(float x) {
+        float result;
+
+        result = 1;
+        result = result - (_pow(x, 2) / _fact(2));
+        result = result + (_pow(x, 4) / _fact(4));
+
+        return result;
     }
-    float ulp(float f) {
-        println("ulp(f) not yet implemented");
+
+
+    // ==============================
+    // Fonction publique cos(x)
+    // ==============================
+
+    /*
+     * Version simple du cosinus.
+     * Hypothèse : x est déjà dans [−π/4 ; π/4]
+     */
+    float cos(float x) {
+        return _cosinePoly(x);
     }
 }
+
 
 
 // End of Deca Math library
