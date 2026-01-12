@@ -76,18 +76,147 @@ class Math {
     }
 
 
-    // ==============================
+
+    // normalisation de l'angle entre 0 et 2pi
+
+    float _normalizeAngle(float x) {
+        float twoPi = 2 * PI;
+
+        if (x >= 0) {
+            x = x / twoPi;
+            x = (x - (int)(x)) * twoPi;
+        } else {
+            x = x / twoPi;
+            x = (x - (int)(x)) * twoPi;
+            x = -x;
+        }
+
+        return x;
+    }
+
+    // symétrie
+    float _reduceSymmetry(float x) {
+        if (x < 0) {
+            return -x;
+        } else {
+            return x;
+        }
+    }
+
+    
+
+
+    
     // Fonction publique cos(x)
-    // ==============================
+    
 
     /*
      * Version simple du cosinus.
-     * Hypothèse : x est déjà dans [−π/4 ; π/4]
+     * Hypothèse : x est déjà dans [0 ; 2pi]
      */
     float cos(float x) {
-        return _cosinePoly(x);
-    }
+
+    
+    x = _normalizeAngle(x);
+    x = _reduceSymmetry(x);
+    return _cosinePoly(x);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
 
 
 
