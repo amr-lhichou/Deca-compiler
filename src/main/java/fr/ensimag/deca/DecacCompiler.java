@@ -72,7 +72,7 @@ public class DecacCompiler {
         this.compilerOptions = compilerOptions;
         this.source = source;
         //this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
-        this.registerAllocater = new RegisterAllocater(16);
+        this.registerAllocater = new RegisterAllocater(15);
 
 
     }
@@ -132,6 +132,11 @@ public class DecacCompiler {
         if( instruction  instanceof POP){
             currentStackSize--;
         }
+        //SUBSP does (sp=sp-2)
+        if( instruction  instanceof SUBSP){
+            currentStackSize=currentStackSize-2;
+        }
+
 
     }
 
@@ -224,13 +229,15 @@ public class DecacCompiler {
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
-        if(this.compilerOptions.getParse()){
-            System.out.println(prog.decompile());
-            return false;
-        }
         if (prog == null) {
             LOG.info("Parsing failed");
             return true;
+        }
+
+        // decac -p vient avant l'etape B
+        if(this.compilerOptions.getParse()){
+            System.out.println(prog.decompile());
+            return false;
         }
         assert(prog.checkAllLocations());
 
@@ -240,6 +247,15 @@ public class DecacCompiler {
             // we return with no output
             return false ;
         }
+        // this part for optimization after
+//        addComment("Program optimization");
+//        prog.optimize();
+//        addComment("end Optimization program");
+//        if(this.compilerOptions.getParse()){
+//            System.out.println(prog.decompile());
+//            return false;
+//        }
+
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
