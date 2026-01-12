@@ -165,10 +165,31 @@ class Math {
         // 6. Polynôme
         return sign[0] * _cosinePoly(x);
     }
+    
+
+    float sin(float x) {
+        return cos(x - (PI / 2));
+    }
+
+    // j protège contre la div par 0 ;)
+    float tan(float x) {
+        float c = cos(x);
+        float s = sin(x);
+        float eps = 0.000001;
+
+        if (_abs(c) <= eps) {
+            if (c < 0) {
+                return s / (c - eps);
+            } else {
+                return s / (c + eps);
+            }
+        }
+        return s / c;
+    }
+    
 
 
-
-
+    
 
 
 
