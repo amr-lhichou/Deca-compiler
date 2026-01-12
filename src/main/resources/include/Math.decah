@@ -123,48 +123,37 @@ class Math {
     
     return x;
     }
-    float _reduceCosQuarterPi(float x) {
-    // ici il faut introduire le sin 
-        if (x > PI / 4) {
-            x = PI / 2 - x;
-        }
-    
-        return x;
-    }
 
-
-    
-
-
-    
     // Fonction publique cos(x)
     
-
     float cos(float x) {
 
-        int[] sign = new int[1];
-        sign[0] = 1;
+        int sign = 1;
 
-        // 1. Périodicité
+    // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
 
-        // 2. Symétrie
+    // 2. Symétrie : cos(-x) = cos(x)
         if (x < 0) {
             x = -x;
         }
 
-        // 3. Réduction vers [0 ; PI]
-        x = _reduceCosPi(x, sign);
+    // 3. Réduction vers [0 ; pi]
+        if (x > PI) {
+            x = 2 * PI - x;
+        }
 
-        // 4. Réduction vers [0 ; PI/2] + signe
-        x = _reduceCosHalfPi(x, sign);
+    // 4. Réduction vers [0 ; pi/2] + signe
+        if (x > PI / 2) {
+            x = PI - x;
+            sign = -sign;
+        }
 
-        // 5. Réduction finale vers [0 ; PI/4]
-        x = _reduceCosQuarterPi(x);
+    // 5. Approximation polynomiale
+        return sign * _cosinePoly(x);
+}
 
-        // 6. Polynôme
-        return sign[0] * _cosinePoly(x);
-    }
+    
     
 
     float sin(float x) {
