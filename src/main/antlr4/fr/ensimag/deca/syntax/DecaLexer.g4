@@ -60,6 +60,7 @@ PRINTLN : 'println';
 PRINTX : 'printx';
 PRINT : 'print';
 PROTECTED : 'protected';
+PUBLIC : 'public';
 RETURN : 'return';
 THIS : 'this';
 TRUE : 'true';

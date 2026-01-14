@@ -41,6 +41,12 @@ public class EnvironmentType {
 
         Symbol stringSymb = compiler.createSymbol("string");
         STRING = new StringType(stringSymb);
+
+        Symbol objectSymb = compiler.createSymbol("Object");
+        ClassType object = new ClassType(objectSymb, Location.BUILTIN, null);
+        envTypes.put(objectSymb,object.getDefinition());
+        this.object=object;
+
         //envTypes.put(stringSymb, new TypeDefinition(STRING, Location.BUILTIN));
         // not added to envTypes, it's not visible for the user.
         
@@ -52,10 +58,26 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public static class DoubleDefException extends Exception {
+        private static final long serialVersionUID = 1L;
+    }
+
+    public void declare(Symbol s, TypeDefinition def) throws DoubleDefException {
+        if (envTypes.get(s) != null) {
+            throw new DoubleDefException();
+        }
+        envTypes.put(s, def);
+    }
+
+   /*  public TypeDefinition get(Symbol s) {
+        return envTypes.get(s);
+    }
+ */
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
     public final NullType    NULL;
+    public final ClassType   object;
 }
