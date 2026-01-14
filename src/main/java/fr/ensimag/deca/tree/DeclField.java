@@ -1,5 +1,13 @@
 package fr.ensimag.deca.tree;
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
 import java.io.PrintStream;
 
 
@@ -22,6 +30,41 @@ public class DeclField extends AbstractDeclField{
         this.typeChamp = typeChamp;
         this.initialisation = initialisation;
     }
+
+    @Override
+    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass)
+            throws ContextualError {
+        Type fieldType = this.typeChamp.verifyType(compiler);
+
+        if (fieldType.isVoid()){
+            throw new ContextualError("Le type du champ ne peut pas être void (règle 2.5)", 
+                                    getLocation());
+        }
+
+        Symbol nom = nomChamp.getName();
+
+        ClassDefinition superClass = currentClass.getSuperClass();
+
+        if (superClass != null){
+            if (superClass.getMembers().get(nom) != null && !superClass.getMembers().get(nom).isField()){
+                throw new ContextualError("Si le nom " + nom + " existe dans la superClass il est un champ (règle 2.5)", getLocation());
+            }
+        }
+
+        FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, 0);
+
+        try {
+            currentClass.getMembers().declare(nom, fieldDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError(
+                "Champ déjà défini dans la classe",
+                getLocation()
+            );
+        }
+        
+        
+    }
+
 
     public void decompile(IndentPrintStream s){
         //laisse aussi vide hh pour eviter prob de throw new unsupprtbleoperationexeption
