@@ -25,7 +25,7 @@ public class CompilerOptions {
     private boolean warnings = false; // Option -w
     private boolean verificationOnly= false; // Option -v
     private boolean noCheck = false;      // Option -n
-    private int registers = 16;           // Option -r (16 default)
+    private int registers = 15;           // Option -r
     public int getDebug() {
         return debug;
     }
@@ -76,6 +76,23 @@ public class CompilerOptions {
                 case "-P": parallel = true; break;
                 case "-w": warnings = true; break; // Ajout warning
                 case "-d": debug++; break;
+                case "-r":
+                    if (i + 1 >= args.length) {
+                        throw new CLIException("check decac -r usage in the doc.");
+                    }
+                    try {
+                        i++;
+                        int r = Integer.parseInt(args[i]);
+
+                        if (r < 4 || r > 16) {
+                            throw new CLIException("number entre 4 et 16.");
+                        }
+                        this.registers = r-1;
+
+                    } catch (NumberFormatException e) {
+                        throw new CLIException(" doit être un entier.");
+                    }
+                    break;
                 default:
                     // options verification
                     if (arg.startsWith("-")) {

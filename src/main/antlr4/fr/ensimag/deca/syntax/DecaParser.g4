@@ -446,6 +446,10 @@ literal returns[AbstractExpr tree]
      setLocation($tree, $INT);
         }
     | FLOAT {
+    double val = Double.parseDouble($text);
+    if (val != 0.0 && Math.abs(val) < Float.MIN_VALUE) {
+            throw new NumberFormatException("Erreur: Float trop petit (Underflow). Min acceptée: 1.4E-45. Valeur reçue : " + $text);
+            }
     $tree = new FloatLiteral(Float.parseFloat($FLOAT.getText()));
     setLocation($tree, $FLOAT);
         }

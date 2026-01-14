@@ -64,6 +64,11 @@ public class DeclClass extends AbstractDeclClass {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    public void codeGenTableConstruction(DecacCompiler compiler) {
+        compiler.addComment("Code de la table des méthodes de " + name.getName());
+    }
+
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {

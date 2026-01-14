@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
 /**
@@ -53,4 +55,17 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     }
 
 
+    public void codeGenListDeclClass(DecacCompiler compiler) {
+        Label label_equals = new Label("code.Object.equals");
+        compiler.addLabel(label_equals);
+        compiler.addComment("Code de la table des méthodes de Object");
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
+        compiler.addInstruction(new LOAD(new LabelOperand(label_equals), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+        // now we get to classes Table construction
+        for (AbstractDeclClass c : getList()) {
+            c.codeGenTableConstruction(compiler);
+        }
+    }
 }
