@@ -34,9 +34,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         // Convertion si de different type
         if (rightOpType.isFloat() && leftOpType.isInt()){
-            setLeftOperand(new ConvFloat(getLeftOperand()));
+            ConvFloat intConv = new ConvFloat(getLeftOperand());
+            intConv.verifyExpr(compiler, localEnv, currentClass);
+            setLeftOperand(intConv);
         } else if (leftOpType.isFloat() && rightOpType.isInt()){
-            setRightOperand(new ConvFloat(getRightOperand()));
+            ConvFloat intConv = new ConvFloat(getRightOperand());
+            intConv.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(intConv);
         }
 
         Type opCmpType = compiler.environmentType.BOOLEAN;

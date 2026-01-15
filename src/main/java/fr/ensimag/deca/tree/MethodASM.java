@@ -1,21 +1,24 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 
-public class MethodASM extends AbstractDeclMeth {
-    private final AbstractIdentifier typeRetour;
-    private final AbstractIdentifier etiquette;
-    private final ListDeclPara listeParametres;
+public class MethodASM extends DeclMethod {
     private final StringLiteral blocAsm;
 
     public MethodASM(AbstractIdentifier typeRetour, AbstractIdentifier etiquette,
                      ListDeclPara listeParametres, StringLiteral blocAsm) {
-        this.typeRetour = typeRetour;
-        this.etiquette = etiquette;
-        this.listeParametres = listeParametres;
+        super(typeRetour, etiquette, listeParametres);
         this.blocAsm = blocAsm;
+    }
+
+   protected void verifyMethBody(DecacCompiler compiler, ClassDefinition currentClass)
+            throws ContextualError{
+
     }
 
     @Override
@@ -28,17 +31,17 @@ public class MethodASM extends AbstractDeclMeth {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        this.typeRetour.prettyPrint(s, prefix, false);
-        this.etiquette.prettyPrint(s, prefix, false);
-        this.listeParametres.prettyPrint(s, prefix, false);
+        this.typeMethode.prettyPrint(s, prefix, false);
+        this.nomMethode.prettyPrint(s, prefix, false);
+        this.parametres.prettyPrint(s, prefix, false);
         this.blocAsm.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        this.typeRetour.iter(f);
-        this.etiquette.iter(f);
-        this.listeParametres.iter(f);
+        this.typeMethode.iter(f);
+        this.nomMethode.iter(f);
+        this.parametres.iter(f);
         this.blocAsm.iter(f);
     }
 }
