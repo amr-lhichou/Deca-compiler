@@ -11,6 +11,12 @@ public abstract class DeclMethod extends AbstractDeclMeth{
     protected AbstractIdentifier typeMethode;
     protected AbstractIdentifier nomMethode;
     protected ListDeclPara parametres;
+    public AbstractIdentifier getTypeMethode() {
+        return typeMethode;
+    }
+    public AbstractIdentifier getNomMethode() {
+        return nomMethode;
+    }
 
     public DeclMethod(AbstractIdentifier typeMethode, AbstractIdentifier nomMethode,
                       ListDeclPara parametres){

@@ -495,6 +495,8 @@ list_classes returns[ListDeclClass tree]
 class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE b=class_body CBRACE {
             $tree = new DeclClass($name.tree,$superclass.tree,$b.fields,$b.methods);
+            setLocation($tree, $CLASS);
+
         }
     ;
 
@@ -538,9 +540,11 @@ list_decl_field[ListChamps l,AbstractIdentifier t,Visibility v]
 decl_field[AbstractIdentifier t,Visibility v] returns[AbstractDeclField tree]
     : i=ident {
           $tree = new DeclField($v,$t,$i.tree,new NoInitialization());
+          setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
       $tree = new DeclField($v,$t,$i.tree,new Initialization($e.tree));
+      setLocation($tree, $i.start);
         }
       )? {
         }
@@ -551,12 +555,13 @@ decl_method returns[AbstractDeclMeth tree]
 }
     : t=type i=ident OPARENT params=list_params CPARENT (bl=block {
     $tree = new Method($t.tree,$i.tree,$params.tree,$bl.decls,$bl.insts);
+    setLocation($tree, $i.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
       $tree = new MethodASM($t.tree,$i.tree,$params.tree,new StringLiteral($code.text));
+      setLocation($tree, $i.start);
         }
-      ) {
-        }
+      )
     ;
 
 list_params returns[ListDeclPara tree]
@@ -583,5 +588,6 @@ multi_line_string returns[String text, Location location]
 param returns[AbstractDeclPara tree]
     : t=type ii=ident {
     $tree = new DeclPara($t.tree,$ii.tree);
+    setLocation($tree, $ii.start);
         }
     ;

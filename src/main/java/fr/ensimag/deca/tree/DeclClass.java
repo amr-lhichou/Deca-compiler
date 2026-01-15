@@ -8,7 +8,16 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
+import java.util.List;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -21,7 +30,15 @@ public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier superclass;
     private ListChamps fields;
     private ListeMethod methods;
-
+    public ListeMethod getMethods() {
+        return methods;
+    }
+    public AbstractIdentifier getName() {
+        return name;
+    }
+    public AbstractIdentifier getSuperclass() {
+        return superclass;
+    }
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superclass, ListChamps fields, ListeMethod methods) {
         this.name = name;
         this.superclass = superclass;
@@ -69,10 +86,77 @@ public class DeclClass extends AbstractDeclClass {
         this.fields.verifyListChampsInit(compiler, currentClass);
     }
 
-    @Override
-    public void codeGenTableConstruction(DecacCompiler compiler) {
-        compiler.addComment("Code de la table des méthodes de " + name.getName());
+public int codeGenTableConstruction(DecacCompiler compiler, int index_parent, int index, List<AbstractDeclClass> list) {
+    compiler.addComment("Code de la table des méthodes de " + name.getName().getName());
+
+    compiler.addInstruction(new LEA(new RegisterOffset(index_parent, Register.GB), Register.R0));
+    compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+    index++;
+
+    compiler.addInstruction(new LOAD(new RegisterOffset(index_parent + 1, Register.GB), Register.R0));
+    compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+    index++;
+
+    DeclClass class_parent = null;
+    String nomSuper = this.superclass.getName().getName();
+
+    for (AbstractDeclClass c : list) {
+        if (((DeclClass)c).getName().getName().getName().equals(nomSuper)) {
+            class_parent = (DeclClass) c;
+            break;
+        }
     }
+    if (class_parent != null) {
+        for (AbstractDeclMeth  mParentAbs : class_parent.getMethods().getList()) {
+            String nomMethodeParent = ((Identifier)((DeclMethod)mParentAbs).getNomMethode()).getName().getName();
+            boolean isOverride = false;
+            for (AbstractDeclMeth mMoiAbs : methods.getList()) {
+                String nomMethodeMoi = ((DeclMethod)mMoiAbs).getNomMethode().getName().getName();
+                if (nomMethodeMoi.equals(nomMethodeParent)) {
+                    isOverride = true;
+                    break;
+                }
+            }
+
+            if (isOverride) {
+                // it's ovveridden
+                String label = "code." + name.getName().getName() + "." + nomMethodeParent;
+                compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
+            } else {
+                // it has the same name as the parent
+                String label = "code." + nomSuper + "." + nomMethodeParent;
+                compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
+            }
+
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+            index++;
+        }
+    }
+
+    for (AbstractDeclMeth mMoiAbs : methods.getList()) {
+        String nomMethodeMoi = ((DeclMethod)mMoiAbs).getNomMethode().getName().getName();
+        boolean existsInParent = false;
+        if (class_parent != null) {
+            for (AbstractDeclMeth mParentAbove : class_parent.getMethods().getList()) {
+                String nomParent = ((DeclMethod)mParentAbove).getNomMethode().getName().getName();
+                if (nomParent.equals(nomMethodeMoi)) {
+                    //it's already written above by the parent
+                    existsInParent = true;
+                    break;
+                }
+            }
+        }
+        // if the method exist only in the son we write it
+        if (!existsInParent) {
+            String label = "code." + name.getName().getName() + "." + nomMethodeMoi;
+            compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+            index++;
+        }
+    }
+
+    return index;
+}
 
 
     @Override

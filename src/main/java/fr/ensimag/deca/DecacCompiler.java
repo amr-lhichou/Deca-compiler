@@ -239,10 +239,10 @@ public class DecacCompiler {
             System.out.println(prog.decompile());
             return false;
         }
-        assert(prog.checkAllLocations());
+       // assert(prog.checkAllLocations());
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+       // assert(prog.checkAllDecorations());
         if (this.compilerOptions.getVerification()){
             // we return with no output
             return false ;

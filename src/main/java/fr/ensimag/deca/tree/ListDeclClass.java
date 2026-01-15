@@ -7,6 +7,9 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author gl53
@@ -56,6 +59,22 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
 
     public void codeGenListDeclClass(DecacCompiler compiler) {
+        codeGenObjecttable(compiler);
+        int current_index = 3;
+        //for the vtables adresses for each classe
+        Map<String, Integer> addresses = new HashMap<>();
+        addresses.put("Object", 1);  // object in 1
+        for (AbstractDeclClass c : getList()) {
+            DeclClass dc = (DeclClass) c;
+            String parentName = dc.getSuperclass().getName().getName();
+            int index_parent = addresses.getOrDefault(parentName, 1);
+            int next_index = dc.codeGenTableConstruction(compiler, index_parent, current_index, getList());
+            String myName = dc.getName().getName().getName();
+            addresses.put(myName, current_index);
+            current_index = next_index;
+        }
+    }
+    public void codeGenObjecttable(DecacCompiler compiler) {
         Label label_equals = new Label("code.Object.equals");
         compiler.addLabel(label_equals);
         compiler.addComment("Code de la table des méthodes de Object");
@@ -63,9 +82,5 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
         compiler.addInstruction(new LOAD(new LabelOperand(label_equals), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
-        // now we get to classes Table construction
-        for (AbstractDeclClass c : getList()) {
-            c.codeGenTableConstruction(compiler);
-        }
     }
 }

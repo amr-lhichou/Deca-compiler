@@ -22,7 +22,7 @@ public class ListChamps extends TreeList<AbstractDeclField>{
         throws ContextualError {
 
         for (AbstractDeclField field : getList()) {
-            field.verifyFieldInit(compiler, currentClass);
+            ((DeclField)field).verifyFieldInit(compiler, currentClass);
         }
     }
 
