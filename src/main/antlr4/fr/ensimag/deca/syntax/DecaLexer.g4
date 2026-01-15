@@ -97,6 +97,10 @@ fragment STRING_CAR : ~["\\\r\n] ;
 STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | '\\"' | '\\\\' | '\r'? '\n')* '"' ;
 // Inclusion de fichier
+// j vais gerer ici les include (#include)
+// j vais utilisé le doInclude qui existe deja dans AbstratDecaLexer
+// il permet de chercher le fichier .decah et de remplacer par son contenue , dinc l inclusion
+INCLUDE : '#include' ' '* STRING { doInclude(getText()); };
 
 //FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 //  j ai commenté token FILENAME , car il y a un '.' dedans , le lexer croyait que "this.numero"

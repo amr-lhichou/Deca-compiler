@@ -1,0 +1,6 @@
+class Joueur {
+    int numero;
+
+    void f() {
+    }
+}
