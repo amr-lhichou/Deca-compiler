@@ -42,7 +42,8 @@ public abstract class DeclMethod extends AbstractDeclMeth{
                 }
             }
         }
-        MethodDefinition methDef = new MethodDefinition(retourType, getLocation(), sig, 0);
+        int index = currentClass.getNumberOfMethods();
+        MethodDefinition methDef = new MethodDefinition(retourType, getLocation(), sig, index);
         try {
             currentClass.getMembers().declare(nomMethode.getName(), methDef);
         } catch (Exception e) {

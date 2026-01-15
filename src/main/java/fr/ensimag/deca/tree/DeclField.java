@@ -51,7 +51,8 @@ public class DeclField extends AbstractDeclField{
             }
         }
 
-        FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, 0);
+        int index = currentClass.getNumberOfFields();
+        FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, index);
 
         try {
             currentClass.getMembers().declare(nom, fieldDef);
@@ -61,9 +62,17 @@ public class DeclField extends AbstractDeclField{
                 getLocation()
             );
         }
-        
-        
+
     }
+
+    protected void verifyFieldInit(DecacCompiler compiler, ClassDefinition currentClass)
+            throws ContextualError{
+        
+        Type fieldType = typeChamp.getType();
+        initialisation.verifyInitialization(compiler, fieldType, currentClass.getMembers(), currentClass);
+    }
+
+
 
 
     public void decompile(IndentPrintStream s){

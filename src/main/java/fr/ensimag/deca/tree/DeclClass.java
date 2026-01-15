@@ -51,6 +51,7 @@ public class DeclClass extends AbstractDeclClass {
 
         name.setType(classType);
         name.setDefinition(classType.getDefinition());
+
     }
 
     @Override
@@ -63,7 +64,9 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        
+        ClassDefinition currentClass = this.name.getClassDefinition();
+        this.methods.verifyListMethodsBody(compiler, currentClass);
+        this.fields.verifyListChampsInit(compiler, currentClass);
     }
 
     @Override
