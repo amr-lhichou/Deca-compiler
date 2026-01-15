@@ -23,5 +23,21 @@ public class Signature {
     public int size() {
         return args.size();
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Signature signature = (Signature) o;
+        if (this.size() != signature.size()) return false;
+        for (int i = 0; i < this.size(); i++) {
+            Type t1 = this.paramNumber(i);
+            Type t2 = signature.paramNumber(i);
+            if (!t1.sameType(t2)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }
