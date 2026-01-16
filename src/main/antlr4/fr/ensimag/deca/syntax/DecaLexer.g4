@@ -61,6 +61,8 @@ PRINTX : 'printx';
 PRINT : 'print';
 PROTECTED : 'protected';
 PUBLIC : 'public';
+PRIVATE : 'private';
+FINAL : 'final';
 RETURN : 'return';
 THIS : 'this';
 TRUE : 'true';

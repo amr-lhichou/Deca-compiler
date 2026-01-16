@@ -10,6 +10,9 @@ import fr.ensimag.deca.tree.Visibility;
  * @date 01/01/2026
  */
 public class FieldDefinition extends ExpDefinition {
+    private final boolean isFinal;
+
+   
     public int getIndex() {
         return index;
     }
@@ -24,13 +27,17 @@ public class FieldDefinition extends ExpDefinition {
     private final Visibility visibility;
     private final ClassDefinition containingClass;
     
-    public FieldDefinition(Type type, Location location, Visibility visibility,
-            ClassDefinition memberOf, int index) {
+    public FieldDefinition(Type type, Location location, Visibility visibility,ClassDefinition memberOf, int index, boolean isFinal) {
         super(type, location);
         this.visibility = visibility;
         this.containingClass = memberOf;
         this.index = index;
+        this.isFinal = isFinal;
     }
+
+    public boolean isFinal() {
+        return isFinal;
+    }   
     
     @Override
     public FieldDefinition asFieldDefinition(String errorMessage, Location l)

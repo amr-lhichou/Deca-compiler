@@ -37,6 +37,12 @@ public class AccesChamp extends AbstractLValue {
 
         FieldDefinition fieldDef = (FieldDefinition) champDef;
 
+        if (fieldDef.getVisibility() == Visibility.PRIVATE) {
+            if (currentClass == null || currentClass != fieldDef.getContainingClass()) {
+                throw new ContextualError("Cannot access private field", getLocation());
+            }
+        }
+
         if(fieldDef.getVisibility() == Visibility.PROTECTED) {
             if(currentClass == null) {
                 throw new ContextualError("Cannot access protected field outside a class", getLocation());
@@ -74,4 +80,9 @@ public class AccesChamp extends AbstractLValue {
         this.objetContexte.iter(f);
         this.identifiantChamp.iter(f);
     }
+
+    public AbstractIdentifier getIdentifiantChamp() {
+        return identifiantChamp;
+    }
+
 }
