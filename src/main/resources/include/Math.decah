@@ -124,14 +124,36 @@ class Math {
     return x;
     }
 
+
     // Fonction publique cos(x)
-    
     float cos(float x) {
 
         int sign = 1;
+        float eps = 0.000001;
 
     // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
+
+    // les cas particuliers 
+        if (_abs(x) < eps) {
+            return 1;
+        }
+
+        if (_abs(x - PI/2) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - PI) < eps) {
+            return -1;
+        }
+
+        if (_abs(x - (3 * PI / 2)) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - (2 * PI)) < eps) {
+            return 1;
+        }
 
     // 2. Symétrie : cos(-x) = cos(x)
         if (x < 0) {
@@ -151,7 +173,9 @@ class Math {
 
     // 5. Approximation polynomiale
         return sign * _cosinePoly(x);
-}
+    }
+
+    
 
     
     
