@@ -41,9 +41,15 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+    private int current_index; // for the Vtable so that we declare global variables after them.
+    public int getCurrent_index(){
+        return current_index;
+    }
+    public void setCurrent_index(int current_index){
+        this.current_index = current_index;
+    }
     // we added a register allocater for optimization
     private RegisterAllocater registerAllocater;
-
     public RegisterAllocater getRegisterAllocater() {
         return registerAllocater;
     }

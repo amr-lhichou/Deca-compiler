@@ -40,20 +40,20 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // on ajoute un index à incrémenter pour augmenter la pile
-        int index=1;
         for (AbstractDeclVar decVar : this.getList()){
             decVar.verifyDeclVar(compiler, localEnv, currentClass);
+        }
+    }
+    // ajout de methode de gencode pour les declVar
+    public void codeGenListDeclVarInst(DecacCompiler compiler){
+        int index=compiler.getCurrent_index();
+        for(AbstractDeclVar decVar : this.getList()){
             ExpDefinition def = decVar.getVarName().getExpDefinition();
             // On calcule l'adresse avec GB/LB
             // pour le Main :Registre GB
             def.setOperand(new RegisterOffset(index, Register.GB));
             // Incrémenter pour la prochaine variable
             index++;
-        }
-    }
-    // ajout de methode de gencode pour les declVar
-    public void codeGenListDeclVarInst(DecacCompiler compiler){
-        for(AbstractDeclVar decVar : this.getList()){
             decVar.codegenDeclVar(compiler);
         }
 

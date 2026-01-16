@@ -61,23 +61,24 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
     public void codeGenListDeclClass(DecacCompiler compiler) {
         codeGenObjecttable(compiler);
-        int current_index = 3;
+        compiler.setCurrent_index(3);
         for (AbstractDeclClass c : getList()) {
             DeclClass dc = (DeclClass) c;
             ClassDefinition currentClass=dc.getName().getClassDefinition();
-            currentClass.setIndex_vtable(current_index);
+            currentClass.setIndex_vtable(compiler.getCurrent_index());
             int index_parent;
             if (currentClass.getSuperClass() != null){
                 System.out.println("Class"+ dc.getName().getName().getName()+"extends" + dc.getSuperclass().getName().getName());
                 index_parent=currentClass.getSuperClass().getIndex_vtable();
             } else {
-                // cette partie du else n est jamais activée -- à corriger la superclass si A n'a pas de parent
+                // cette partie du else n est jamais activée -- à corriger par hossam/ insaf la superclass si A n'a pas de parent
                 // si le parent de A est object --- superclass doit etre null .
                 index_parent=1 ;
             }
-            current_index = dc.codeGenTableConstruction(compiler, index_parent, current_index, getList());
+            compiler.setCurrent_index(dc.codeGenTableConstruction(compiler, index_parent, compiler.getCurrent_index(), getList()));
             
         }
+
     }
     public void codeGenObjecttable(DecacCompiler compiler) {
         Label label_equals = new Label("code.Object.equals");
