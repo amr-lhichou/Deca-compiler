@@ -58,7 +58,7 @@ public class DeclClass extends AbstractDeclClass {
         if (!superType.isClass()) throw new ContextualError("Super-classe invalide ", superclass.getLocation());
         ClassDefinition superClassDef = ((ClassType) superType).getDefinition();
 
-        ClassType classType = new ClassType(name.getName(), getLocation(), superClassDef);
+        ClassType classType = new ClassType(name.getName(), name.getLocation(), superClassDef);
 
         try{
             compiler.environmentType.declare(name.getName(), classType.getDefinition());
@@ -72,9 +72,16 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void verifyClassMembers(DecacCompiler compiler)
-            throws ContextualError {
+    protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         ClassDefinition currentClass = this.name.getClassDefinition();
+        
+        //Initialisation correct des compteurs hérités
+        ClassDefinition superClassDef = currentClass.getSuperClass();
+
+        currentClass.setNumberOfFields(superClassDef==null ? 0 : superClassDef.getNumberOfFields());
+        currentClass.setNumberOfMethods(superClassDef==null ? 0 : superClassDef.getNumberOfMethods());
+
+
         this.methods.verifyListMethods(compiler, currentClass);
         this.fields.verifyListChamps(compiler, currentClass);
     }

@@ -3,6 +3,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
@@ -18,8 +19,7 @@ public abstract class DeclMethod extends AbstractDeclMeth{
         return nomMethode;
     }
 
-    public DeclMethod(AbstractIdentifier typeMethode, AbstractIdentifier nomMethode,
-                      ListDeclPara parametres){
+    public DeclMethod(AbstractIdentifier typeMethode, AbstractIdentifier nomMethode, ListDeclPara parametres){
         this.typeMethode = typeMethode;
         this.nomMethode = nomMethode;
         this.parametres = parametres;
@@ -60,8 +60,8 @@ public abstract class DeclMethod extends AbstractDeclMeth{
         try {
             currentClass.getMembers().declare(nomMethode.getName(), methDef);
             this.nomMethode.setDefinition(methDef);
-        } catch (Exception e) {
-            throw new ContextualError("Méthode" + nomMethode.getName() + "existe déjà.", getLocation());
+        } catch (DoubleDefException e) {
+            throw new ContextualError("Méthode " + nomMethode.getName() + " existe déjà.", getLocation());
         }
     }
 
