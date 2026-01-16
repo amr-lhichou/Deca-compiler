@@ -1,0 +1,10 @@
+// Description :
+// extends une class inconnue (SuperLigaClub n'existe pas).
+//
+// Resultats :
+// echec superclasse inconnue.
+class BarcaB extends SuperLigaClub {
+}
+{
+    println("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+}

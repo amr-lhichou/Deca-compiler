@@ -1,0 +1,12 @@
+// Description :
+// deux attribut meme noms , problème...
+//
+// Resultats :
+// Echec
+
+class Club {
+    int score;
+    float score;
+}
+{
+}
