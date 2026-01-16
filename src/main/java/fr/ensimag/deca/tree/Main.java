@@ -60,18 +60,14 @@ public class Main extends AbstractMain {
         declVariables.codeGenListDeclVarInst(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
-        // Stack Size needed for variable declaration
-        int size_var= declVariables.size() ;
+        // Stack Size needed for variable declaration and vtable
+        int size_var= declVariables.size()+compiler.getVar_size() ;
         // Stack size needed for temporary (push)
         int size_temp =  compiler.getStackMaxSize();
         // Stack total size
         int stack_size= size_temp + size_var;
-        compiler.addFirst(new ADDSP(new ImmediateInteger(size_var)));
-        if(!compiler.getCompilerOptions().getNoCheck()){
-        compiler.addFirst(new BOV(new Label("stack_overflow_error")));}
-        // we test the size with TSTO
-        compiler.addFirst(new TSTO(new ImmediateInteger(stack_size)));
-
+        compiler.setVar_size(size_var);
+        compiler.setStack_size(stack_size);
     }
 
 

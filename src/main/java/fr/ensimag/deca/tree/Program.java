@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -44,12 +46,16 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Code des tables des méthodes");
         classes.codeGenListDeclClass(compiler);
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addFirst(new ADDSP(new ImmediateInteger(compiler.getVar_size())));
+        if(!compiler.getCompilerOptions().getNoCheck()){
+            compiler.addFirst(new BOV(new Label("stack_overflow_error")));}
+        // we test the size with TSTO
+        compiler.addFirst(new TSTO(new ImmediateInteger(compiler.getStack_size())));
     }
 
     @Override
