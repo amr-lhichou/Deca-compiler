@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
@@ -61,17 +62,21 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     public void codeGenListDeclClass(DecacCompiler compiler) {
         codeGenObjecttable(compiler);
         int current_index = 3;
-        //for the vtables adresses for each classe
-        Map<String, Integer> addresses = new HashMap<>();
-        addresses.put("Object", 1);  // object in 1
         for (AbstractDeclClass c : getList()) {
             DeclClass dc = (DeclClass) c;
-            String parentName = dc.getSuperclass().getName().getName();
-            int index_parent = addresses.getOrDefault(parentName, 1);
-            int next_index = dc.codeGenTableConstruction(compiler, index_parent, current_index, getList());
-            String myName = dc.getName().getName().getName();
-            addresses.put(myName, current_index);
-            current_index = next_index;
+            ClassDefinition currentClass=dc.getName().getClassDefinition();
+            currentClass.setIndex_vtable(current_index);
+            int index_parent;
+            if (currentClass.getSuperClass() != null){
+                System.out.println("Class"+ dc.getName().getName().getName()+"extends" + dc.getSuperclass().getName().getName());
+                index_parent=currentClass.getSuperClass().getIndex_vtable();
+            } else {
+                // cette partie du else n est jamais activée -- à corriger la superclass si A n'a pas de parent
+                // si le parent de A est object --- superclass doit etre null .
+                index_parent=1 ;
+            }
+            current_index = dc.codeGenTableConstruction(compiler, index_parent, current_index, getList());
+            
         }
     }
     public void codeGenObjecttable(DecacCompiler compiler) {
