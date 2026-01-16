@@ -48,10 +48,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("Code des tables des méthodes");
         classes.codeGenListDeclClass(compiler);
         compiler.addComment("Main program");
-        if(main != null) {
-            main.codeGenMain(compiler);
-        }
-
+        main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }
 

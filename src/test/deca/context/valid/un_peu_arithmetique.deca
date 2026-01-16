@@ -1,0 +1,18 @@
+//description:
+// arthmétique avec les int avec op elementaire + * - ( )
+//
+//Resultats:
+//Ok
+
+{
+int mise;
+int cote_x10;
+int frais;
+int gain_brut;
+mise = 20;
+cote_x10=25;
+frais = 3;
+gain_brut = mise * cote_x10 - mise * 10;
+}
+
+

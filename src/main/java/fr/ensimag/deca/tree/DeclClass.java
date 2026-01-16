@@ -8,16 +8,16 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.LabelOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -93,73 +93,60 @@ public class DeclClass extends AbstractDeclClass {
         this.fields.verifyListChampsInit(compiler, currentClass);
     }
 
-public int codeGenTableConstruction(DecacCompiler compiler, int index_parent, int index, List<AbstractDeclClass> list) {
-    compiler.addComment("Code de la table des méthodes de " + name.getName().getName());
-
-    compiler.addInstruction(new LEA(new RegisterOffset(index_parent, Register.GB), Register.R0));
-    compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
-    index++;
-
-    compiler.addInstruction(new LOAD(new RegisterOffset(index_parent + 1, Register.GB), Register.R0));
-    compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
-    index++;
-
-    DeclClass class_parent = null;
-    String nomSuper = this.superclass.getName().getName();
-
-    for (AbstractDeclClass c : list) {
-        if (((DeclClass)c).getName().getName().getName().equals(nomSuper)) {
-            class_parent = (DeclClass) c;
-            break;
+    private List<String> getRecursiveMethodLabels(List<AbstractDeclClass> list) {
+        List<String> vtable;
+        // we look for the parent
+        DeclClass class_parent = null;
+        String nomSuper = this.superclass.getName().getName();
+        for (AbstractDeclClass c : list) {
+            if (((DeclClass)c).getName().getName().getName().equals(nomSuper)) {
+                class_parent = (DeclClass) c;
+                break;
+            }
         }
-    }
-    if (class_parent != null) {
-        for (AbstractDeclMeth  mParentAbs : class_parent.getMethods().getList()) {
-            String nomMethodeParent = ((Identifier)((DeclMethod)mParentAbs).getNomMethode()).getName().getName();
+        // first get the parent vtable
+        if (class_parent != null) {
+            vtable = class_parent.getRecursiveMethodLabels(list);
+        } else {
+            // if there's no parent (Object is the parent) we initialize
+            vtable = new ArrayList<>();
+            vtable.add("code.Object.equals");
+        }
+        //and now we add our methods
+        for (AbstractDeclMeth my_method : methods.getList()) {
+            String nomMethodeMoi = ((DeclMethod)my_method).getNomMethode().getName().getName();
+            String labelMoi = "code." + this.getName().getName().getName() + "." + nomMethodeMoi;
+
             boolean isOverride = false;
-            for (AbstractDeclMeth mMoiAbs : methods.getList()) {
-                String nomMethodeMoi = ((DeclMethod)mMoiAbs).getNomMethode().getName().getName();
-                if (nomMethodeMoi.equals(nomMethodeParent)) {
+            for (int i = 0; i < vtable.size(); i++) {
+                String labelExistant = vtable.get(i);
+                String nomMethodeExistante = labelExistant.substring(labelExistant.lastIndexOf('.') + 1);
+                if (nomMethodeExistante.equals(nomMethodeMoi)) {
+                    vtable.set(i, labelMoi);
                     isOverride = true;
                     break;
                 }
             }
-
-            if (isOverride) {
-                // it's ovveridden
-                String label = "code." + name.getName().getName() + "." + nomMethodeParent;
-                compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
-            } else {
-                // it has the same name as the parent
-                String label = "code." + nomSuper + "." + nomMethodeParent;
-                compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
+            if (!isOverride) {
+                vtable.add(labelMoi);
             }
-
-            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
-            index++;
         }
+
+        return vtable;
     }
 
-    for (AbstractDeclMeth mMoiAbs : methods.getList()) {
-        String nomMethodeMoi = ((DeclMethod)mMoiAbs).getNomMethode().getName().getName();
-        boolean existsInParent = false;
-        if (class_parent != null) {
-            for (AbstractDeclMeth mParentAbove : class_parent.getMethods().getList()) {
-                String nomParent = ((DeclMethod)mParentAbove).getNomMethode().getName().getName();
-                if (nomParent.equals(nomMethodeMoi)) {
-                    //it's already written above by the parent
-                    existsInParent = true;
-                    break;
-                }
-            }
-        }
-        // if the method exist only in the son we write it
-        if (!existsInParent) {
-            String label = "code." + name.getName().getName() + "." + nomMethodeMoi;
-            compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
-            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
-            index++;
-        }
+public int codeGenTableConstruction(DecacCompiler compiler, int index_parent, int index, List<AbstractDeclClass> list) {
+    compiler.addComment("Code de la table des méthodes de " + name.getName().getName());
+    // store parent adress
+    compiler.addInstruction(new LEA(new RegisterOffset(index_parent, Register.GB), Register.R0));
+    compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+    index++;
+    // get his table
+    List<String> labels = getRecursiveMethodLabels(list);
+    for (String label : labels) {
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label(label)), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.GB)));
+        index++;
     }
 
     return index;

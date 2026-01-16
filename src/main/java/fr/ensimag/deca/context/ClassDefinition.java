@@ -11,8 +11,13 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2026
  */
 public class ClassDefinition extends TypeDefinition {
-
-
+    private int index_vtable=1;// par défaut object
+    public int getIndex_vtable() {
+        return index_vtable;
+    }
+    public void setIndex_vtable(int index_vtable) {
+        this.index_vtable = index_vtable;
+    }
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }

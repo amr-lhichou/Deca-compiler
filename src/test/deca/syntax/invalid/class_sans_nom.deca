@@ -1,0 +1,10 @@
+// Description :
+// on oublie (par faute de frappe ) le noms de la classe
+
+// Resultats :
+// Erreur syntaxique
+//Regle : class_decl -> 'class' ident class_extension '{' class_body '}'
+
+
+class {}{
+private int num_telephone;}

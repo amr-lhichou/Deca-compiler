@@ -1,0 +1,11 @@
+// Description :
+// Comparaison d'ordre sur boolean , donc impossible ...
+//
+// Resultats :
+// Echecc
+// Regle : Les opérands doivent être de Type INT ou FLOAT (règle 3.33)
+
+{
+    boolean b;
+    b = true < false;
+}

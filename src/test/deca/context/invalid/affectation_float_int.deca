@@ -1,0 +1,11 @@
+// Description :
+// sans casting on peut pas affecter un float a un intger donc erreur
+//
+// Resultats :
+// Echec
+// Regle : float et int ne sont pas compatibles (règle 3.28)
+
+{
+    int buts;
+    buts = 3.5;
+}
