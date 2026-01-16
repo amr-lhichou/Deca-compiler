@@ -1,0 +1,13 @@
+//description:
+// n test une affctation tres simple puis on la print ( c est le cas le plus simple il doit passer)
+//
+//Resultats:
+//Ok
+
+{
+int resultast_match;
+resultast_match = 12;
+println(resultast_match);
+}
+
+

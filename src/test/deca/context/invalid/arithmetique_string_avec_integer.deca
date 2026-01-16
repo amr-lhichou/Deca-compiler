@@ -1,0 +1,11 @@
+// Description :
+// impossible de sommer string et un integer , donc erreur...
+//
+// Resultats :
+// Echec
+// Regle : Opération '+' interdite entre string et int (règle (3.33))
+
+{
+    int champions;
+    champions = "barca" + 2;
+}

@@ -1,0 +1,11 @@
+//Description:
+// on a fait deux == dans la declaration
+//
+//Resultats:
+//Erreur syntaxique
+//Regle : decl_var -> ident ('='expr)?
+
+{int cote == 575758;}
+
+
+

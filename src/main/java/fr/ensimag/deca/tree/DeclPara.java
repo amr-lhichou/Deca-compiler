@@ -38,15 +38,20 @@ public class DeclPara extends AbstractDeclPara {
     }
     protected void verifyParamExp(DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError{
         Type paraType = this.typeArgument.verifyType(compiler);
-        EnvironmentExp envExp = new EnvironmentExp(localEnv);
+        //EnvironmentExp envExp = new EnvironmentExp(localEnv);
+        if(paraType.isVoid()){
+            throw new ContextualError("Le paramètre ne peut pas être de type void (règle 2.9)", getLocation());
+        }
+
         Symbol nomParam = this.nomArgument.getName();
         ParamDefinition defPara = new ParamDefinition(paraType, this.getLocation());
         try {
-            envExp.declare(nomParam, defPara);
+            localEnv.declare(nomParam, defPara);
         } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Le paramètre " + nomParam.getName() + " est déjà défini",
-                    this.getLocation());
+            throw new ContextualError("Le paramètre " + nomParam.getName() + " est déjà défini", getLocation());
         }
+
+        nomArgument.setDefinition(defPara);
     }
 
 

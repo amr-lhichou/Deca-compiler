@@ -1,0 +1,9 @@
+//Description :
+// déclaration un peu erroné , avec une virgule aprés le type
+//Resultats:
+//Erreur syntaxique
+// Regle : decl_var_set -> type list_decl_var ';'
+
+{
+int, resultats_matche;
+}

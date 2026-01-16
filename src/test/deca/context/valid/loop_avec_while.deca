@@ -1,0 +1,19 @@
+//description:
+// un peu de boocle avec while et des increments
+//
+//Resultats:
+//Ok
+
+{
+int minute;
+minute = 0;
+
+    while (minute < 3) {
+        println("Barca minute =", minute);
+        minute = minute + 1;
+    }
+
+    println("Visca Barca");
+}
+
+

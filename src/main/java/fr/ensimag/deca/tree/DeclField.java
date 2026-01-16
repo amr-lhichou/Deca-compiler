@@ -32,13 +32,11 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass)
-            throws ContextualError {
+    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError {
         Type fieldType = this.typeChamp.verifyType(compiler);
 
         if (fieldType.isVoid()){
-            throw new ContextualError("Le type du champ ne peut pas être void (règle 2.5)", 
-                                    getLocation());
+            throw new ContextualError("Le type du champ ne peut pas être void (règle 2.5)", getLocation());
         }
 
         Symbol nom = nomChamp.getName();
@@ -51,7 +49,7 @@ public class DeclField extends AbstractDeclField{
             }
         }
 
-        int index = currentClass.getNumberOfFields();
+        int index = currentClass.getNumberOfFields() + 1;
         FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, index);
 
         try {
@@ -62,6 +60,10 @@ public class DeclField extends AbstractDeclField{
                 getLocation()
             );
         }
+
+        // Lier la definition au noeud AST et mettre à jour le compteur pour le prochian champ
+        nomChamp.setDefinition(fieldDef);
+        currentClass.setNumberOfFields(index);
 
     }
 

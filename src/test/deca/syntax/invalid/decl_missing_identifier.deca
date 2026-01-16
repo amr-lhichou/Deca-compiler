@@ -1,0 +1,10 @@
+//Description:
+//tout est ok , sauf on a oublier le nom de la variable (ident)
+//
+//Resultats:
+//Erreur syntaxique
+//Regle : decl_var -> ident ('='expr)?
+
+{int = 67;}
+
+
