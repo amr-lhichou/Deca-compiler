@@ -1,0 +1,9 @@
+//Description:
+//on decalare deux ariable , mais avec deux virgule entre les deux ( prblème de frappe)
+//
+//Resultats:
+//Erreur syntaxique
+//Regle:list_decl_var -> decl_var(','decl_var)*
+
+{float score,,resultats;
+}

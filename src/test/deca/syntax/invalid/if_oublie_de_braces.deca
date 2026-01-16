@@ -1,0 +1,11 @@
+//Description:
+//oublie de {} dan sle corps de if
+//
+//Resultats:
+//Erreur syntaxique
+//Regle : if_then_else -> '{'list_inst'}'
+
+{if (true) int i = 7;}
+}
+
+
