@@ -48,6 +48,20 @@ public class DecacCompiler {
     public void setCurrent_index(int current_index){
         this.current_index = current_index;
     }
+    private int var_size;
+    public int getVar_size(){
+        return var_size;
+    }
+    public void setVar_size(int var_size){
+        this.var_size = var_size;
+    }
+    private int stack_size;
+    public int getStack_size(){
+        return stack_size;
+    }
+    public void setStack_size(int stack_size){
+        this.stack_size = stack_size;
+    }
     // we added a register allocater for optimization
     private RegisterAllocater registerAllocater;
     public RegisterAllocater getRegisterAllocater() {
@@ -245,10 +259,10 @@ public class DecacCompiler {
             System.out.println(prog.decompile());
             return false;
         }
-       // assert(prog.checkAllLocations());
+        //assert(prog.checkAllLocations());
 
         prog.verifyProgram(this);
-       // assert(prog.checkAllDecorations());
+        //assert(prog.checkAllDecorations());
         if (this.compilerOptions.getVerification()){
             // we return with no output
             return false ;
@@ -287,6 +301,28 @@ public class DecacCompiler {
         this.addInstruction(new WSTR("Error: Division by zero error"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
+        // 11.3 Débordement mémoire (Tas) - Appelé par NEW
+        this.addLabel(new Label("heap_overflow"));
+        this.addInstruction(new WSTR("Error: Heap overflow"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        // deferencement null
+        this.addLabel(new Label("null_pointer_error"));
+        this.addInstruction(new WSTR("Error: Null pointer exception"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(new Label("missing_return"));
+        this.addInstruction(new WSTR("Error: Return statement missing from non-void method"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(new Label("cast_error"));
+        this.addInstruction(new WSTR("Error: Invalid cast"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
 
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);

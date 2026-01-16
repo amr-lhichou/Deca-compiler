@@ -78,6 +78,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             compiler.setCurrent_index(dc.codeGenTableConstruction(compiler, index_parent, compiler.getCurrent_index(), getList()));
             
         }
+        compiler.setVar_size(compiler.getCurrent_index());
+        compiler.setStack_size(compiler.getCurrent_index());
 
     }
     public void codeGenObjecttable(DecacCompiler compiler) {
