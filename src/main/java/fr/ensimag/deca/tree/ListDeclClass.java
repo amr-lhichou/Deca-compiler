@@ -8,8 +8,6 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -80,6 +78,16 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
         compiler.setVar_size(compiler.getCurrent_index());
         compiler.setStack_size(compiler.getCurrent_index());
+
+       compiler.addComment("Début d'initialisation des Champs.");
+
+        for (AbstractDeclClass c : getList()) {
+            DeclClass dc = (DeclClass) c;
+            ClassDefinition currentClass = dc.getName().getClassDefinition();
+            if (dc.getFields() != null) {
+                dc.getFields().codeGenListChamps(compiler, currentClass);
+            }
+        }
 
     }
     public void codeGenObjecttable(DecacCompiler compiler) {

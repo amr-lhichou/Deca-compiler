@@ -7,6 +7,9 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 
@@ -26,9 +29,17 @@ public class DeclField extends AbstractDeclField{
         this.initialisation = init;
     }
 
+    public AbstractIdentifier getNomField(){
+        return this.nomChamp;
+    }
 
     public DeclField(Visibility v, AbstractIdentifier typeChamp,AbstractIdentifier nomChamp, AbstractInitialization init) {
         this(v,false,typeChamp,nomChamp,init);
+    }
+
+    public AbstractInitialization getInitialisation(){
+        return this.initialisation;
+
     }
 
     @Override
@@ -82,6 +93,15 @@ public class DeclField extends AbstractDeclField{
     }
 
 
+    protected void codeGenField(DecacCompiler compiler, Symbol className){
+
+        if (!(this.initialisation instanceof NoInitialization)){
+            FieldDefinition defChamp = this.nomChamp.getFieldDefinition();
+            compiler.addComment("Initialisation explicite de " + className + "." + this.nomChamp.getName());
+            DAddr addr = new RegisterOffset(defChamp.getIndex(), Register.R1);
+            initialisation.codeGenInit(compiler, addr, defChamp.getType());
+        }
+    }
 
 
     public void decompile(IndentPrintStream s){

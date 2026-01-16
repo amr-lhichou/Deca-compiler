@@ -33,6 +33,11 @@ public class DeclClass extends AbstractDeclClass {
     public ListeMethod getMethods() {
         return methods;
     }
+
+    public ListChamps getFields(){
+        return this.fields;
+    }
+
     public AbstractIdentifier getName() {
         return name;
     }
