@@ -1,0 +1,12 @@
+// Description :
+// faute dans la declaration des paramètre dans les methode
+
+// Resultats :
+// Erreur syntaxique
+
+//Regle : list_params -> param (',' param)*
+
+class equipe{
+    int calc_score(int but,int cote,){
+    return but*cote;}
+}
