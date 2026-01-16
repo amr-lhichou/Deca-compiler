@@ -1,0 +1,11 @@
+// Description :
+// impossible de multiplier un bool et un integer . donc erreur ...
+//
+// Resultats :
+// Echec
+// Regle :  Opération '*' interdite entre boolean et int (règle (3.33)
+
+{
+    int resultast;
+    resultast = true * 3;
+}

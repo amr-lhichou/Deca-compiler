@@ -1,0 +1,11 @@
+// Description :
+// le modulo n est qu avec les integer , donc erreur dans un modulo en float
+//
+// Resultats :
+// Echec
+// Regle : Le modulo '%' n'est défini que pour les entiers
+
+{
+    float ratio;
+    ratio = 677777.2 % 2;
+}
