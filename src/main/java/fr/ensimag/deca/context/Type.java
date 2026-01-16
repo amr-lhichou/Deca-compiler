@@ -29,8 +29,8 @@ public abstract class Type {
     }
 
     public boolean isCompatible(Type otherType){
-        if (this.isFloat() && otherType.isInt()) {
-            return true;
+        if (otherType == null) {
+            return false; 
         }
 
         return otherType.isSubTypeOf(this);

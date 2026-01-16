@@ -170,10 +170,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 
         Definition expDef = localEnv.get(this.name);
+
+        // si on ne trouve pas localement on cherche dans les membres de la classe
+        if (expDef == null && currentClass != null) {
+            expDef = currentClass.getMembers().get(this.name);
+        }
 
         if (expDef == null) {
             throw new ContextualError(

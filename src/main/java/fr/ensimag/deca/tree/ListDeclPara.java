@@ -17,7 +17,7 @@ public class ListDeclPara extends TreeList<AbstractDeclPara> {
                 s.print(", ");
             }
             param.decompile(s);
-            first = !first;
+            first = false;
         }
     }
 

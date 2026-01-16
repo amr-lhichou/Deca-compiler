@@ -65,12 +65,15 @@ public class DeclField extends AbstractDeclField{
         nomChamp.setDefinition(fieldDef);
         currentClass.setNumberOfFields(index);
 
+        System.out.println("FIELD " + nomChamp.getName().getName() + " visibility=" + natureAcces);
+
+
     }
 
-    protected void verifyFieldInit(DecacCompiler compiler, ClassDefinition currentClass)
-            throws ContextualError{
-        
-        Type fieldType = typeChamp.getType();
+    protected void verifyFieldInit(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError{
+        //ca peut être null si typeChamp n’a pas son .type, donc ceci est plus fiable
+        FieldDefinition def= (FieldDefinition) currentClass.getMembers().get(nomChamp.getName());
+        Type fieldType = def.getType();
         initialisation.verifyInitialization(compiler, fieldType, currentClass.getMembers(), currentClass);
     }
 
