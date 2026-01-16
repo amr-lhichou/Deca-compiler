@@ -17,10 +17,15 @@ public class This extends AbstractExpr {
     protected void prettyPrintChildren(PrintStream s, String prefix) { }
 
 
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
-        // Obligatoire pour compiler, sera rempli en Partie B par Houssam_Amr
-        throw new UnsupportedOperationException("verifyExpr non implémentée pour New attention hh");
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        //Autoriser l'utilisation de this uniquement dans une classe ou une méthode
+        if(currentClass == null) {
+            throw new ContextualError("Use of this outside a class or method", getLocation());
+        }
+
+        Type t = currentClass.getType();
+        setType(t);
+        return t;
     }
 
 

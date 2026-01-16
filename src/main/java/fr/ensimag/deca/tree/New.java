@@ -15,10 +15,13 @@ public class New extends AbstractExpr {
         this.entiteCreer = entiteCreer;
     }
 
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
-        // Obligatoire pour compiler , a remplir par Houssam_Amr en partie B
-        throw new UnsupportedOperationException("verifyExpr non implémentée pour New");
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        Type t = entiteCreer.verifyType(compiler);
+        if(!t.isClass()) {
+            throw new ContextualError("New can only be used with class types", getLocation());
+        }
+        setType(t);
+        return t;
     }
 
 

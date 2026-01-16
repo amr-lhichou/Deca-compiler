@@ -44,6 +44,11 @@ public class Initialization extends AbstractInitialization {
 
         Type typeExpr = this.expression.verifyExpr(compiler, localEnv, currentClass);
 
+        if (typeExpr == null) {
+            throw new ContextualError("Erreur interne: verifyExpr a retourné null (expression non typée)", getLocation());
+        }
+
+
         if (!t.isCompatible(typeExpr)){
             throw new ContextualError("Initialisation incompatible : le type " + typeExpr + 
             " est incompatible avec le type " + t + " (règle 3.28)"
