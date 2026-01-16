@@ -1,0 +1,22 @@
+
+// Description :
+// on teste creation de classe et d un objet simple
+
+// Resultats :
+// ok
+
+class Stadium {
+int capacity;
+int yearBuilt;
+void display(){
+println(capacity);
+println(yearBuilt);
+}
+}
+{
+Stadium s;
+s = new Stadium();
+s.capacity = 50000;
+s.yearBuilt = 2010;
+s.display();
+}

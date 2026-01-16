@@ -1,0 +1,28 @@
+// Description
+// on test l Accès aux méthodes héritées depuis la class mère
+
+
+// Resultats :
+// ok
+
+
+class Manager {
+    int experience;
+
+    void displayExperience() {
+        println(experience);
+    }
+}
+
+class AssistantCoach extends Manager {
+    void show() {
+        displayExperience();
+    }
+}
+
+{
+    AssistantCoach ac;
+    ac = new AssistantCoach();
+    ac.experience = 15;
+    ac.show();
+}

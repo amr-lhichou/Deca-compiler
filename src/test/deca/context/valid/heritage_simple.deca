@@ -1,0 +1,26 @@
+// Description: Héritage simple
+//un heritage simple qui doit marché
+
+// Resultats :
+// ok
+
+class FootballPlayer {
+    int goals;
+
+    void printGoals() {
+        println(goals);
+    }
+}
+
+class Striker extends FootballPlayer {
+    void setGoals(int g) {
+        goals = g;
+    }
+}
+
+{
+    Striker s;
+    s = new Striker();
+    s.setGoals(25);
+    s.printGoals();
+}

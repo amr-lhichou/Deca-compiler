@@ -1,0 +1,20 @@
+
+// Description :
+// on teste creation de classe , avec des attribute de types differentes
+
+// Resultats :
+// ok
+
+class player {
+int number;
+int height;
+boolean c;
+}
+
+{
+player p;
+s = new player();
+s.number = 50000;
+s.height = 2010;
+s.isLeftHanded=true;
+}
