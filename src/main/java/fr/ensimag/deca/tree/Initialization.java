@@ -72,6 +72,7 @@ public class Initialization extends AbstractInitialization {
         GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         // on charge cette valeur dans l 'adresse
         compiler.addInstruction(new STORE(R_target, addr));
+        compiler.getRegisterAllocater().freeRegister();
     }
 
 

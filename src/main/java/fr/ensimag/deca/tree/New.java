@@ -44,6 +44,7 @@ public class New extends AbstractExpr {
         String class_name = entiteCreer.getName().getName();
         compiler.addInstruction(new BSR(new Label("init." + class_name)));
         compiler.addInstruction(new POP(R_target));
+        //compiler.addInstruction(new LOAD(R_target,compiler.getRegisterAllocater().getCurrentRegister()));
         compiler.addComment("-----fin de new_object -----"); ;
     }
 

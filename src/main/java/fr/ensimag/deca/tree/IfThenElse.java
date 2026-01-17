@@ -86,6 +86,7 @@ public class IfThenElse extends AbstractInst {
 
         //SI false: on saute au  bloc ELSE
         compiler.addInstruction(new BEQ(elseLabel));
+        compiler.getRegisterAllocater().freeRegister();
 
         // bloc THEN
         getThenBranch().codeGenListInst(compiler);

@@ -73,11 +73,13 @@ public class AppelMethode extends AbstractExpr {
         instance.codeGenInst(compiler);
         GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         compiler.addInstruction(new STORE(R_target, new RegisterOffset(0, Register.SP)));// empiler the arguments droite a gauche
+        compiler.getRegisterAllocater().freeRegister();
         int offset = -1; // commence après 'this'
         for (AbstractExpr arg : parametres.getList()) {
             arg.codeGenInst(compiler);
             R_target = compiler.getRegisterAllocater().getCurrentRegister();
             compiler.addInstruction(new STORE(R_target, new RegisterOffset(offset, Register.SP)));
+            compiler.getRegisterAllocater().freeRegister();
             offset--; // indice décroissant
         }
 

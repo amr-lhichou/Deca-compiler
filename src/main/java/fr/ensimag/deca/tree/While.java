@@ -54,7 +54,6 @@ public class While extends AbstractInst {
         compiler.getRegisterAllocater().freeRegister();
         // execution du body
         getBody().codeGenListInst(compiler);
-
         // On reteste  la condition : start
         compiler.addInstruction(new BRA(start));
 

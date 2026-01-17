@@ -80,13 +80,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         getLeftOperand().codeGenInst(compiler);
         GPRegister leftReg = allocator.getCurrentRegister();
 
-        GPRegister rightReg = allocator.allocateRegister();
-
-        if (rightReg != null) {
+        if (allocator.hasNext()) {
             // we calculate the right
             getRightOperand().codeGenInst(compiler);
             // we keep the register where the right side was calculated
-            rightReg = allocator.getCurrentRegister();
+            GPRegister rightReg = allocator.getCurrentRegister();
             // we calculate (ADD,Minus..)
             codeGenOp(compiler, rightReg, leftReg);
             //we free the right register
@@ -98,10 +96,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             // we use the stack
             // PUSH left
             compiler.addInstruction(new PUSH(leftReg));
+            allocator.freeRegister();
             getRightOperand().codeGenInst(compiler);
-            //PUSH right
-            compiler.addInstruction(new PUSH(leftReg));
-
+            GPRegister rightReg = allocator.getCurrentRegister();
+            compiler.addInstruction(new PUSH(rightReg));
+            //allocator.freeRegister();
 
             // swap from the stack
             compiler.addInstruction(new LOAD(new RegisterOffset(-1, Register.SP), leftReg));

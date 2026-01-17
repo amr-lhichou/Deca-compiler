@@ -19,6 +19,10 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -186,44 +190,7 @@ public abstract class AbstractExpr extends AbstractInst {
             compiler.addLabel(labelFalse);
             compiler.addInstruction(new WSTR("false"));
 
-            compiler.addLabel(labelEnd);
-//        // si STRING : on a pas de calcul on affiche directement
-//
-//        this.codeGenInst(compiler);
-//        // Tous les instance passe par codeGenInst.
-//        // le calcul est stocké dans  R2
-//        // on affiche Selon le type
-//        if (getType().isInt()) {
-//            // charge R2 dans R1 pour laffichage
-//            compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
-//            compiler.addInstruction(new WINT());
-//        }
-//        else if (getType().isFloat()) {
-//            compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
-//            if (printHex) {
-//                compiler.addInstruction(new WFLOATX()); // en Hexa
-//            } else {
-//                compiler.addInstruction(new WFLOAT());  // en Décimal
-//            }
-//        }
-//        else if (getType().isBoolean()) {
-//            // On a le résultat  0 ou 1 dans R2.
-//            int id = compiler.getLabelId();
-//            Label labelFalse = new Label("print_false_" + id);
-//            Label labelEnd = new Label("print_end_" + id);
-//
-//            // if R2 = 0, on saute pour afficher R2
-//            compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.getR(2)));
-//            compiler.addInstruction(new BEQ(labelFalse));
-//            // if R2=1 (true)
-//            compiler.addInstruction(new WSTR("true"));
-//            compiler.addInstruction(new BRA(labelEnd));
-//            // cas false
-//            compiler.addLabel(labelFalse);
-//            compiler.addInstruction(new WSTR("false"));
-//            // FIN
-//            compiler.addLabel(labelEnd);
-        }
+            compiler.addLabel(labelEnd);        }
         compiler.getRegisterAllocater().freeRegister();
     }
 
