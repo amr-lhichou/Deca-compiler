@@ -9,7 +9,7 @@ import fr.ensimag.ima.pseudocode.Register;
  */
 public class RegisterAllocater {
 
-    private int currentRegIndex = 2; //we start at R2
+    private int currentRegIndex = 3; //we start at R2
     private int maxRegIndex;         // Depends on the option -r
 
 
@@ -36,7 +36,7 @@ public class RegisterAllocater {
     }
     //function that gives the current register we last used
     public GPRegister getCurrentRegister() {
-        return Register.getR(currentRegIndex);
+        return Register.getR(currentRegIndex-1);
     }
 
 }
