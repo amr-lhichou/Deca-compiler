@@ -10,4 +10,6 @@ public abstract class AbstractDeclMeth extends Tree {
    
    protected abstract void verifyMethBody(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError;
+
+   protected abstract void codeGenMethod(DecacCompiler compiler, ClassDefinition currentClass);
 }

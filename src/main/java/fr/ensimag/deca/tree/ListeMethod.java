@@ -23,4 +23,12 @@ public class ListeMethod extends TreeList<AbstractDeclMeth>{
             declMeth.verifyMethBody(compiler, currentClass);
         }
     }
+
+    public void codeGenListMethods(DecacCompiler compiler, ClassDefinition currentClass){
+
+        for (AbstractDeclMeth meth : getList()) {
+            meth.codeGenMethod(compiler, currentClass);
+        }
+
+    }
 }

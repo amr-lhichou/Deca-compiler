@@ -89,6 +89,15 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             }
         }
 
+        compiler.addComment("Définition des Methodes");
+        for (AbstractDeclClass classDec : getList()) {
+            DeclClass decClass = (DeclClass) classDec;
+            ClassDefinition currentClass = decClass.getName().getClassDefinition();
+
+            if (decClass.getMethods() != null) {
+                decClass.getMethods().codeGenListMethods(compiler, currentClass);
+            }
+        }
     }
     public void codeGenObjecttable(DecacCompiler compiler) {
         Label label_equals = new Label("code.Object.equals");

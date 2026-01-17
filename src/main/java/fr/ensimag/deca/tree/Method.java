@@ -4,6 +4,15 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+
 import java.io.PrintStream;
 import fr.ensimag.deca.context.MethodDefinition;
 
@@ -27,6 +36,28 @@ public class Method extends DeclMethod {
         declarationsLocales.verifyListDeclVariable(compiler, envLocals, currentClass);
         corpsMethode.verifyListInst(compiler, envLocals, currentClass, methDef.getType());
 
+    }
+
+    @Override
+    public void codeGenMethod(DecacCompiler compiler, ClassDefinition currentClass){
+
+        compiler.addComment("Code de la méthode " + this.nomMethode.getName());
+        compiler.addLabel(new Label("code." + currentClass.getType().getName() + "." + this.nomMethode.getName()));
+
+        // TSTO #2 (à changer si on a besoin de plus?)
+        compiler.addInstruction(new TSTO(new ImmediateInteger(2)));
+        compiler.addInstruction(new BOV(new Label("stack_overflow_error")));
+        compiler.addInstruction(new PUSH(Register.getR(2)));
+        compiler.addInstruction(new PUSH(Register.getR(3)));
+
+        // le corps de la methode
+        corpsMethode.codeGenListInst(compiler);
+
+        compiler.addLabel(new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName()));
+
+        compiler.addInstruction(new POP(Register.getR(2)));
+        compiler.addInstruction(new POP(Register.getR(3)));
+        compiler.addInstruction(new RTS());
     }
 
     @Override
