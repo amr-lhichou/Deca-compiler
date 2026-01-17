@@ -66,38 +66,32 @@ public class AppelMethode extends AbstractExpr {
     }
     @Override
     public void codeGenInst(DecacCompiler compiler) {
-
         int number_Args = parametres.size();
         // get place for arg+vtable_adress
         compiler.addInstruction(new ADDSP(new ImmediateInteger(number_Args + 1)));
-        // empiler the arguments droite a gauche
-        int offset = -number_Args;
-        for (AbstractExpr arg : parametres.getList()) {
-            arg.codeGenInst(compiler);
-            GPRegister regArg  = compiler.getRegisterAllocater().getCurrentRegister();
-            compiler.addInstruction(new STORE(regArg, new RegisterOffset(offset, Register.SP)));
-            offset++;
-        }
-
         // put this in stask (0)SP
         instance.codeGenInst(compiler);
-        GPRegister regThis = compiler.getRegisterAllocater().getCurrentRegister();
-        compiler.addInstruction(new STORE(regThis, new RegisterOffset(0, Register.SP)));
-        compiler.getRegisterAllocater().freeRegister();
-        GPRegister new_register =compiler.getRegisterAllocater().allocateRegister();
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), new_register));
-        compiler.addInstruction(new CMP(new NullOperand(), new_register));
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        compiler.addInstruction(new STORE(R_target, new RegisterOffset(0, Register.SP)));// empiler the arguments droite a gauche
+        int offset = -1; // commence après 'this'
+        for (AbstractExpr arg : parametres.getList()) {
+            arg.codeGenInst(compiler);
+            R_target = compiler.getRegisterAllocater().getCurrentRegister();
+            compiler.addInstruction(new STORE(R_target, new RegisterOffset(offset, Register.SP)));
+            offset--; // indice décroissant
+        }
+
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), R_target));
+        compiler.addInstruction(new CMP(new NullOperand(), R_target));
         compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
         // get the Vtable
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, new_register), new_register));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, R_target), R_target));
         // call the method
         MethodDefinition methodDef = (MethodDefinition) methodeCible.getDefinition();
-        compiler.addInstruction(new BSR(new RegisterOffset(methodDef.getIndex(), new_register)));
-        compiler.getRegisterAllocater().freeRegister();
+        compiler.addInstruction(new BSR(new RegisterOffset(methodDef.getIndex(), R_target)));
         // clean the stack
         compiler.addInstruction(new SUBSP(new ImmediateInteger(number_Args + 1)));
         //copy the result(in R0) to our currentRegister
-        GPRegister R_target = compiler.getRegisterAllocater().allocateRegister();
         compiler.addInstruction(new LOAD(Register.R0, R_target));
     }
 
