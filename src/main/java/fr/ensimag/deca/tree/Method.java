@@ -55,8 +55,8 @@ public class Method extends DeclMethod {
 
         compiler.addLabel(new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName()));
 
-        compiler.addInstruction(new POP(Register.getR(2)));
         compiler.addInstruction(new POP(Register.getR(3)));
+        compiler.addInstruction(new POP(Register.getR(2)));
         compiler.addInstruction(new RTS());
     }
 

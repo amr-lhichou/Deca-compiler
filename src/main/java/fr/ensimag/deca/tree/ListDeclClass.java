@@ -79,7 +79,18 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         compiler.setVar_size(compiler.getCurrent_index());
         compiler.setStack_size(compiler.getCurrent_index());
 
-       compiler.addComment("Début d'initialisation des Champs.");
+    }
+    public void codeGenObjecttable(DecacCompiler compiler) {
+        Label label_equals = new Label("code.Object.equals");
+        compiler.addLabel(label_equals);
+        compiler.addComment("Code de la table des méthodes de Object");
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
+        compiler.addInstruction(new LOAD(new LabelOperand(label_equals), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+    }
+    public void codeGenMethods(DecacCompiler compiler) {
+        compiler.addComment("Début d'initialisation des Champs.");
 
         for (AbstractDeclClass c : getList()) {
             DeclClass dc = (DeclClass) c;
@@ -98,14 +109,5 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
                 decClass.getMethods().codeGenListMethods(compiler, currentClass);
             }
         }
-    }
-    public void codeGenObjecttable(DecacCompiler compiler) {
-        Label label_equals = new Label("code.Object.equals");
-        compiler.addLabel(label_equals);
-        compiler.addComment("Code de la table des méthodes de Object");
-        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
-        compiler.addInstruction(new LOAD(new LabelOperand(label_equals), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
     }
 }
