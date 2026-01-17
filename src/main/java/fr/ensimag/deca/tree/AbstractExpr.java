@@ -19,10 +19,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -228,6 +224,7 @@ public abstract class AbstractExpr extends AbstractInst {
 //            // FIN
 //            compiler.addLabel(labelEnd);
         }
+        compiler.getRegisterAllocater().freeRegister();
     }
 
 

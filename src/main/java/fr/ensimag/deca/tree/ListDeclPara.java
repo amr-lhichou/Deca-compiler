@@ -39,4 +39,12 @@ public class ListDeclPara extends TreeList<AbstractDeclPara> {
         return envPara;
     }
 
+    public void codeGenParams(DecacCompiler compiler) {
+        int offset = -3;
+        for (AbstractDeclPara param : getList()) {
+            param.codeGenParam(compiler, offset);
+            offset--;
+        }
+    }
+
 }
