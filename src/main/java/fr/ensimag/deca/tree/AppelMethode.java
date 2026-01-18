@@ -3,6 +3,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
+
 import java.io.PrintStream;
 
 public class AppelMethode extends AbstractExpr {
@@ -61,6 +64,39 @@ public class AppelMethode extends AbstractExpr {
         setType(methDef.getType());
         return methDef.getType();
     }
+    @Override
+    public void codeGenInst(DecacCompiler compiler) {
+        int number_Args = parametres.size();
+        // get place for arg+vtable_adress
+        compiler.addInstruction(new ADDSP(new ImmediateInteger(number_Args + 1)));
+        // put this in stask (0)SP
+        instance.codeGenInst(compiler);
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        compiler.addInstruction(new STORE(R_target, new RegisterOffset(0, Register.SP)));// empiler the arguments droite a gauche
+        compiler.getRegisterAllocater().freeRegister();
+        int offset = -1; // commence après 'this'
+        for (AbstractExpr arg : parametres.getList()) {
+            arg.codeGenInst(compiler);
+            R_target = compiler.getRegisterAllocater().getCurrentRegister();
+            compiler.addInstruction(new STORE(R_target, new RegisterOffset(offset, Register.SP)));
+            compiler.getRegisterAllocater().freeRegister();
+            offset--; // indice décroissant
+        }
+
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), R_target));
+        compiler.addInstruction(new CMP(new NullOperand(), R_target));
+        compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+        // get the Vtable
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, R_target), R_target));
+        // call the method
+        MethodDefinition methodDef = (MethodDefinition) methodeCible.getDefinition();
+        compiler.addInstruction(new BSR(new RegisterOffset(methodDef.getIndex(), R_target)));
+        // clean the stack
+        compiler.addInstruction(new SUBSP(new ImmediateInteger(number_Args + 1)));
+        //copy the result(in R0) to our currentRegister
+        compiler.addInstruction(new LOAD(Register.R0, R_target));
+    }
+
 
     public void decompile(IndentPrintStream s) {
 

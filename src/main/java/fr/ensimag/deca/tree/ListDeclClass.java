@@ -79,16 +79,6 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         compiler.setVar_size(compiler.getCurrent_index());
         compiler.setStack_size(compiler.getCurrent_index());
 
-       compiler.addComment("Début d'initialisation des Champs.");
-
-        for (AbstractDeclClass c : getList()) {
-            DeclClass dc = (DeclClass) c;
-            ClassDefinition currentClass = dc.getName().getClassDefinition();
-            if (dc.getFields() != null) {
-                dc.getFields().codeGenListChamps(compiler, currentClass);
-            }
-        }
-
     }
     public void codeGenObjecttable(DecacCompiler compiler) {
         Label label_equals = new Label("code.Object.equals");
@@ -98,5 +88,26 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
         compiler.addInstruction(new LOAD(new LabelOperand(label_equals), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+    }
+    public void codeGenMethods(DecacCompiler compiler) {
+        compiler.addComment("Début d'initialisation des Champs.");
+
+        for (AbstractDeclClass c : getList()) {
+            DeclClass dc = (DeclClass) c;
+            ClassDefinition currentClass = dc.getName().getClassDefinition();
+            if (dc.getFields() != null) {
+                dc.getFields().codeGenListChamps(compiler, currentClass);
+            }
+        }
+
+        compiler.addComment("Définition des Methodes");
+        for (AbstractDeclClass classDec : getList()) {
+            DeclClass decClass = (DeclClass) classDec;
+            ClassDefinition currentClass = decClass.getName().getClassDefinition();
+
+            if (decClass.getMethods() != null) {
+                decClass.getMethods().codeGenListMethods(compiler, currentClass);
+            }
+        }
     }
 }

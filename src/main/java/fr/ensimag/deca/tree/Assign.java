@@ -88,6 +88,7 @@ public class Assign extends AbstractBinaryExpr {
 
         // On store dans Adresse
         compiler.addInstruction(new STORE(rightResult, addr));
+        compiler.getRegisterAllocater().freeRegister();
     }
 
     @Override

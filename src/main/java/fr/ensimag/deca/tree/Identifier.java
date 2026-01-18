@@ -248,7 +248,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // On récupère la définition pour savoir où est stockée la variable
-        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        GPRegister R_target = compiler.getRegisterAllocater().allocateRegister();
         DAddr addr = getExpDefinition().getOperand();
 
         // On charge l'adresse dans R2

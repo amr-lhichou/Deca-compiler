@@ -3,7 +3,20 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+
 import java.io.PrintStream;
 import fr.ensimag.deca.context.MethodDefinition;
 
@@ -27,6 +40,51 @@ public class Method extends DeclMethod {
         declarationsLocales.verifyListDeclVariable(compiler, envLocals, currentClass);
         corpsMethode.verifyListInst(compiler, envLocals, currentClass, methDef.getType());
 
+    }
+
+    @Override
+    public void codeGenMethod(DecacCompiler compiler, ClassDefinition currentClass){
+
+        compiler.addComment("Code de la méthode " + this.nomMethode.getName());
+        Label methodLabel = new Label("code." + currentClass.getType().getName() + "." + this.nomMethode.getName());
+        ((MethodDefinition) this.nomMethode.getDefinition()).setLabel(methodLabel);
+        compiler.addLabel(methodLabel);
+
+        // stack check
+        compiler.addInstruction(new TSTO(new ImmediateInteger(12)));
+        compiler.addInstruction(new BOV(new Label("stack_overflow_error")));
+        compiler.addInstruction(new PUSH(Register.getR(2)));
+        compiler.addInstruction(new PUSH(Register.getR(3)));
+
+        // gen des parametres
+        if (this.parametres != null){
+            this.parametres.codeGenParams(compiler);
+        }
+
+        int nbLocals = 0;
+
+        // gen variables
+        if (this.declarationsLocales != null){
+            nbLocals = this.declarationsLocales.codeGenListDeclVarInstMethod(compiler);
+            if (nbLocals > 0){
+                compiler.addInstruction(new ADDSP(new ImmediateInteger(nbLocals)));
+            }
+        }
+
+        // gen corps de la methode
+        if (corpsMethode != null) {
+            corpsMethode.codeGenListInst(compiler);
+        }
+
+        compiler.addLabel(new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName()));
+
+        if (nbLocals > 0){
+            compiler.addInstruction(new SUBSP(new ImmediateInteger(nbLocals)));
+        }
+
+        compiler.addInstruction(new POP(Register.getR(3)));
+        compiler.addInstruction(new POP(Register.getR(2)));
+        compiler.addInstruction(new RTS());
     }
 
     @Override

@@ -92,7 +92,7 @@ public class DecacCompiler {
         this.compilerOptions = compilerOptions;
         this.source = source;
         //this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
-        this.registerAllocater = new RegisterAllocater(15);
+        this.registerAllocater = new RegisterAllocater(16);
 
 
     }

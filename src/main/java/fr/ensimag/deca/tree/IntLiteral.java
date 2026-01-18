@@ -42,7 +42,7 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // fait le load dans R2 comme tjrs
-        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        GPRegister R_target = compiler.getRegisterAllocater().allocateRegister();
         compiler.addInstruction(new LOAD(new ImmediateInteger(value),R_target ));
     }
 

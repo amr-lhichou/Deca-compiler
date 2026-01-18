@@ -1,0 +1,24 @@
+// Description:
+// on teste polymorphisme simple ...
+
+
+// Resultats :
+// ok
+
+class Position {
+    void printRole() {
+        println("hhhhhhhhhhhhhhh");
+    }
+}
+
+class Midfielder extends Position {
+    void printRole() {
+        println("azdadzadazda");
+    }
+}
+
+{
+    Midfielder mf;
+    mf = new Midfielder();
+    mf.printRole();
+}

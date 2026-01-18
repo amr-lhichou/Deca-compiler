@@ -51,6 +51,9 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addComment("---- Class definitions ----");
+        LOG.debug("Class definitions");
+        classes.codeGenMethods(compiler);
         compiler.addFirst(new ADDSP(new ImmediateInteger(compiler.getVar_size())));
         if(!compiler.getCompilerOptions().getNoCheck()){
             compiler.addFirst(new BOV(new Label("stack_overflow_error")));}

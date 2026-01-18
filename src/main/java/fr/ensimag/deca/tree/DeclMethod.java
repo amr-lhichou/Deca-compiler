@@ -65,4 +65,6 @@ public abstract class DeclMethod extends AbstractDeclMeth{
         }
     }
 
+    public abstract void codeGenMethod(DecacCompiler compiler, ClassDefinition currentClass);
+
 }

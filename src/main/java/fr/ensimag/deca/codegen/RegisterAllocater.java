@@ -9,7 +9,7 @@ import fr.ensimag.ima.pseudocode.Register;
  */
 public class RegisterAllocater {
 
-    private int currentRegIndex = 2; //we start at R2
+    private int currentRegIndex = 1; //we start at R2
     private int maxRegIndex;         // Depends on the option -r
 
 
@@ -17,11 +17,15 @@ public class RegisterAllocater {
         // R0 et R1 are reserved. We start with R2
         this.maxRegIndex = maxRegisters - 1;
     }
+    public boolean hasNext() {
+        return currentRegIndex < maxRegIndex;
+    }
 
     // function that allows the first available register
     public GPRegister allocateRegister() {
-        if (currentRegIndex <= maxRegIndex) {
-            return Register.getR(currentRegIndex++);
+        if (currentRegIndex < maxRegIndex) {
+            currentRegIndex++;
+            return Register.getR(currentRegIndex);
         }
         //if none available we PUSH/POP
         return null;
@@ -30,7 +34,7 @@ public class RegisterAllocater {
 
     public void freeRegister() {
        // we dont free R0 ,R1
-        if (currentRegIndex > 2) {
+        if (currentRegIndex > 1) {
             currentRegIndex--;
         }
     }

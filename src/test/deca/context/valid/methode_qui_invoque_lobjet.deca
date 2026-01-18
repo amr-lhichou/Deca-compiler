@@ -1,0 +1,25 @@
+// Description:
+// les methode invoque les attribut de l objet
+
+// Resultats :
+// ok
+
+
+class Footballer {
+    int shirtNumber;
+
+    void setNumber(int num) {
+        shirtNumber = num;
+    }
+
+    void printNumber() {
+        println(shirtNumber);
+    }
+}
+
+{
+    Footballer f;
+    f = new Footballer();
+    f.setNumber(10);
+    f.printNumber();
+}

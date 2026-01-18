@@ -40,7 +40,7 @@ public class BooleanLiteral extends AbstractExpr {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        GPRegister R_target = compiler.getRegisterAllocater().allocateRegister();
         if(getValue()){
         compiler.addInstruction(new LOAD(new ImmediateInteger(1), R_target));
         }

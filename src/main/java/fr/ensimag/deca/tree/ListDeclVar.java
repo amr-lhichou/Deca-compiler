@@ -59,5 +59,16 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     }
 
+    public int codeGenListDeclVarInstMethod(DecacCompiler compiler) {
+        int offset = 1; // first local at 1(LB)
+        for (AbstractDeclVar decVar : this.getList()) {
+            ExpDefinition def = decVar.getVarName().getExpDefinition();
+            def.setOperand(new RegisterOffset(offset, Register.LB));
+            offset++;
+            decVar.codegenDeclVar(compiler);
+        }
+        return offset - 1; // number of locals
+    }
+
 
 }
