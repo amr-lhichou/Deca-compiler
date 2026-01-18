@@ -1,0 +1,15 @@
+
+//accès d'un attribut protected interdit depuis une autre class
+
+class A {
+    protected int p = 1;
+}
+
+class X {
+    int f(A a) {
+        return a.p;
+    }
+}
+
+{
+}

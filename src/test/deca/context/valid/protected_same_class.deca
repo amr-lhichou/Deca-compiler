@@ -1,0 +1,13 @@
+
+class A {
+    protected int x = 5;
+
+    int meth() {
+        return this.x;
+    }
+}
+
+{
+    A a = new A();
+    println(a.meth());
+}

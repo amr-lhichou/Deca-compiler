@@ -1,0 +1,18 @@
+
+// C n'est pas une sous classe de A
+// Erreur
+
+class A {
+    protected int x = 1;
+}
+
+class B extends A { }
+
+class C {
+    int f(B b) {
+        return b.x;
+    }
+}
+
+{
+}

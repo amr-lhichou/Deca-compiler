@@ -1,0 +1,21 @@
+
+
+class A {
+    protected int x = 1;
+
+    int get() { 
+        return this.x; 
+    }
+}
+
+class B extends A {
+    int sum(B b, int i) {
+        return b.x + this.x + i;
+    }
+}
+
+{
+    B b = new B();
+    println(b.get());
+    println(b.sum(b, 3));
+}

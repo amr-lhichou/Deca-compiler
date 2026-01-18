@@ -1,0 +1,17 @@
+class A {
+    protected int x = 1;
+}
+
+class B extends A { }
+
+
+class C extends B {
+    int meth() {
+        return this.x;  
+    }
+}
+
+{
+    C c = new C();
+    println(c.meth());
+}

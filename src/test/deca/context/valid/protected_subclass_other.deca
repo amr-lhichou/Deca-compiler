@@ -1,0 +1,14 @@
+class A {
+    protected int x = 1;
+}
+
+class B extends A {
+    int meth(B b) {
+        return b.x;
+    }
+}
+
+{
+    B b = new B();
+    println(b.meth(b));
+}

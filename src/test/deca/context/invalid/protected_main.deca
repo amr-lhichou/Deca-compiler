@@ -1,0 +1,11 @@
+
+// Accès d'un attribut protected est interdit en dehors de la class
+
+class A {
+    protected int p = 1;
+}
+
+{
+    A a = new A();
+    println(a.p); 
+}

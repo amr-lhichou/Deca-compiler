@@ -1,0 +1,15 @@
+
+//puisque a est typé A, et pas B on peut pas y accéder
+
+class A {
+    protected int x = 1;
+}
+
+class B extends A {
+    int meth(A a) {
+        return a.x;
+    }
+}
+
+{
+}
