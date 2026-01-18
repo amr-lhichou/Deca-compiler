@@ -41,7 +41,14 @@ public class Return extends AbstractInst {
         expression.codeGenInst(compiler);
         GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         compiler.addInstruction(new LOAD(R_target, Register.R0));
-        compiler.addInstruction(new BRA(endLabel));
+        compiler.getRegisterAllocater().freeRegister();
+        Label target;
+        if (endLabel != null) {
+            target = endLabel;
+        } else {
+            target = compiler.getCurrentMethodEndLabel();
+        }
+        compiler.addInstruction(new BRA(target));
     }
 
     public void decompile(IndentPrintStream s) {
