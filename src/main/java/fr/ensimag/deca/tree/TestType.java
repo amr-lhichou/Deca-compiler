@@ -10,8 +10,8 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 
 public class TestType extends AbstractExpr {
-    private final AbstractExpr object;
-    private final AbstractIdentifier typeVise;
+    AbstractExpr object;
+    AbstractIdentifier typeVise;
 
     public TestType(AbstractExpr object, AbstractIdentifier typeVise) {
         this.object = object;
@@ -37,7 +37,7 @@ public class TestType extends AbstractExpr {
         return resultType;
     }
 
-        public void codeGenInst(DecacCompiler compiler) {
+    public void codeGenInst(DecacCompiler compiler) {
         compiler.addComment("---- Begin___Instance___of----");
         int cmp =compiler.getLabelId();
         Label labelTrue = new Label("instanceof_true_" + cmp);
