@@ -10,10 +10,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.deca.context.FieldDefinition;
 
 /**
@@ -74,22 +72,37 @@ public class Assign extends AbstractBinaryExpr {
     protected String getOperatorName() {
         return "=";
     }
-    @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // we generate the code for the right part
-        getRightOperand().codeGenInst(compiler);
-        GPRegister rightResult = compiler.getRegisterAllocater().getCurrentRegister();
-
-        // On récupère la valeur de l expression a gauche
-        AbstractLValue leftOp = getLeftOperand();
-
-        // On récupère l'adresse calculée lors de l'étape de déclaration
-        DAddr addr = leftOp.getExpDefinition().getOperand();
-
-        // On store dans Adresse
-        compiler.addInstruction(new STORE(rightResult, addr));
+    getRightOperand().codeGenInst(compiler);
+    GPRegister Rightresult = compiler.getRegisterAllocater().getCurrentRegister();
+    AbstractLValue left = getLeftOperand();
+    if (left instanceof AccesChamp) {
+        AccesChamp ac = (AccesChamp) left;
+        compiler.addInstruction(new PUSH(Rightresult));
         compiler.getRegisterAllocater().freeRegister();
+        ac.getObjetContexte().codeGenInst(compiler);
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(new CMP(new NullOperand(), R_target));
+            compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+        }
+        int offset = ac.getIdentifiantChamp().getFieldDefinition().getIndex();
+        compiler.addInstruction(new POP(Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(offset, R_target)));
+        compiler.addInstruction(new LOAD(Register.R0, R_target));
     }
+    else if (left instanceof Identifier && ((Identifier) left).getExpDefinition().isField()) {
+        int off = ((Identifier) left).getFieldDefinition().getIndex();
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        compiler.addInstruction(new STORE(Rightresult, new RegisterOffset(off, Register.R1)));
+    }
+    // local variable or globale
+    else {
+        compiler.addInstruction(new STORE(Rightresult, left.getExpDefinition().getOperand()));
+    }
+
+}
+    
 
     @Override
     protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {

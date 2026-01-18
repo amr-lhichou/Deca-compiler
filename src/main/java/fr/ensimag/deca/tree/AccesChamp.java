@@ -3,11 +3,17 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
+
 import java.io.PrintStream;
 
 public class AccesChamp extends AbstractLValue {
     private AbstractExpr objetContexte;
     private AbstractIdentifier identifiantChamp;
+    public AbstractExpr getObjetContexte() {
+        return objetContexte;
+    }
 
     public AccesChamp(AbstractExpr objetContexte, AbstractIdentifier identifiantChamp) {
         this.objetContexte = objetContexte;
@@ -67,8 +73,24 @@ public class AccesChamp extends AbstractLValue {
         setType(champDef.getType());
         return champDef.getType();
     }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        objetContexte.codeGenInst(compiler);
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(new CMP(new NullOperand(), R_target));
+            compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+        }
+        FieldDefinition def = identifiantChamp.getFieldDefinition();
+        compiler.addInstruction(new LOAD(new RegisterOffset(def.getIndex(), R_target), R_target));
+    }
 
+
+
+
+    @Override
     public void decompile(IndentPrintStream s) {
+
     }
 
     protected void prettyPrintChildren(PrintStream s, String prefix) {
