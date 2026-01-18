@@ -15,16 +15,19 @@ public class LocationException extends Exception {
 
     public void display(PrintStream s) {
         Location loc = getLocation();
+        String file;
         String line;
         String column;
         if (loc == null) {
+            file = "<unknown>";
             line = "<unknown>";
             column = "";
         } else {
+            file = location.getFilename() ;
             line = Integer.toString(loc.getLine());
             column = ":" + loc.getPositionInLine();
         }
-        s.println(location.getFilename() + ":" + line + column + ": " + getMessage());
+        s.println(file + ":" + line + column + ": " + getMessage());
     }
 
     private static final long serialVersionUID = 7628400022855935597L;

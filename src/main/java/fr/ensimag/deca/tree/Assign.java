@@ -2,13 +2,15 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
-import java.lang.reflect.Field;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -37,25 +39,6 @@ public class Assign extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-
-        if ( getLeftOperand() instanceof AccesChamp) {
-            FieldDefinition fieldDef = ((AccesChamp) getLeftOperand()).getIdentifiantChamp().getFieldDefinition();
-            if (fieldDef.isFinal()) {
-                throw new ContextualError("Cannot assign to final field ", getLocation());
-            }
-        }
-        else if ( getLeftOperand() instanceof Identifier) {
-            ExpDefinition def = ((Identifier) getLeftOperand()).getExpDefinition();
-
-            if(def.isField()) {
-                FieldDefinition fieldDef = (FieldDefinition) def;
-                if (fieldDef.isFinal()) {
-                    throw new ContextualError("Cannot assign to final field ", getLocation());
-                }
-            }
-        }
-
-
 
         // On doit utiliser verifyRValue
         AbstractExpr rightType = getRightOperand().verifyRValue(compiler, localEnv, currentClass, leftType);

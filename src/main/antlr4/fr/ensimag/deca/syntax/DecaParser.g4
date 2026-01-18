@@ -388,6 +388,7 @@ select_expr returns[AbstractExpr tree]
         | /* epsilon */ {
             // we matched "e.i"
             $tree = new AccesChamp($e1.tree,$i.tree);
+            setLocation($tree, $DOT) ;
         }
         )
     ;
@@ -521,37 +522,30 @@ $methods = new ListeMethod();
       )*
     ;
 
-field_final returns[boolean isFinal]
-    : /* epsilon */ { $isFinal = false; }
-    | FINAL { $isFinal = true; }
-    ;
-
 
 decl_field_set[ListChamps list]
-    : v=visibility f=field_final t=type list_decl_field[$list,$t.tree,$v.valeur,$f.isFinal]
+    : v=visibility  t=type list_decl_field[$list,$t.tree,$v.valeur]
       SEMI
     ;
 
 visibility returns[Visibility valeur]
     : /* epsilon */ {$valeur = Visibility.PUBLIC;}
     | PROTECTED {$valeur = Visibility.PROTECTED;}
-    | PUBLIC {$valeur = Visibility.PUBLIC;}
-    | PRIVATE {$valeur = Visibility.PRIVATE;}
     ;
 
-list_decl_field[ListChamps l,AbstractIdentifier t,Visibility v, boolean isFinal]
-    : dv1=decl_field[$t,$v,$isFinal]{$l.add($dv1.tree);}
-        (COMMA dv2=decl_field[$t,$v,$isFinal]{$l.add($dv2.tree);}
+list_decl_field[ListChamps l,AbstractIdentifier t,Visibility v]
+    : dv1=decl_field[$t,$v]{$l.add($dv1.tree);}
+        (COMMA dv2=decl_field[$t,$v]{$l.add($dv2.tree);}
       )*
     ;
 
-decl_field[AbstractIdentifier t,Visibility v, boolean isFinal] returns[AbstractDeclField tree]
+decl_field[AbstractIdentifier t,Visibility v] returns[AbstractDeclField tree]
     : i=ident {
-          $tree = new DeclField($v,$isFinal,$t,$i.tree,new NoInitialization());
+          $tree = new DeclField($v,$t,$i.tree,new NoInitialization());
           setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
-      $tree = new DeclField($v,$isFinal,$t,$i.tree,new Initialization($e.tree));
+      $tree = new DeclField($v,$t,$i.tree,new Initialization($e.tree));
       setLocation($tree, $i.start);
         }
       )? {

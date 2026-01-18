@@ -19,11 +19,9 @@ public class DeclField extends AbstractDeclField{
     private AbstractIdentifier typeChamp;
     private AbstractIdentifier nomChamp;
     private AbstractInitialization initialisation;
-    private boolean isFinal;
 
-    public DeclField(Visibility v, boolean isFinal, AbstractIdentifier typeChamp,AbstractIdentifier nomChamp, AbstractInitialization init) {
+    public DeclField(Visibility v, AbstractIdentifier typeChamp,AbstractIdentifier nomChamp, AbstractInitialization init) {
         this.natureAcces = v;
-        this.isFinal = isFinal;
         this.typeChamp = typeChamp;
         this.nomChamp = nomChamp;
         this.initialisation = init;
@@ -33,9 +31,7 @@ public class DeclField extends AbstractDeclField{
         return this.nomChamp;
     }
 
-    public DeclField(Visibility v, AbstractIdentifier typeChamp,AbstractIdentifier nomChamp, AbstractInitialization init) {
-        this(v,false,typeChamp,nomChamp,init);
-    }
+   
 
     public AbstractInitialization getInitialisation(){
         return this.initialisation;
@@ -61,11 +57,8 @@ public class DeclField extends AbstractDeclField{
         }
 
         int index = currentClass.getNumberOfFields() + 1;
-        FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, index, isFinal);
+        FieldDefinition fieldDef = new FieldDefinition(fieldType, getLocation(), natureAcces, currentClass, index);
 
-        if (isFinal && initialisation instanceof NoInitialization) {
-            throw new ContextualError("Un champ final doit être initialisé", getLocation());
-        }
 
         try {
             currentClass.getMembers().declare(nom, fieldDef);

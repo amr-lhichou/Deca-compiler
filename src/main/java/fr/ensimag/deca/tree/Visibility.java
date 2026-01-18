@@ -9,6 +9,5 @@ package fr.ensimag.deca.tree;
 
 public enum Visibility {
     PUBLIC,
-    PROTECTED,
-    PRIVATE
+    PROTECTED
 }
