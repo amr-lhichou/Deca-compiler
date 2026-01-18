@@ -104,5 +104,10 @@ public class AccesChamp extends AbstractLValue {
         this.identifiantChamp.iter(f);
     }
 
+    public AbstractIdentifier getIdentifiantChamp() {
+        return identifiantChamp;
+    }
+
+
 
 }

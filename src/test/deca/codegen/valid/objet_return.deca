@@ -1,0 +1,16 @@
+
+// return dans un accesseur
+
+class A {
+    int x;
+
+    int getX() { 
+        return x; 
+    }
+}
+
+{
+    A a = new A();
+    a.x = 53;
+    println(a.getX());
+}

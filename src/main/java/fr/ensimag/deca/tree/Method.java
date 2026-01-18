@@ -51,11 +51,15 @@ public class Method extends DeclMethod {
 
     @Override
     public void codeGenMethod(DecacCompiler compiler, ClassDefinition currentClass){
+        
 
         compiler.addComment("Code de la méthode " + this.nomMethode.getName());
         Label methodLabel = new Label("code." + currentClass.getType().getName() + "." + this.nomMethode.getName());
         ((MethodDefinition) this.nomMethode.getDefinition()).setLabel(methodLabel);
         compiler.addLabel(methodLabel);
+
+        Label endLabel = new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName());
+
 
         // stack check
         compiler.addInstruction(new TSTO(new ImmediateInteger(12)));

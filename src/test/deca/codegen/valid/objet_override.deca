@@ -1,0 +1,13 @@
+class A {
+    int meth() { return 1; }
+}
+class B extends A {
+    int meth() { return 2; }
+}
+
+{
+    A a = new A();
+    A b = new B();
+    println(a.meth());
+    println(b.meth());
+}
