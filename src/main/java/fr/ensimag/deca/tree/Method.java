@@ -59,7 +59,6 @@ public class Method extends DeclMethod {
         ((MethodDefinition) this.nomMethode.getDefinition()).setLabel(methodLabel);
         compiler.addLabel(methodLabel);
 
-        Label endLabel = new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName());
 
 
         // stack check

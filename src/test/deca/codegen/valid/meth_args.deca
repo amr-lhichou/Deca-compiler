@@ -1,0 +1,10 @@
+class A {
+    int add(int x, int y) { 
+        return x + y; 
+    }
+}
+
+{
+    A x = new A();
+    println(x.add(9,53));
+}
