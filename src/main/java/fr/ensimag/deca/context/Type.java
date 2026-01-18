@@ -33,6 +33,11 @@ public abstract class Type {
             return false; 
         }
 
+        // on peut doner un int à un float : floar x = 1; 
+        if (this.isFloat() && otherType.isInt()) {
+            return true;
+        }
+
         return otherType.isSubTypeOf(this);
     }
 

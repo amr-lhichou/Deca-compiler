@@ -14,6 +14,7 @@ public class AppelMethode extends AbstractExpr {
     private final ListExpr parametres;
 
     public AppelMethode(AbstractExpr instance, AbstractIdentifier methodeCible, ListExpr parametres) {
+        this.setLocation(methodeCible.getLocation());
         this.instance = instance;
         this.methodeCible = methodeCible;
         this.parametres = parametres;

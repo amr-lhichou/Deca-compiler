@@ -18,6 +18,9 @@ public class AccesChamp extends AbstractLValue {
     public AccesChamp(AbstractExpr objetContexte, AbstractIdentifier identifiantChamp) {
         this.objetContexte = objetContexte;
         this.identifiantChamp = identifiantChamp;
+
+        // il fallait metre le lieu du noeud accesschamp
+        this.setLocation(identifiantChamp.getLocation());
     }
 
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
@@ -35,7 +38,7 @@ public class AccesChamp extends AbstractLValue {
 
 
         if (champDef == null) {
-            throw new ContextualError("The field " + identifiantChamp.getName().getName() + " does not exist in class " + classDef.getType().getName().getName(), getLocation());
+            throw new ContextualError("The field '" + identifiantChamp.getName().getName() + "' does not exist in class " + classDef.getType().getName().getName(), getLocation());
         }
         if (!champDef.isField()) {
             throw new ContextualError(identifiantChamp.getName().getName() + " is not a field", getLocation());
@@ -90,7 +93,9 @@ public class AccesChamp extends AbstractLValue {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        objetContexte.decompile(s);
+        s.print(".");
+        identifiantChamp.decompile(s);
     }
 
     protected void prettyPrintChildren(PrintStream s, String prefix) {
