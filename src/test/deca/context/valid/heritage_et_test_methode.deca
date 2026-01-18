@@ -16,7 +16,9 @@ class Manager {
 
 class AssistantCoach extends Manager {
     void show() {
-        displayExperience();
+
+        // pour l'instant il faut this. pour appeler une methode
+        this.displayExperience();
     }
 }
 
