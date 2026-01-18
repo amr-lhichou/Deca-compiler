@@ -47,6 +47,7 @@ public class Method extends DeclMethod {
 
         compiler.addComment("Code de la méthode " + this.nomMethode.getName());
         Label methodLabel = new Label("code." + currentClass.getType().getName() + "." + this.nomMethode.getName());
+        Label endLabel = new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName());
         ((MethodDefinition) this.nomMethode.getDefinition()).setLabel(methodLabel);
         compiler.addLabel(methodLabel);
 
@@ -70,13 +71,16 @@ public class Method extends DeclMethod {
                 compiler.addInstruction(new ADDSP(new ImmediateInteger(nbLocals)));
             }
         }
+        Label oldLabel = compiler.getCurrentMethodEndLabel();
+        compiler.setCurrentMethodEndLabel(endLabel);
 
         // gen corps de la methode
         if (corpsMethode != null) {
             corpsMethode.codeGenListInst(compiler);
         }
+        compiler.setCurrentMethodEndLabel(oldLabel);
 
-        compiler.addLabel(new Label("fin." + currentClass.getType().getName() + "." + this.nomMethode.getName()));
+        compiler.addLabel(endLabel);
 
         if (nbLocals > 0){
             compiler.addInstruction(new SUBSP(new ImmediateInteger(nbLocals)));

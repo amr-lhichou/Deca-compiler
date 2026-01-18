@@ -78,8 +78,9 @@ public class IfThenElse extends AbstractInst {
         int cmp = compiler.getLabelId();
         Label elseLabel = new Label("else_if" + cmp );
         Label endLabel = new Label("end_if"+cmp);
-
+        compiler.addComment("-----Condition_if-------");
         getCondition().codeGenInst(compiler);
+        compiler.addComment("-----Fin__Condition_if-------");
         GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         // tester si faux : egalite avec 0
         compiler.addInstruction(new CMP(new ImmediateInteger(0), R_target));
@@ -87,16 +88,21 @@ public class IfThenElse extends AbstractInst {
         //SI false: on saute au  bloc ELSE
         compiler.addInstruction(new BEQ(elseLabel));
         compiler.getRegisterAllocater().freeRegister();
+        compiler.addComment("-----BEGIN__BLOC_THEN-------");
 
         // bloc THEN
         getThenBranch().codeGenListInst(compiler);
+        compiler.addComment("-----FIN__BLOC_THEN-------");
+
         // Saut direct à la fin . Else n'est pas traité
         compiler.addInstruction(new BRA(endLabel));
 
         // Bloc else
         compiler.addLabel(elseLabel);
-        getElseBranch().codeGenListInst(compiler);
+        compiler.addComment("-----BEGIN__BLOC_ELSE-------");
 
+        getElseBranch().codeGenListInst(compiler);
+        compiler.addComment("-----FIN__BLOC_ELSE-------");
         compiler.addLabel(endLabel);
     }
 

@@ -82,6 +82,17 @@ public class DecacCompiler {
         LabelId++;
         return LabelId;
     }
+    // labels for return
+    private Label currentMethodEndLabel = null;
+
+    public Label getCurrentMethodEndLabel() {
+        return currentMethodEndLabel;
+    }
+
+    public void setCurrentMethodEndLabel(Label l) {
+        currentMethodEndLabel = l;
+    }
+
     /**
      * Portable newline character.
      */
@@ -93,8 +104,6 @@ public class DecacCompiler {
         this.source = source;
         //this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
         this.registerAllocater = new RegisterAllocater(16);
-
-
     }
 
     /**

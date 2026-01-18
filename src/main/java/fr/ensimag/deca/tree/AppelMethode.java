@@ -68,12 +68,14 @@ public class AppelMethode extends AbstractExpr {
     public void codeGenInst(DecacCompiler compiler) {
         int number_Args = parametres.size();
         // get place for arg+vtable_adress
+        compiler.addComment("------Begin-Call-Methode------");
         compiler.addInstruction(new ADDSP(new ImmediateInteger(number_Args + 1)));
         // put this in stask (0)SP
         instance.codeGenInst(compiler);
         GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
         compiler.addInstruction(new STORE(R_target, new RegisterOffset(0, Register.SP)));// empiler the arguments droite a gauche
         compiler.getRegisterAllocater().freeRegister();
+        compiler.addComment("------Begin-Empiler-paramteres---");
         int offset = -1; // commence après 'this'
         for (AbstractExpr arg : parametres.getList()) {
             arg.codeGenInst(compiler);
@@ -82,6 +84,8 @@ public class AppelMethode extends AbstractExpr {
             compiler.getRegisterAllocater().freeRegister();
             offset--; // indice décroissant
         }
+        compiler.addComment("------FIN-Empiler-paramteres------");
+
 
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), R_target));
         compiler.addInstruction(new CMP(new NullOperand(), R_target));
@@ -95,6 +99,10 @@ public class AppelMethode extends AbstractExpr {
         compiler.addInstruction(new SUBSP(new ImmediateInteger(number_Args + 1)));
         //copy the result(in R0) to our currentRegister
         compiler.addInstruction(new LOAD(Register.R0, R_target));
+        compiler.addComment("------END-Call-Methode------");
+        // R_target dernier a été libéré on doit le réallouer
+        compiler.getRegisterAllocater().allocateRegister();
+
     }
 
 
