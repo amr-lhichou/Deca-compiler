@@ -16,10 +16,11 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -247,12 +248,23 @@ public class Identifier extends AbstractIdentifier {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // On récupère la définition pour savoir où est stockée la variable
         GPRegister R_target = compiler.getRegisterAllocater().allocateRegister();
-        DAddr addr = getExpDefinition().getOperand();
-
-        // On charge l'adresse dans R2
+        ExpDefinition def = getExpDefinition();
+        // fields case
+        if (def.isField()) {
+            FieldDefinition fdef = (FieldDefinition) def;
+            // this is in -2(LB)
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), R_target));
+            if (!compiler.getCompilerOptions().getNoCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), R_target));
+                compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+            }
+            compiler.addInstruction(new LOAD(new RegisterOffset(fdef.getIndex(), R_target), R_target));
+            return;
+        }
+        DAddr addr = def.getOperand();
         compiler.addInstruction(new LOAD(addr, R_target));
     }
+
 
 }

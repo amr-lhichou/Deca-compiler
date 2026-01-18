@@ -1,0 +1,14 @@
+// Description :
+// Accès à un attribut qui n existe pas.
+//
+// Resultats :
+// Echec
+class Ballon {
+    int pression;
+}
+
+{
+    Ballon b;
+    b = new Ballon();
+    b.couleur = 1;
+}

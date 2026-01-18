@@ -1,0 +1,15 @@
+// Description :
+// nb d'args invalide
+//
+// Resultats :
+// Echec
+class Passeur {
+    int passe(int a, int b) { return a + b; }
+}
+{
+    Passeur pedri;
+    pedri = new Passeur();
+    println(pedri.passe(10));
+}
+
+

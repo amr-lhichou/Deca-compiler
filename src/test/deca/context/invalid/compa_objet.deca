@@ -1,0 +1,15 @@
+// Description :
+// Comparaison < sur les objets ( impossible ... comme en java )
+//
+// Resultats :
+// Echec
+class Joueur { }
+{
+    Joueur a;
+    Joueur b;
+    a = new Joueur();
+    b = new Joueur();
+    if (a < b) {
+        println("a est meilleur que b");
+    }
+}

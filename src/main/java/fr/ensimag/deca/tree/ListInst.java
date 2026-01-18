@@ -33,6 +33,22 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
+    public boolean endsWithReturn() {
+        if (getList().isEmpty()) {
+            return false;
+        }
+        AbstractInst lastInst = getList().get(getList().size() - 1);
+        if (lastInst instanceof Return) {
+            return true;
+        }
+
+        // si le rtour est dans if else
+        if (lastInst instanceof IfThenElse) {
+            IfThenElse ite = (IfThenElse) lastInst;
+            return ite.getThenBranch().endsWithReturn() && ite.getElseBranch().endsWithReturn();
+        }
+        return false;
+    }
 
     public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {

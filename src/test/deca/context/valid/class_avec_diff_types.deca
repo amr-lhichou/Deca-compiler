@@ -12,9 +12,9 @@ boolean c;
 }
 
 {
-player p;
+player s;
 s = new player();
 s.number = 50000;
 s.height = 2010;
-s.isLeftHanded=true;
+s.c=true;
 }

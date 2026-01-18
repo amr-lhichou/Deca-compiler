@@ -1,0 +1,14 @@
+// Description :
+// Mauvais type d'arg passé en paramètre
+//
+// Resultats :
+// Echec
+
+class Passeur {
+    int passe(int a, int b) { return a + b; }
+}
+{
+    Passeur gavi;
+    gavi = new Passeur();
+    println(gavi.passe(true, 2));
+}

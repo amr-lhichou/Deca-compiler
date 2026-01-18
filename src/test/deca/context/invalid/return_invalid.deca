@@ -1,0 +1,12 @@
+// Description :
+// Return mauvais type .... donc echec
+//
+// Resultats :
+// Echec
+class Speaker {
+    int annonce() {
+        return "GOOOOL";
+    }
+}
+{
+}

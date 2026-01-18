@@ -1,0 +1,13 @@
+// Description :
+// Appel d'une methode fantome ...
+//
+// Resultats :
+// Echec
+class Joueur {
+    int numero;
+}
+{
+    Joueur xavi;
+    xavi = new Joueur();
+    xavi.faireLeTikiTaka();
+}

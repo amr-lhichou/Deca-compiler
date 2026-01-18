@@ -1,6 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
@@ -26,6 +31,12 @@ public class This extends AbstractExpr {
         Type t = currentClass.getType();
         setType(t);
         return t;
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), R_target));
     }
 
 

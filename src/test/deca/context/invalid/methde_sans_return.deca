@@ -1,0 +1,12 @@
+// Description :
+// Methode int avec return oublié ...
+//
+// Resultats :
+// Echec
+class MiTemps {
+    int duree(int x) {
+        x = x + 45;
+    }
+}
+{
+}

@@ -1,0 +1,13 @@
+// Description :
+// Deux fois la meme methode ( avec meme paramètre)
+//
+// Resultats :
+// Echec
+
+class Arbitre {
+    int siffle(int minute) { return minute; }
+    int siffle(int minute) { return minute + 1; }
+}
+{
+}
+

@@ -1,0 +1,9 @@
+// Description :
+// new sur (int), donc problème car int pas une class
+//
+// Resultats :
+// echec
+{
+    int but;
+    but = new int();
+}

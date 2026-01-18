@@ -1,0 +1,11 @@
+// Description :
+// impossible l heritage de soi meme
+//
+// Resultats :
+// Echec
+
+
+class Coach extends Coach {
+}
+{
+}
