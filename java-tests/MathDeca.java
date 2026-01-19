@@ -258,6 +258,46 @@ public class MathDeca {
         // 6. Approximation polynomiale (Taylor)
         return sign * _sinePoly(x, 7);
     }
+
+
+
+    static float asinPoly(float x) {
+        float x2 = x * x;
+
+        float r = x;
+        r += (x * x2) / 6.0f;
+        r += (3.0f * x * x2 * x2) / 40.0f;
+        r += (5.0f * x * x2 * x2 * x2) / 112.0f;
+
+        return r;
+    }
+
+
+    public  float asin(float x) {
+
+        float eps = 1e-6f;
+        int sign = 1;
+
+        if (x > 1.0f || x < -1.0f) {
+            throw new IllegalArgumentException("asin hors domaine");
+        }
+
+        if (_abs(x) < eps) return 0.0f;
+        if (_abs(x - 1.0f) < eps) return PI / 2;
+        if (_abs(x + 1.0f) < eps) return -PI / 2;
+
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+        if (x > 0.5f) {
+            float y = sqrt(1.0f - x * x);
+            return sign * (PI / 2 - asinPoly(y));
+        }
+
+        return sign * asinPoly(x);
+    }
     
 
 

@@ -55,6 +55,42 @@ class Math {
         }
         return result;
     }
+    /**
+     * Approximation de la racine carrée par la méthode de Newton–Raphson
+     *
+     * On cherche y tel que y^2 = x
+     *
+     * @param x nombre positif
+     * @return approximation de sqrt(x)
+     */
+    float _sqrt(float x) {
+
+        float y;
+        int i;
+        float eps = 0.000001;
+
+        // Cas particuliers
+        if (x < 0) {
+            println("Erreur : sqrt d'un nombre négatif");
+            return 0;
+        }
+
+        if (x == 0) {
+            return 0;
+        }
+
+        // Approximation initiale
+        y = x;
+        i = 0;
+
+        // Méthode de Newton : y_{n+1} = (y_n + x / y_n) / 2
+        while (i < 10) {
+            y = 0.5 * (y + x / y);
+            i = i + 1;
+        }
+
+        return y;
+    }
 
 
     
@@ -265,34 +301,69 @@ class Math {
     }
 
 
+    float _asinPoly(float x) {
+        float x2;
+        float result;
 
+        x2 = x * x;
 
+        result = x;
+        result = result + (x * x2) / 6.0;
+        result = result + (3.0 * x * x2 * x2) / 40.0;
+        result = result + (5.0 * x * x2 * x2 * x2) / 112.0;
 
-
-
-
-
-
-
-
-
-
-
-    // j protège contre la div par 0 ;)
-    float tan(float x) {
-        float c = cos(x);
-        float s = sin(x);
-        float eps = 0.000001;
-
-        if (_abs(c) <= eps) {
-            if (c < 0) {
-                return s / (c - eps);
-            } else {
-                return s / (c + eps);
-            }
-        }
-        return s / c;
+        return result;
     }
+
+
+
+
+
+
+
+    float asin(float x) {
+
+    float y;
+    int sign;
+    float eps;
+
+    eps = 0.000001;
+    sign = 1;
+
+    // Domaine de définition
+    if (x > 1.0 || x < -1.0) {
+        println("Erreur : asin hors domaine");
+        return 0;
+    }
+
+    // Cas particuliers
+    if (_abs(x) < eps) {
+        return 0;
+    }
+
+    if (_abs(x - 1.0) < eps) {
+        return PI / 2;
+    }
+
+    if (_abs(x + 1.0) < eps) {
+        return -PI / 2;
+    }
+
+    // Gestion du signe
+    if (x < 0) {
+        x = -x;
+        sign = -1;
+    }
+
+    // Réduction de domaine
+    if (x > 0.5) {
+        y = _sqrt(1.0 - x * x);
+        return sign * (PI / 2 - _asinPoly(y));
+    }
+
+    // Taylor direct
+    return sign * _asinPoly(x);
+}
     
 
 
