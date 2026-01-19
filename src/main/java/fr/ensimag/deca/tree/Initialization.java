@@ -48,11 +48,16 @@ public class Initialization extends AbstractInitialization {
             throw new ContextualError("Erreur interne: verifyExpr a retourné null (expression non typée)", getLocation());
         }
 
+        Location loc=getLocation();
+        if(expression !=null && expression.getLocation() !=null){
+            loc = expression.getLocation();
+        }
+
 
         if (!t.isCompatible(typeExpr)){
             throw new ContextualError("Initialisation incompatible : le type " + typeExpr + 
             " est incompatible avec le type " + t + " (règle 3.28)"
-            , getLocation());
+            , loc);
         }
 
         // if we initialize float with int we convert int to float ex : float x =1;

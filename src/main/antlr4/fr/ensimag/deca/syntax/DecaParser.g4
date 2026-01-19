@@ -546,8 +546,10 @@ decl_field[AbstractIdentifier t,Visibility v] returns[AbstractDeclField tree]
           setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
-      $tree = new DeclField($v,$t,$i.tree,new Initialization($e.tree));
-      setLocation($tree, $i.start);
+        Initialization init = new Initialization($e.tree);
+        setLocation(init, $EQUALS);
+        $tree = new DeclField($v,$t,$i.tree, init);
+        setLocation($tree, $i.start);
         }
       )? {
         }
