@@ -1,0 +1,15 @@
+// Description :
+// Addition entre un objet et un int donc impossible car type differet
+
+// Resultats :
+// Echec
+
+class Ballon {
+    int pression;
+}
+
+{
+    Ballon b = new Ballon();
+    int x = b + 1;
+    print(x);
+}

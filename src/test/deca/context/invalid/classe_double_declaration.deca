@@ -1,0 +1,15 @@
+// Description :
+// Deux classes meme nom 
+
+// Resultats :
+// Echec
+
+class Club {
+    int budget;
+}
+
+class Club {
+    int joueurs;
+}
+
+{ }

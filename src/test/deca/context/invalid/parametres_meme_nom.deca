@@ -1,0 +1,13 @@
+// Description :
+// para avec meme noms impossible
+
+// Resultats :
+// Echec
+
+class Coach {
+    int strategie(int plan, int plan) {
+        return plan;
+    }
+}
+
+{ }

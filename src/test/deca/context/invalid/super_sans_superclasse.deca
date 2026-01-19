@@ -1,0 +1,13 @@
+// Description :
+// Utilisation de super sans heritage ...
+
+// Resultats :
+// Echec
+
+class Defense {
+    int degager() {
+        return super.degager();
+    }
+}
+
+{ }

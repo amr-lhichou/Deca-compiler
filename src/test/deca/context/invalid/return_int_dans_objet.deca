@@ -1,0 +1,15 @@
+// Description :
+// return un int au lieu d un objet donc problème ...
+
+// Resultats :
+// Echec
+
+class Tactique { }
+
+class Coach {
+    Tactique choisir() {
+        return 4;
+    }
+}
+
+{ }

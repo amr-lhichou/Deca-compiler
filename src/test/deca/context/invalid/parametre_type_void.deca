@@ -1,0 +1,11 @@
+// Description :
+// impossible de faire paramètre de type void 
+
+// Resultats :
+// Echec
+
+class Arbitre {
+    void annoncer(void msg) { }
+}
+
+{ }

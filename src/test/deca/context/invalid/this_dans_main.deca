@@ -1,0 +1,9 @@
+// Description :
+// this a linterrier d un print donc impossible 
+
+// Resultats :
+// Echec
+
+{
+    print(this);
+}
