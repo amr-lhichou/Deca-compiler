@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterAllocater;
 import fr.ensimag.deca.context.Type;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -55,37 +56,51 @@ public class Assign extends AbstractBinaryExpr {
     protected String getOperatorName() {
         return "=";
     }
-    protected void codeGenInst(DecacCompiler compiler) {
+
+protected void codeGenInst(DecacCompiler compiler) {
+    RegisterAllocater allocator = compiler.getRegisterAllocater();
     getRightOperand().codeGenInst(compiler);
-    GPRegister Rightresult = compiler.getRegisterAllocater().getCurrentRegister();
+    GPRegister rightReg = allocator.getCurrentRegister();
     AbstractLValue left = getLeftOperand();
-    if (left instanceof AccesChamp) {
-        AccesChamp ac = (AccesChamp) left;
-        compiler.addInstruction(new PUSH(Rightresult));
-        compiler.getRegisterAllocater().freeRegister();
-        ac.getObjetContexte().codeGenInst(compiler);
-        GPRegister R_target = compiler.getRegisterAllocater().getCurrentRegister();
-        if (!compiler.getCompilerOptions().getNoCheck()) {
-            compiler.addInstruction(new CMP(new NullOperand(), R_target));
-            compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+    if (getLeftOperand() instanceof AccesChamp) {
+        AccesChamp ac = (AccesChamp) getLeftOperand();
+        int fieldIndex = ac.getIdentifiantChamp().getFieldDefinition().getIndex();
+        if (allocator.hasNext()) {
+            ac.getObjetContexte().codeGenInst(compiler);
+            GPRegister objReg = allocator.getCurrentRegister();
+            if (!compiler.getCompilerOptions().getNoCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), objReg));
+                compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+            }
+            compiler.addInstruction(new STORE(rightReg, new RegisterOffset(fieldIndex, objReg)));
+            allocator.freeRegister();
+
+        } else {
+             compiler.addInstruction(new PUSH(rightReg));
+            allocator.freeRegister(); // On libère le registre
+            ac.getObjetContexte().codeGenInst(compiler);
+            GPRegister objReg = allocator.getCurrentRegister();
+            if (!compiler.getCompilerOptions().getNoCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), objReg));
+                compiler.addInstruction(new BEQ(new Label("null_pointer_error")));
+            }
+            compiler.addInstruction(new LOAD(objReg, Register.R1));
+            compiler.addInstruction(new POP(rightReg));
+            compiler.addInstruction(new STORE(rightReg, new RegisterOffset(fieldIndex, Register.R1)));
+
         }
-        int offset = ac.getIdentifiantChamp().getFieldDefinition().getIndex();
-        compiler.addInstruction(new POP(Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(offset, R_target)));
-        compiler.addInstruction(new LOAD(Register.R0, R_target));
     }
     else if (left instanceof Identifier && ((Identifier) left).getExpDefinition().isField()) {
-        int off = ((Identifier) left).getFieldDefinition().getIndex();
+        int offset = ((Identifier) left).getFieldDefinition().getIndex();
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
-        compiler.addInstruction(new STORE(Rightresult, new RegisterOffset(off, Register.R1)));
-    }
-    // local variable or globale
-    else {
-        compiler.addInstruction(new STORE(Rightresult, left.getExpDefinition().getOperand()));
-    }
+        compiler.addInstruction(new STORE(rightReg, new RegisterOffset(offset, Register.R1)));
 
+    }
+    else {
+        compiler.addInstruction(new STORE(rightReg, left.getExpDefinition().getOperand()));
+    }
 }
-    
+
 
     @Override
     protected void codeGenOp(DecacCompiler compiler, GPRegister op1, GPRegister op2) {

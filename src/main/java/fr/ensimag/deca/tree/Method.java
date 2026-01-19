@@ -86,7 +86,9 @@ public class Method extends DeclMethod {
 
         // gen corps de la methode
         if (corpsMethode != null) {
+            compiler.addComment("----corps-method-----");
             corpsMethode.codeGenListInst(compiler);
+            compiler.addComment("------end-corps-method-----");
         }
         compiler.setCurrentMethodEndLabel(oldLabel);
 
