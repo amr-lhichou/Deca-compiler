@@ -51,16 +51,29 @@ public class MathDeca {
         return result;
     }
 
-    /* ===============================
-     * Polynôme de Taylor du cosinus
-     * cos(x) ≈ 1 − x²/2! + x⁴/4!
-     * Valable sur [-π/4 ; π/4]
-     * =============================== */
+   // on etend notre cos a n'importe quel ordre 
 
-    float _cosinePoly(float x) {
+    float _cosinePoly(float x, int order) {
         float result = 1.0f;
-        result = result - (_pow(x, 2) / _fact(2));
-        result = result + (_pow(x, 4) / _fact(4));
+        int k = 1;
+
+    // On s'assure que l'ordre est pair
+        if (order % 2 != 0) {
+            order = order - 1;
+        }
+
+        while (2 * k <= order) {
+            float term = _pow(x, 2 * k) / _fact(2 * k);
+
+            if (k % 2 == 1) {
+                result = result - term;
+            } else {
+                result = result + term;
+            }
+
+            k = k + 1;
+        }
+
         return result;
     }
 
@@ -84,38 +97,56 @@ public class MathDeca {
     }
 
     // foction cos
-     
-
     float cos(float x) {
+
         int sign = 1;
+        float eps = 0.000001f;
+        int ORDER = 4;
 
-        // Cas particuliers simples
-        if (x == 0.0f) {
-            return 1.0f;
-        }
-
-        // 1. Périodicité : ramener dans [0 ; 2π]
+    // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
 
-        // 2. Symétrie : cos(-x) = cos(x)
+    // les cas particuliers 
+        if (_abs(x) < eps) {
+            return 1;
+        }
+
+        if (_abs(x - PI/2) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - PI) < eps) {
+            return -1;
+        }
+
+        if (_abs(x - (3 * PI / 2)) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - (2 * PI)) < eps) {
+            return 1;
+        }
+
+    // 2. Symétrie : cos(-x) = cos(x)
         if (x < 0) {
             x = -x;
         }
 
-        // 3. Réduction vers [0 ; π]
+    // 3. Réduction vers [0 ; pi]
         if (x > PI) {
-            x = 2.0f * PI - x;
+            x = 2 * PI - x;
         }
 
-        // 4. Réduction vers [0 ; π/2] + signe
-        if (x > PI / 2.0f) {
+    // 4. Réduction vers [0 ; pi/2] + signe
+        if (x > PI / 2) {
             x = PI - x;
             sign = -sign;
         }
 
-        
-
-        // 5. Approximation polynomiale
-        return sign * _cosinePoly(x);
+    // 5. Approximation polynomiale
+        return sign * _cosinePoly(x, ORDER);
     }
+
+
+    
 }

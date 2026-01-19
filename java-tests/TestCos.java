@@ -4,7 +4,7 @@ public class TestCos {
 
     static void test(float x, MathDeca m) {
         float ref = (float) Math.cos(x);   // référence Java
-        float deca = m.cos(x);              // ton cos
+        float deca = m.cos(x);              // mon cos
         float err = Math.abs(ref - deca);
 
         String status = (err < EPS) ? "OK" : "!!";

@@ -65,12 +65,26 @@ class Math {
      * cos(x) ≈ 1 − x²/2! + x⁴/4!
      * Valide pour x ∈ [−π/4 ; π/4]
      */
-    float _cosinePoly(float x) {
-        float result;
+    float _cosinePoly(float x, int order) {
+        float result = 1.0;
+        int k = 1;
 
-        result = 1;
-        result = result - (_pow(x, 2) / _fact(2));
-        result = result + (_pow(x, 4) / _fact(4));
+    // On s'assure que l'ordre est pair
+        if (order % 2 != 0) {
+            order = order - 1;
+        }
+
+        while (2 * k <= order) {
+            float term = _pow(x, 2 * k) / _fact(2 * k);
+
+            if (k % 2 == 1) {
+                result = result - term;
+            } else {
+                result = result + term;
+            }
+
+            k = k + 1;
+        }
 
         return result;
     }
@@ -130,6 +144,7 @@ class Math {
 
         int sign = 1;
         float eps = 0.000001;
+        int ORDER = 4;
 
     // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
@@ -172,7 +187,7 @@ class Math {
         }
 
     // 5. Approximation polynomiale
-        return sign * _cosinePoly(x);
+        return sign * _cosinePoly(x, ORDER);
     }
 
     
