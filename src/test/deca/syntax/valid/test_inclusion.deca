@@ -1,5 +1,7 @@
 #include "include_joueur.decah"
 
+class A { }
 {
     Joueur j = new Joueur();
+    println(1);
 }

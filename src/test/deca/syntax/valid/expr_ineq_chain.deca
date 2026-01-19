@@ -1,0 +1,14 @@
+{
+    if(1 < 2 < 3){
+        println("ok");
+    }
+    if(3 > 2 > 1){
+        println("ok");
+    }
+    if(1 <= 2 <= 2){
+        println("ok");
+    }
+    if(3 >= 2 >= 2){
+        println("ok");
+    }
+}
