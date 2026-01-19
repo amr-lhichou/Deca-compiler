@@ -169,52 +169,56 @@ public class MathDeca {
 
         int sign = 1;
         float eps = 0.000001f;
-        int ORDER = 5;
-
-    // 1. Périodicité
-        x = _normalizeAngle(x);
-
-    // Cas particuliers
+    
+        // 0. Cas particuliers immédiats
         if (_abs(x) < eps) {
             return 0;
         }
-
+    
+        // 1. Gestion du signe (fonction impaire)
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+    
+        // 2. Périodicité : ramener dans [0 ; 2π]
+        x = _normalizeAngle(x);
+    
+        // Cas remarquables après normalisation
+        if (_abs(x - (PI / 2)) < eps) {
+            return sign * 1;
+        }
         if (_abs(x - PI) < eps) {
             return 0;
         }
-
+        if (_abs(x - (3 * PI / 2)) < eps) {
+            return sign * (-1);
+        }
         if (_abs(x - (2 * PI)) < eps) {
             return 0;
         }
-
-        if (_abs(x - (PI / 2)) < eps) {
-            return 1;
-        }
-
-        if (_abs(x - (3 * PI / 2)) < eps) {
-            return -1;
-        }
-
-    // 2. Symétrie : sin(-x) = -sin(x)
-        if (x < 0) {
-            x = -x;
-            sign = -sign;
-        }
-
-    // 3. Réduction vers [0 ; π]
+    
+        // 3. Réduction vers [0 ; π]
         if (x > PI) {
             x = 2 * PI - x;
             sign = -sign;
         }
-
-    // 4. Réduction vers [0 ; π/2]
+    
+        // 4. Réduction vers [0 ; π/2]
         if (x > PI / 2) {
             x = PI - x;
         }
-
-    // 5. Approximation polynomiale
-        return sign * _sinePoly(x, ORDER);
+    
+        // 5. Réduction finale vers [0 ; π/4]
+        if (x > PI / 4) {
+            // sin(x) = cos(π/2 - x)
+            return sign * cos((PI / 2) - x);
+        }
+    
+        // 6. Approximation polynomiale (Taylor)
+        return sign * _sinePoly(x, 7);
     }
+    
 
 
 
