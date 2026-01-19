@@ -1,1 +1,1 @@
-#include "include_cycle_2.deca"
+#include "src/test/deca/syntax/invalid/include_cycle_2.deca"
