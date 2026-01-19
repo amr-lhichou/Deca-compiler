@@ -102,8 +102,12 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        //this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
-        this.registerAllocater = new RegisterAllocater(16);
+        if (this.compilerOptions!=null){
+            this.registerAllocater = new RegisterAllocater(compilerOptions.getRegisters());
+
+        }
+        else{
+        this.registerAllocater = new RegisterAllocater(16);}
     }
 
     /**
@@ -276,14 +280,14 @@ public class DecacCompiler {
             // we return with no output
             return false ;
         }
-        // this part for optimization after
+         //this part for optimization after
 //        addComment("Program optimization");
 //        prog.optimize();
 //        addComment("end Optimization program");
-//        if(this.compilerOptions.getParse()){
-//            System.out.println(prog.decompile());
-//            return false;
-//        }
+        if(this.compilerOptions.getParse()){
+            System.out.println(prog.decompile());
+            return false;
+        }
 
         addComment("start main program");
         prog.codeGenProgram(this);

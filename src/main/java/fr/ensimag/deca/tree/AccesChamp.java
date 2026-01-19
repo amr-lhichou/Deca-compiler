@@ -15,6 +15,10 @@ public class AccesChamp extends AbstractLValue {
         return objetContexte;
     }
 
+    public AbstractIdentifier getIdentifiantChamp() {
+        return identifiantChamp;
+    }
+
     public AccesChamp(AbstractExpr objetContexte, AbstractIdentifier identifiantChamp) {
         this.objetContexte = objetContexte;
         this.identifiantChamp = identifiantChamp;

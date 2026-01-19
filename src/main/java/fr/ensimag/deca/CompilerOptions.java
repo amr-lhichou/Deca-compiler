@@ -87,7 +87,7 @@ public class CompilerOptions {
                         if (r < 4 || r > 16) {
                             throw new CLIException("number entre 4 et 16.");
                         }
-                        this.registers = r-1;
+                        this.registers = r;
 
                     } catch (NumberFormatException e) {
                         throw new CLIException(" doit être un entier.");
