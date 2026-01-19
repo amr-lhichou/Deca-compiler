@@ -59,13 +59,14 @@ public class Method extends DeclMethod {
         ((MethodDefinition) this.nomMethode.getDefinition()).setLabel(methodLabel);
         compiler.addLabel(methodLabel);
 
-
-
+        int limit = compiler.getCompilerOptions().getRegisters();
+        int rMax = limit - 1;
         // stack check
-        compiler.addInstruction(new TSTO(new ImmediateInteger(12)));
+        compiler.addInstruction(new TSTO(new ImmediateInteger(12+rMax)));
         compiler.addInstruction(new BOV(new Label("stack_overflow_error")));
-        compiler.addInstruction(new PUSH(Register.getR(2)));
-        compiler.addInstruction(new PUSH(Register.getR(3)));
+        for (int r = 2; r <= rMax; r++) {
+            compiler.addInstruction(new PUSH(Register.getR(r)));
+        }
 
         // gen des parametres
         if (this.parametres != null){
@@ -97,16 +98,25 @@ public class Method extends DeclMethod {
         if (nbLocals > 0){
             compiler.addInstruction(new SUBSP(new ImmediateInteger(nbLocals)));
         }
-
-        compiler.addInstruction(new POP(Register.getR(3)));
-        compiler.addInstruction(new POP(Register.getR(2)));
+        // Restauration
+        for (int r = rMax; r >= 2; r--) {
+            compiler.addInstruction(new POP(Register.getR(r)));
+        }
         compiler.addInstruction(new RTS());
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
+        // nom methode et parametres
+        this.typeMethode.decompile(s);
+        s.print(" ");
+        this.nomMethode.decompile(s);
+        s.print("(");
+        parametres.decompile(s);
+        s.print(") ");
+
         // { r := ’{’.vars.insts.’}’}
-        s.print("{");
+        s.println("{");
         this.declarationsLocales.decompile(s);
         this.corpsMethode.decompile(s);
         s.print("}");

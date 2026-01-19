@@ -24,23 +24,22 @@ public class AppelMethode extends AbstractExpr {
         Type instType = instance.verifyExpr(compiler, localEnv, currentClass);
 
         if(!instType.isClassOrNull()) {
-            throw new ContextualError("The type of the instance is not a class", getLocation());
+            throw new ContextualError("Le type de l'instance n'est pas une classe (règle 3.41)", getLocation());
         }
 
         if(instType.isNull()) {
-            throw new ContextualError("Cannot call method on a null object", getLocation());
+            throw new ContextualError("On ne peut pas appeler une méthode sur un objet null (règle 3.41)", getLocation());
         }
 
-        ClassDefinition classDef = instType.asClassType("Error: not a class type", getLocation()).getDefinition();
+        ClassDefinition classDef = instType.asClassType("Error: n'est pas un type class", getLocation()).getDefinition();
 
         ExpDefinition def = classDef.getMembers().get(methodeCible.getName());
         if(def==null){
-            throw new ContextualError("The method " + methodeCible.getName().getName() + " does not exist in class " + instType.getName().getName(), getLocation());
-        }
+            throw new ContextualError("La méthode '" + methodeCible.getName().getName() + "' n'existe pas dans la classe "
+                                        + instType.getName().getName() + " (règle 3.71)", getLocation());}
 
-        if (!def.isMethod()) {
-            throw new ContextualError(methodeCible.getName().getName() + " is not a method", getLocation());
-        }
+        if (!def.isMethod()) {throw new ContextualError("'" + methodeCible.getName().getName() +
+                                "' n'est pas une méthode (règle 3.71)", getLocation());}
 
         MethodDefinition methDef = (MethodDefinition) def;
 
@@ -49,7 +48,7 @@ public class AppelMethode extends AbstractExpr {
         int nParam = parametres.getList().size();
 
         if(nParam != nExp) {
-            throw new ContextualError("Number of parameters does not match number of arguments", getLocation());
+            throw new ContextualError("Le nombre d'arguments ne correspond pas au nombre de paramètres (règle 3.41)", getLocation());
         }
 
         for (int i = 0; i < nExp; i++) {
@@ -108,7 +107,24 @@ public class AppelMethode extends AbstractExpr {
 
 
     public void decompile(IndentPrintStream s) {
+        // Print l'instance 
+        instance.decompile(s);
+        s.print(".");
 
+        // Print le nom de la methode
+        methodeCible.decompile(s);
+
+        // Print les parametres (...)
+        s.print("(");
+        if (!parametres.getList().isEmpty()) {
+            for (int i = 0; i < parametres.getList().size(); i++) {
+                parametres.getList().get(i).decompile(s);
+                if (i < parametres.getList().size() - 1) {
+                    s.print(", ");
+                }
+            }
+        }
+        s.print(")");
     }
 
     protected void prettyPrintChildren(PrintStream s, String prefix) {

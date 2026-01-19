@@ -1,0 +1,13 @@
+// Description :
+// Initialisation d'un champ de type classe avec un int comme celui d avant impossible
+
+// Resultats :
+// Echec
+
+class Stade { }
+
+class Match {
+    Stade lieu = 1;
+}
+
+{ }

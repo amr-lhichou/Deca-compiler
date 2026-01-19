@@ -1,0 +1,10 @@
+class Infini {
+    int f(int n) {
+        return this.f(n + 1);
+    }
+}
+
+{
+    Infini a = new Infini();
+    println(a.f(0));
+}

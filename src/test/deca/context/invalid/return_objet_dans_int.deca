@@ -1,0 +1,15 @@
+// Description :
+// retourn invalid ( objet au lieu de objet)
+
+// Resultats :
+// Echec
+
+class VAR { }
+
+class Arbitre {
+    int verifier() {
+        return new VAR();
+    }
+}
+
+{ }

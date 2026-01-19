@@ -1,0 +1,9 @@
+// Description :
+// Appel d'une methode sur la valeur null comme acces attribut 
+
+// Resultats :
+// Echec
+
+{
+    null.tirer();
+}

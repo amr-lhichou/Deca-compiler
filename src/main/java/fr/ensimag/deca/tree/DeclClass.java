@@ -53,14 +53,23 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.print("class ");
+        name.decompile(s);
+        if (superclass != null && !superclass.getName().getName().equals("Object")) {
+            s.print(" extends ");
+            superclass.decompile(s);
+        }
+        s.println(" {");
+        fields.decompile(s);
+        methods.decompile(s);
+        s.println("}");
     }
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         //On recupère le type et on verifie la super class
         Type superType = superclass.verifyType(compiler);
-        if (!superType.isClass()) throw new ContextualError("Super-classe invalide ", superclass.getLocation());
+        if (!superType.isClass()) throw new ContextualError("Super-classe invalide (règle 3.5)", superclass.getLocation());
         ClassDefinition superClassDef = ((ClassType) superType).getDefinition();
 
         ClassType classType = new ClassType(name.getName(), name.getLocation(), superClassDef);
@@ -68,7 +77,7 @@ public class DeclClass extends AbstractDeclClass {
         try{
             compiler.environmentType.declare(name.getName(), classType.getDefinition());
         } catch (EnvironmentType.DoubleDefException e){
-            throw new ContextualError("Classe " + name.getName() + " déjà définie", name.getLocation());
+            throw new ContextualError("Classe " + name.getName() + " déjà définie (règle 3.5)", name.getLocation());
         }
 
         name.setType(classType);

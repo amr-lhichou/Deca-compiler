@@ -1,0 +1,13 @@
+// Description :
+// Initialisation d'un champ int avec un objet absurde
+
+// Resultats :
+// Echec
+
+class Joueur { }
+
+class FeuilleMatch {
+    int note = new Joueur();
+}
+
+{ }

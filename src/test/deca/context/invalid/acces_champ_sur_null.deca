@@ -1,0 +1,9 @@
+// Description :
+// acces a attribut de ull or null n est rien donc erreur
+
+// Resultats :
+// Echec
+
+{
+    print(null.numero);
+}

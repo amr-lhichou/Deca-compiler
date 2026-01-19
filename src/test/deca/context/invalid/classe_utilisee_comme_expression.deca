@@ -1,0 +1,13 @@
+// Description :
+// Utilisation d'un identifiant de type (classe) comme une expression. or le print a bosein d un abstractexpression
+
+// Resultats :
+// Echec
+
+class Derby {
+    int annee;
+}
+
+{
+    print(Derby);
+}

@@ -17,6 +17,7 @@ import fr.ensimag.deca.DecacCompiler;
 
 public class This extends AbstractExpr {
     public void decompile(IndentPrintStream s) {
+        s.print("this");
     }
 
     protected void prettyPrintChildren(PrintStream s, String prefix) { }
@@ -25,7 +26,7 @@ public class This extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         //Autoriser l'utilisation de this uniquement dans une classe ou une méthode
         if(currentClass == null) {
-            throw new ContextualError("Use of this outside a class or method", getLocation());
+            throw new ContextualError("L'utilisation de 'this' est interdite dans le programme principal (règle 3.43)", getLocation());
         }
 
         Type t = currentClass.getType();

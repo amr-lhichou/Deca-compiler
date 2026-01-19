@@ -6,7 +6,15 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 
 public class ListeMethod extends TreeList<AbstractDeclMeth>{
-    public void decompile(IndentPrintStream s){}
+    
+    @Override
+    public void decompile(IndentPrintStream s){
+        for (AbstractDeclMeth method : getList()) {
+            method.decompile(s);
+            s.println();
+        }
+    }
+    
 
     // pass 2
     public void verifyListMethods(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError {

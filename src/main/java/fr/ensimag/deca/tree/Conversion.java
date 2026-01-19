@@ -95,18 +95,18 @@ public class Conversion extends AbstractExpr {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-//        typeCible.iter(f);
-//        cible.iter(f);
+       typeCible.iter(f);
+       cible.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-//        typeCible.prettyPrint(s, prefix, false);
-//        cible.prettyPrint(s, prefix, true);
+       typeCible.prettyPrint(s, prefix, false);
+       cible.prettyPrint(s, prefix, true);
     }
-//    @Override
-//    String prettyPrintNode() {
-//        return "("+ expType +")" +" to " + "(" + convType + ")";
-//    }
+   @Override
+   String prettyPrintNode() {
+       return "("+ expType +")" +" to " + "(" + convType + ")";
+   }
 
 }
