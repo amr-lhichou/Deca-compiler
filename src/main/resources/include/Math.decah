@@ -279,9 +279,14 @@ float _cosinePoly(float x) {
         float result = x;
         float term = x;
         int k = 0;
+         float a;
+            float b;
+
 
         while (k <= 10) {
-            if (this._abs(term) < this.ulp(result)) {
+            a = this._abs(term);
+            b =  this.ulp(result);
+            if (a<b) {
                 k = 11;
             } else {
                 term = (-term * x * x) / (1.0 * (2 * k + 2) * (2 * k + 3));
