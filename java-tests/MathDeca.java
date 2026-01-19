@@ -50,6 +50,46 @@ public class MathDeca {
         }
         return result;
     }
+    
+
+    /**
+     * Approximation de la racine carrée par la méthode de Newton–Raphson
+     *
+     * On cherche y tel que y² = x
+     *
+     * @param x nombre positif
+     * @return approximation de sqrt(x)
+     */
+    public static float sqrt(float x) {
+
+        float y;
+        int i;
+
+        // Cas particuliers
+        if (x < 0.0f) {
+            System.out.println("Erreur : sqrt d'un nombre négatif");
+            return 0.0f;
+        }
+
+        if (x == 0.0f) {
+            return 0.0f;
+        }
+
+        // Approximation initiale
+        y = x;
+        i = 0;
+
+        // Méthode de Newton–Raphson
+        // y_{n+1} = (y_n + x / y_n) / 2
+        while (i < 10) {
+            y = 0.5f * (y + x / y);
+            i++;
+        }
+
+        return y;
+    }
+
+
 
    // on etend notre cos a n'importe quel ordre 
 
