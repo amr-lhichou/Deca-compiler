@@ -1,0 +1,64 @@
+class A {
+    int x;
+
+    void set(int v) { 
+        x = v; 
+    }
+
+    int add(int k) { 
+        return x + k; 
+    }
+}
+
+class B extends A {
+    int y;
+
+    void set(int v) { 
+        x = v; 
+        y = v; 
+        }   // override
+
+    int add(int k) { 
+        return x + y + k; 
+    }      // override
+}
+
+class C extends B {
+    int z;
+
+    void set(int v) { 
+        x = v; 
+        y = v + 1; 
+        z = v + 2; 
+    }
+
+    int add(int k) { 
+        return x + y + z + k; 
+    }
+}
+
+{
+    A a;
+    int i = 0;
+    int s = 0;
+
+    while (i < 10) {
+        if (i % 3 == 0) {
+            a = new A();
+        } else if (i % 3 == 1) {
+            a = new B();
+        } else {
+            a = new C();
+        }
+
+        a.set(i);                 // dispatch dynamique
+        s = s + a.add(10);      // dispatch dynamique
+
+        if (i == 4) {
+            println("mid", s);
+        }
+        i = i + 1;
+    }
+
+    println("end", s);
+}

@@ -1,0 +1,42 @@
+
+class A {
+    protected int p;
+    int x;
+
+    void set(int v) { 
+        p = v; 
+        x = v + 1; 
+    }
+
+    int getP() { 
+        return p; 
+    }
+    
+    int getX() { 
+        return x; 
+    }
+}
+
+class B extends A {
+    
+    int sum2() { 
+        return this.p + this.x; 
+    }  
+
+    int sum3(B other) { 
+        return other.p + other.x + this.p; 
+    } 
+}
+
+{
+    B b = new B();
+    B c = new B();
+
+    
+    b.set(1);
+    c.set(2);
+
+    println(b.sum2());
+    println(b.sum3(c));
+    println(c.getP(), c.getX());
+}
