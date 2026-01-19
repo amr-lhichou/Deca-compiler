@@ -420,6 +420,7 @@ primary_expr returns[AbstractExpr tree]
     | NEW n=ident OPARENT CPARENT {
              assert($ident.tree != null);
              $tree = new New($n.tree);
+              setLocation($tree, $NEW);
         }
      | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
@@ -430,6 +431,7 @@ primary_expr returns[AbstractExpr tree]
     | literal {
             assert($literal.tree != null);
             $tree = $literal.tree;
+             setLocation($tree, $literal.start);
         }
     ;
 
