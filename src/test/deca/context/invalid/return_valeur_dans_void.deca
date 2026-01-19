@@ -1,0 +1,13 @@
+// Description :
+// Une méthode void (sas return) ne peut pas retourner une valeur.
+
+// Resultats :
+// Echec
+
+class Joueur {
+    void courir() {
+        return 10;
+    }
+}
+
+{ }

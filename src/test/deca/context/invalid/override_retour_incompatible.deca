@@ -1,0 +1,15 @@
+// Description :
+// Redéfinition d'une méthode avec un type de retour différent .
+
+// Resultats :
+// Echec
+
+class Club {
+    int points() { return 377777; }
+}
+
+class ClubPro extends Club {
+    float points() { return 3.0; }
+}
+
+{ }
