@@ -195,9 +195,87 @@ class Math {
     
     
 
-    float sin(float x) {
-        return cos(x - (PI / 2));
+    // développement du sinus Taylor en fct de l'ordre
+
+    float _sinePoly(float x, int order) {
+
+        float result = x;
+        int i = 3;
+        int sign = -1;
+
+        while (i <= order) {
+            result = result + sign * (_pow(x, i) / _fact(i));
+            sign = -sign;
+            i = i + 2;
+        }
+
+        return result;
     }
+    // Puis la fonction avec restriction et cas et antisymétrie 
+
+    float sin(float x) {
+
+        int sign = 1;
+        float eps = 0.000001;
+        int ORDER = 5;
+
+    // 1. Périodicité
+        x = _normalizeAngle(x);
+
+    // Cas particuliers
+        if (_abs(x) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - PI) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - (2 * PI)) < eps) {
+            return 0;
+        }
+
+        if (_abs(x - (PI / 2)) < eps) {
+            return 1;
+        }
+
+        if (_abs(x - (3 * PI / 2)) < eps) {
+            return -1;
+        }
+
+    // 2. Symétrie : sin(-x) = -sin(x)
+        if (x < 0) {
+            x = -x;
+            sign = -sign;
+        }
+
+    // 3. Réduction vers [0 ; π]
+        if (x > PI) {
+            x = 2 * PI - x;
+            sign = -sign;
+        }
+
+    // 4. Réduction vers [0 ; π/2]
+        if (x > PI / 2) {
+            x = PI - x;
+        }
+
+    // 5. Approximation polynomiale
+        return sign * _sinePoly(x, ORDER);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // j protège contre la div par 0 ;)
     float tan(float x) {
