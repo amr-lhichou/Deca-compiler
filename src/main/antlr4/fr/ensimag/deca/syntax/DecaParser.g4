@@ -159,6 +159,7 @@ inst returns[AbstractInst tree]
     | RETURN expr SEMI {
             $tree = new Return($expr.tree);
             assert($expr.tree != null);
+            setLocation($tree, $RETURN);
         }
     ;
 
@@ -585,6 +586,11 @@ multi_line_string returns[String text, Location location]
             $text = $s.text;
             $location = tokenLocation($s);
         }
+    | s1=STRING s2=MULTI_LINE_STRING s3=STRING {
+            // cas """ ... """
+            $text = $s2.text;
+            $location = tokenLocation($s1);
+    }
     ;
 
 param returns[AbstractDeclPara tree]

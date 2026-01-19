@@ -1,6 +1,12 @@
 
 class A {
-    void m() asm("lig1 ok lig2");
+    void m() asm("""
+    lig1 
+    lig2
+    lig3
+    lig4
+    lig5
+    """);
 }
 {
     A a;
