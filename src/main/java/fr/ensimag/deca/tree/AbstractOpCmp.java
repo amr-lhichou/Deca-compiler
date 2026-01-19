@@ -21,31 +21,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     public AbstractOpCmp(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
-
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        Type rightOpType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type leftOpType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-
-        if (!(leftOpType.isInt() || leftOpType.isFloat()) || !(rightOpType.isInt() || rightOpType.isFloat())){
-            throw new ContextualError("Les opérands doivent être de Type INT ou FLOAT (règle 3.33)", getLocation());
-        }
-
-        // Convertion si de different type
-        if (rightOpType.isFloat() && leftOpType.isInt()){
-            ConvFloat intConv = new ConvFloat(getLeftOperand());
-            intConv.verifyExpr(compiler, localEnv, currentClass);
-            setLeftOperand(intConv);
-        } else if (leftOpType.isFloat() && rightOpType.isInt()){
-            ConvFloat intConv = new ConvFloat(getRightOperand());
-            intConv.verifyExpr(compiler, localEnv, currentClass);
-            setRightOperand(intConv);
-        }
-
-        Type opCmpType = compiler.environmentType.BOOLEAN;
-        setType(opCmpType);
-        return opCmpType;
-    }
-
 }
+
+
+
