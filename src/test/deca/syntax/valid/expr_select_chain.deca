@@ -1,0 +1,19 @@
+
+class A {
+    A a;
+    A b;
+    int x;
+    A self() { 
+        return this; 
+    }
+    int getX() { 
+        return x; 
+    }
+}
+
+{
+    A o;
+    o = new A();
+    println(o.self().self().self().getX());
+    println(o.a.b.a.b.x);
+}
