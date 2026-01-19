@@ -1,0 +1,14 @@
+// Description :
+// Utilisation d'une méthode sans return dans un int .
+
+// Resultats :
+// Echec
+
+class Arbitre {
+    void siffler() { }
+}
+
+{
+    Arbitre a = new Arbitre();
+    int x = a.siffler();
+}

@@ -1,0 +1,15 @@
+// Description :
+// Redéfinition d'une méthode avec paratter diff.
+
+// Resultats :
+// Echec
+
+class Coach {
+    int plan(int minute) { return minute; }
+}
+
+class CoachAdjoint extends Coach {
+    int plan(float minute) { return 0; }
+}
+
+{ }

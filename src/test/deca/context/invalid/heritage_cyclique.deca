@@ -1,0 +1,10 @@
+// Description :
+// Héritage boucle 
+
+// Resultats :
+// Echec
+
+class Attaquant extends Defenseur { }
+class Defenseur extends Attaquant { }
+
+{ }

@@ -1,0 +1,13 @@
+// Description :
+// Une méthode a return int doit retourner un int pas void.
+
+// Resultats :
+// Echec
+
+class Gardien {
+    int arreter() {
+        return;
+    }
+}
+
+{ }
