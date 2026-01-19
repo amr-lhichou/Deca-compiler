@@ -1,0 +1,13 @@
+
+class A {
+    void m() asm("
+        lig1 
+        ok
+        lig2
+    ");
+}
+{
+    A a;
+    a = new A();
+    a.m();
+}

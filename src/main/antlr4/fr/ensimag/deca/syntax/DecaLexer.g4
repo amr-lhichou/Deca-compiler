@@ -94,8 +94,8 @@ FLOAT : FLOATDEC | FLOATHEX;
 
 // Chaine de caractères
 fragment STRING_CAR : ~["\\\r\n] ;
-STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | '\\"' | '\\\\' | '\r'? '\n')* '"' ;
+STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 // Inclusion de fichier
 // j vais gerer ici les include (#include)
 // j vais utilisé le doInclude qui existe deja dans AbstratDecaLexer

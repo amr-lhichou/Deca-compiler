@@ -1,0 +1,9 @@
+
+class A {
+    int a,b,c;
+    protected int p,q;
+}
+
+{
+    println(1);
+}

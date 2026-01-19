@@ -1,0 +1,21 @@
+
+//champ et appel de méthode
+
+
+class A {
+    int x;
+    int get(){ 
+        return x; 
+    }
+    void set(int v){ 
+        x = v; 
+    }
+}
+
+{
+    A a;
+    a = new A();
+    a.set(1);
+    println(a.get());
+    println(a.x);
+}

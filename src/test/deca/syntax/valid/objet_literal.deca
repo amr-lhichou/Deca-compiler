@@ -1,0 +1,21 @@
+
+class A { 
+    int x; 
+    A meth(){ 
+        return this; 
+    } 
+}
+
+{
+    A a;
+    a = new A();
+
+    println(1);
+    println(1.5);
+    println("ok");
+
+    println((1 + 2) * 3);
+    if (a.meth() == this){
+        print("ok");
+    } 
+}
