@@ -6,7 +6,7 @@ class Math {
 
     
     // Constantes mathématiques + constantes pour calcul de ulp
-    
+
     float PI = 3.14159265358979323846;
     float QUARTER_PI = 0.7853981633974483; // pi/ 4
     
@@ -19,10 +19,10 @@ class Math {
     int MAX_EXPONENT = 127;
 
     // Plus petit float strictement positif (subnormal)
-    float MIN_VALUE = 1.40129846 * _pow(10, -45);
+    float MIN_VALUE = 1.5E-45;
 
     // Plus grand float représentable
-    float MAX_VALUE = 3.40282347 * _pow(10, 38);
+    float MAX_VALUE =  3.40282347E38;
 
     
     // Fonctions internes utilitaires
@@ -39,7 +39,7 @@ class Math {
 
     // Puissance entière simple : x^n (n >= 0)
     float _pow(float x, int n) {
-        float result = 1;
+        float result = 1.0;
         int i = 0;
 
         while (i < n) {
@@ -106,13 +106,13 @@ class Math {
         float eps = 0.000001;
 
         // Cas particuliers
-        if (x < 0) {
+        if (x < 0.0) {
             println("Erreur : sqrt d'un nombre négatif");
-            return 0;
+            return 0.0;
         }
 
-        if (x == 0) {
-            return 0;
+        if (x == 0.0) {
+            return 0.0;
         }
 
         // Approximation initiale
@@ -130,11 +130,11 @@ class Math {
 
     // retourne exposant du float x sans passage binaire
     
-    int _getExponent(float x) {
-        float ax = _abs(x);
+    int _getExponent(float x){
+        float ax = this._abs(x);
         int e = 0;
     
-        if (ax == 0.0f) {
+        if (ax == 0.0) {
             return MIN_EXPONENT - 1;
         }
     
@@ -162,31 +162,28 @@ class Math {
     
     // Polynôme de Taylor du cosinus
     
-    float _cosinePoly(float x) {
+float _cosinePoly(float x) {
+    float result = 1.0;
+    float term = 1.0;
+    int k = 1;
+    float a;
+    float b;
 
-        float result = 1.0;
-        float term = 1.0;
-        int k = 1;
-
-        while (true) {
-
-        // t_k = -t_{k-1} * x^2 / ((2k-1)(2k))
-            term = -term * x * x / ((2*k - 1) * (2*k));
-
-            if (_abs(term) < ulp(result)) {
-                break;
-            }
-
+    while (k <= 10) {
+        a=this._abs(term) ;
+        b = this.ulp(result);
+        if (a<b) {
+            k = 11; // stop
+        } else {
+            // term = -term * x^2 / ((2k-1)(2k))
+            term = (-term * x * x) / (1.0 * (2 * k - 1) * (2 * k));
             result = result + term;
             k = k + 1;
-
-            if (k > 10) {
-                break;
-            }
         }
-
-        return result;
     }
+    return result;
+}
+
     // version optimi Horner 
     float _cosinePolyHorner(float x) {
 
@@ -209,73 +206,66 @@ class Math {
     // normalisation de l'angle entre 0 et 2pi
 
     float _normalizeAngle(float x) {
-        float twoPi = 2 * PI;
+        float twoPi = 2.0 * PI;
 
-        if (x >= 0) {
-            x = x / twoPi;
-            x = (x - (int)(x)) * twoPi;
-        } else {
-            x = x / twoPi;
-            x = (x - (int)(x)) * twoPi;
-            x = -x;
+        // ramener dans (-2pi, 2pi) grossièrement
+        while (x >= twoPi) {
+            x = x - twoPi;
+        }
+        while (x < 0.0) {
+            x = x + twoPi;
         }
 
         return x;
     }
+
+
 
     
 
 
     // Fonction publique cos(x)
     float cos(float x) {
-
-        int sign = 1;
+        float sign = 1.0;
         float eps = 0.000001;
-        
 
-    // 1. Périodicité : ramener dans [0 ; 2pi]
-        x = _normalizeAngle(x);
+        x = this._normalizeAngle(x);
 
-    // les cas particuliers 
-        if (_abs(x) < eps) {
-            return 1;
+        if (this._abs(x) < eps) {
+            return 1.0;
         }
 
-        if (_abs(x - PI/2) < eps) {
-            return 0;
+        if (this._abs(x - (PI / 2.0)) < eps) {
+            return 0.0;
         }
 
-        if (_abs(x - PI) < eps) {
-            return -1;
+        if (this._abs(x - PI) < eps) {
+            return -1.0;
         }
 
-        if (_abs(x - (3 * PI / 2)) < eps) {
-            return 0;
+        if (this._abs(x - (3.0 * PI / 2.0)) < eps) {
+            return 0.0;
         }
 
-        if (_abs(x - (2 * PI)) < eps) {
-            return 1;
+        if (this._abs(x - (2.0 * PI)) < eps) {
+            return 1.0;
         }
 
-    // 2. Symétrie : cos(-x) = cos(x)
-        if (x < 0) {
+        if (x < 0.0) {
             x = -x;
         }
 
-    // 3. Réduction vers [0 ; pi]
         if (x > PI) {
-            x = 2 * PI - x;
+            x = (2.0 * PI) - x;
         }
 
-    // 4. Réduction vers [0 ; pi/2] + signe
-        if (x > PI / 2) {
+        if (x > (PI / 2.0)) {
             x = PI - x;
             sign = -sign;
         }
 
-    // 5. Approximation polynomiale
-        return sign * _cosinePoly(x);
-        // return sign * _cosinePolyHorner(x);
+        //return sign * this._cosinePoly(x);
+        return sign * this._cosinePolyHorner(x);
     }
 
     
@@ -286,31 +276,23 @@ class Math {
     // développement du sinus Taylor en fct de l'ordre
 
     float _sinePoly(float x) {
-
         float result = x;
         float term = x;
         int k = 0;
 
-        while (true) {
-
-        // t_{k+1} = -t_k * x^2 / ((2k+2)(2k+3))
-            term = -term * x * x / ((2*k + 2) * (2*k + 3));
-
-            if (_abs(term) < ulp(result)) {
-                break;
-            }
-
-            result = result + term;
-            k = k + 1;
-
-        // sécurité
-            if (k > 10) {
-                break;
+        while (k <= 10) {
+            if (this._abs(term) < this.ulp(result)) {
+                k = 11;
+            } else {
+                term = (-term * x * x) / (1.0 * (2 * k + 2) * (2 * k + 3));
+                result = result + term;
+                k = k + 1;
             }
         }
-
         return result;
     }
+
+
     // developpement horner pour sin 
     float _sinePolyHorner(float x) {
 
@@ -333,134 +315,115 @@ class Math {
     // Puis la fonction avec restriction et cas et antisymétrie 
 
     float sin(float x) {
-
-        int sign = 1;
+        float sign = 1.0;
         float eps = 0.000001;
 
-    // 0. Cas particuliers immédiats
-        if (_abs(x) < eps) {
-            return 0;
+        if (this._abs(x) < eps) {
+            return 0.0;
         }
 
-    // 1. Gestion du signe (fonction impaire)
-        if (x < 0) {
+        if (x < 0.0) {
             x = -x;
-            sign = -1;
+            sign = -1.0;
         }
 
-    // 2. Périodicité : ramener dans [0 ; 2pi]
-        x = _normalizeAngle(x);
+        x = this._normalizeAngle(x);
 
-    // Cas remarquables après normalisation
-        if (_abs(x - (PI / 2)) < eps) {
-            return sign * 1;
+        if (this._abs(x - (PI / 2.0)) < eps) {
+            return sign * 1.0;
         }
-        if (_abs(x - PI) < eps) {
-            return 0;
+        if (this._abs(x - PI) < eps) {
+            return 0.0;
         }
-        if (_abs(x - (3 * PI / 2)) < eps) {
-            return sign * (-1);
+        if (this._abs(x - (3.0 * PI / 2.0)) < eps) {
+            return sign * (-1.0);
         }
-        if (_abs(x - (2 * PI)) < eps) {
-            return 0;
+        if (this._abs(x - (2.0 * PI)) < eps) {
+            return 0.0;
         }
 
-    // 3. Réduction vers [0 ; pi]
         if (x > PI) {
-            x = 2 * PI - x;
+            x = (2.0 * PI) - x;
             sign = -sign;
         }
 
-    // 4. Réduction vers [0 ; pi/2]
-        if (x > PI / 2) {
+        if (x > (PI / 2.0)) {
             x = PI - x;
         }
 
-    // 5. Réduction finale vers [0 ; pi/4]
-        if (x > PI / 4) {
-        // sin(x) = cos(pi/2 - x)
-            return sign * cos((PI / 2) - x);
+        if (x > (PI / 4.0)) {
+            return sign * this.cos((PI / 2.0) - x);
         }
 
-    // 6. Approximation polynomiale (Taylor)
-        return sign * _sinePoly(x);
-        // return sign * _sinePolyHorner(x);
+        return sign * this._sinePoly(x);
     }
+
 
 
     // polynome dour asin avec critère ulp
 
-    float _asinPolyULP(float x) {
+   float _asinPolyULP(float x) {
+       float result = x;
+       float term = x;
+       int k = 1;
 
-        float result = x;
-        float term;
-        int k = 1;
+       float num;
+       float den;
+       float coeff;
 
-    // terme initial : x^(2k+1)
-        term = x;
+       while (k <= 10 && this._abs(term) >= this.ulp(result)) {
+           num = this._fact(2 * k); // int
+           den = this._pow(4.0, k) * (1.0 * this._fact(k) * this._fact(k)) * (2.0 * k + 1.0);
+           coeff = (1.0 * num) / den;   // force num en float
 
-        while (true) {
+           term = coeff * this._pow(x, 2 * k + 1);
+           result = result + term;
+           k = k + 1;
+       }
 
-        // coefficient du dev taylor de asin 
-            float num = _fact(2 * k);
-            float den = _pow(4.0, k) * _pow(_fact(k), 2) * (2 * k + 1);
-            float coeff = num / den;
+       return result;
+   }
 
-            term = coeff * _pow(x, 2 * k + 1);
 
-        // critère ULP
-            if (_abs(term) < ulp(result)) {
-                break;
-            }
-
-            result = result + term;
-            k = k + 1;
-
-            // sécurité
-            if (k > 10) {
-                break;
-            }
-        }
-
-        return result;
-    }
 
 
     // focntion asin  en tenant compte de ulp 
     float asin(float x) {
 
         float eps = 1e-6;
-        int sign = 1;
+        float sign = 1.0;
+        float y;   // déclarée en haut
 
         if (x > 1.0 || x < -1.0) {
-            return 0;
+            return 0.0;
         }
 
-        if (_abs(x) < eps) {
-            return 0;
+        if (this._abs(x) < eps) {
+            return 0.0;
         }
 
-        if (_abs(x - 1.0) < eps) {
+        if (this._abs(x - 1.0) < eps) {
             return PI / 2;
         }
 
-        if (_abs(x + 1.0) < eps) {
+        if (this._abs(x + 1.0) < eps) {
             return -PI / 2;
         }
 
-        if (x < 0) {
+        if (x < 0.0) {
             x = -x;
             sign = -1;
         }
 
-    // Réduction pour convergence
+        // Réduction pour convergence
         if (x > 0.5) {
-            float y = sqrt(1.0 - x * x);
-            return sign * (PI / 2 - _asinPolyULP(y));
+            y = this._sqrt(1.0 - x * x);
+            return sign * (PI / 2 - this._asinPolyULP(y));
         }
 
-        return sign * _asinPolyULP(x);
+        return sign * this._asinPolyULP(x);
     }
+
 
 
 
@@ -469,34 +432,27 @@ class Math {
 
 
     // développement du arctan avec ulp 
+float _atanPolyULP(float x) {
+    float result = x;
+    float term = x;
+    int k = 1;
+    float current = 1.0; // important
 
-    float _atanPolyULP(float x) {
-
-        float result = x;
-        float term = x;
-        int k = 1;
-
-        while (true) {
-
+    while (k <= 10) {
+        if (this._abs(current) < this.ulp(result)) {
+            k = 11;
+        } else {
             term = -term * x * x;
-
-            float current = term / (2 * k + 1);
-
-            if (_abs(current) < ulp(result)) {
-                break;
-            }
-
+            current = term / (2.0 * k + 1.0);
             result = result + current;
             k = k + 1;
-
-        // sécurité
-            if (k > 10) {
-                break;
-            }
         }
-
-        return result;
     }
+    return result;
+}
+
+
+
 
 
 
@@ -506,22 +462,22 @@ class Math {
     float atan(float x) {
 
         float eps = 1e-6;
-        int sign = 1;
+        float sign = 1.0;
 
-        if (_abs(x) < eps) {
-            return 0;
+        if (this._abs(x) < eps) {
+            return 0.0;
         }
 
-        if (x < 0) {
+        if (x < 0.0) {
             x = -x;
             sign = -1;
         }
 
         if (x > 1.0) {
-            return sign * (PI / 2 - _atanPolyULP(1.0 / x));
+            return sign * (PI / 2.0 - this._atanPolyULP(1.0 / x));
         }
 
-        return sign * _atanPolyULP(x);
+        return sign * this._atanPolyULP(x);
     }
 
 
@@ -534,9 +490,9 @@ class Math {
             return MIN_VALUE;
         }
     
-        e = _getExponent(x);
+        e = this._getExponent(x);
     
-        return _pow2(e - 23);
+        return this._pow2(e - 23);
     }
 
 
