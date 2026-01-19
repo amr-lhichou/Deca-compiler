@@ -1,0 +1,14 @@
+
+class A { }
+class B extends A { 
+    int x; 
+}
+
+{
+    A a;
+    a = new B();
+
+    if (a instanceof B) {
+        B b;
+    }
+}

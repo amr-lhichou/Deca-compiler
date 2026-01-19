@@ -1,0 +1,18 @@
+
+class A { 
+
+}
+class B extends A { 
+    int x; 
+}
+
+{
+    A a;
+    B b;
+
+    a = new B();
+    b = (B)(a);
+    
+    b.x = 1;
+    println(b.x);
+}

@@ -1,0 +1,37 @@
+class A { 
+    int meth(){ 
+        return 1; 
+    } 
+}
+
+{
+    A a;
+    a = new A();
+
+    ;                  
+    print();            
+    println();
+    printx();
+    printlnx();
+
+    print(1,"s");
+    println(1, 2, 3);
+    printx(1.0);
+    printlnx(2.5);
+
+    if (true) { 
+        println("if"); 
+    }
+    else if (false) { 
+        println("elseif"); 
+    }
+    else { 
+        println("else"); 
+    }
+
+    while (false) { 
+        println("while"); 
+    }
+
+    a.meth();              
+}

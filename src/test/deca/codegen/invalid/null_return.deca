@@ -1,0 +1,15 @@
+
+class A {
+    A get(){ 
+        return null; 
+    }
+    int meth(){ 
+        return 1; 
+    }
+}
+
+{
+    A a;
+    a = new A();
+    println(a.get().meth());
+}

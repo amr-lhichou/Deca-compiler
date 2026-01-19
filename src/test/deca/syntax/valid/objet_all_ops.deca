@@ -1,0 +1,26 @@
+
+class A { }
+class B extends A { }
+
+{
+    int i;
+    float f;
+    boolean b;
+    A a;
+    A x;
+
+    i = 1 + 2 * 3 - 4 / 3 % 2;
+    b = !false && true || false;
+    b = (1 == 1) && (2 != 3) && (1 < 2) && (2 <= 2) && (3 > 2) && (3 >= 3);
+
+    a = new B();
+    if(a instanceof A){
+        println("ok");
+    };
+    if(a instanceof B){
+        println("ok");
+    };
+
+    x = (A)(a);         
+    println((1 + 2) * 3);
+}

@@ -73,9 +73,6 @@ public class DeclField extends AbstractDeclField{
         nomChamp.setDefinition(fieldDef);
         currentClass.setNumberOfFields(index);
 
-        System.out.println("FIELD " + nomChamp.getName().getName() + " visibility=" + natureAcces);
-
-
     }
 
     protected void verifyFieldInit(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError{

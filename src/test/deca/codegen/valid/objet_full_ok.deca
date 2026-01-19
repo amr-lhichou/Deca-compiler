@@ -1,0 +1,76 @@
+class A {
+    protected int p;
+    int x;
+
+    void setX(int v) { 
+        x = v; 
+    }
+
+    int  meth() { 
+        return x*2; 
+    }     
+}
+
+class B extends A {
+
+    int y;
+
+    void setY(int v) { 
+        y = v; 
+    }
+    void setP(int v) { 
+        p = v; 
+    }   
+
+    // override
+    int meth() { 
+        return x*y; 
+    } 
+
+    int sum() { 
+        return p + x + y; 
+    }
+}
+
+class C extends A {
+    int meth() { 
+        return x*10; 
+    }    // override
+}
+
+{
+    A a;
+    A aa;
+    B b;
+    C c;
+    B tmp;
+
+    a = new A();
+    a.setX(1);
+    println(a.meth());          // 2*1 = 2
+
+    b = new B();
+    b.setX(2);
+    b.setY(3);
+    b.setP(4);
+    println(b.meth());          // 2 * 3 = 6
+    println(b.sum());     // 4 + 2 + 3 = 9
+
+    aa = b;                  // upcast
+    println(aa.meth());         // B.meth() = 6
+
+    c = new C();
+    c.setX(5);
+    println(c.meth());          // 10 * 5 = 50
+
+    // instanceof + cast
+    tmp = null;
+    if (aa instanceof B) {
+        tmp = (B)(aa);
+        println("castOK");
+        println(tmp.sum());
+    }
+
+    // instanceof false case
+    if(!(a instanceof B)) { println("false case");  } // false
+}
