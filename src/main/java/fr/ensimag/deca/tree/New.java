@@ -21,7 +21,7 @@ public class New extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type t = entiteCreer.verifyType(compiler);
         if(!t.isClass()) {
-            throw new ContextualError("New can only be used with class types", getLocation());
+            throw new ContextualError("Le mot-clé 'new' ne peut être utilisé qu'avec des types de classe (règle 3.42)", getLocation());
         }
         setType(t);
         return t;
@@ -49,6 +49,9 @@ public class New extends AbstractExpr {
     }
 
     public void decompile(IndentPrintStream s) {
+        s.print("new ");
+        entiteCreer.decompile(s);
+        s.print("()");
     }
 
     protected void prettyPrintChildren(PrintStream s, String prefix) {

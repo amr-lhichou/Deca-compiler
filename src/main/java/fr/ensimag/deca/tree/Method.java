@@ -107,8 +107,16 @@ public class Method extends DeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        // nom methode et parametres
+        this.typeMethode.decompile(s);
+        s.print(" ");
+        this.nomMethode.decompile(s);
+        s.print("(");
+        parametres.decompile(s);
+        s.print(") ");
+
         // { r := ’{’.vars.insts.’}’}
-        s.print("{");
+        s.println("{");
         this.declarationsLocales.decompile(s);
         this.corpsMethode.decompile(s);
         s.print("}");

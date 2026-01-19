@@ -94,8 +94,19 @@ public class DeclField extends AbstractDeclField{
     }
 
 
+    @Override
     public void decompile(IndentPrintStream s){
-        //laisse aussi vide hh pour eviter prob de throw new unsupprtbleoperationexeption
+        if (natureAcces != null && natureAcces != Visibility.PUBLIC) {
+            s.print(natureAcces.name().toLowerCase() + " ");
+        }
+        typeChamp.decompile(s);
+        s.print(" ");
+        nomChamp.decompile(s);
+        if (!(initialisation instanceof NoInitialization)) {
+            s.print(" = ");
+            initialisation.decompile(s);
+        }
+        s.println(";");
     }
 
     protected void prettyPrintChildren(PrintStream s,String prefix){

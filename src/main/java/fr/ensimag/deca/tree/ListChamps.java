@@ -19,8 +19,13 @@ import fr.ensimag.ima.pseudocode.Label;
 
 
 public class ListChamps extends TreeList<AbstractDeclField>{
+
+    @Override
     public void decompile(IndentPrintStream s){
-        //pour eviter prob de compilation lever pa le throw dan s listDeclVar ... j la laisse vide pour l instant ...
+        for (AbstractDeclField field : getList()) {
+            field.decompile(s);
+            s.println();
+        }
     }
 
     public void verifyListChamps(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError {

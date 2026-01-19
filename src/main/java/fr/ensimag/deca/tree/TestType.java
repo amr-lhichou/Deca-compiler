@@ -25,11 +25,11 @@ public class TestType extends AbstractExpr {
         Type rigType = typeVise.verifyType(compiler);
 
         if(!rigType.isClass()) {
-            throw new ContextualError("The right operand of the 'instanceof' operator must be a class type.", typeVise.getLocation());
+            throw new ContextualError("L'opérande droit de l'opérateur 'instanceof' doit être un type classe (règle 3.40)", typeVise.getLocation());
         }
 
         if(!lefType.isClassOrNull()) {
-            throw new ContextualError("The left operand of the 'instanceof' operator must be a class type or null.", object.getLocation());
+            throw new ContextualError("L'opérande gauche de l'opérateur 'instanceof' doit être un type classe ou null (règle 3.40)", object.getLocation());
         }
 
         Type resultType = compiler.environmentType.BOOLEAN;

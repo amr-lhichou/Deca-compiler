@@ -25,11 +25,11 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,ClassDefinition currentClass, Type returnType) throws ContextualError {
     //retuen interdi so returntype est null ou void
         if(returnType == null) {
-            throw new ContextualError("Return statement outside a method", getLocation());
+            throw new ContextualError("'return' interdite en dehors d'une méthode (règle 3.24)", getLocation());
         }
 
         if (returnType.isVoid()) {
-            throw new ContextualError("Return statement not allowed in a void method", getLocation());
+            throw new ContextualError("'return' non autorisée dans une méthode void (règle 3.24)", getLocation());
         }
 
         Type exprType = expression.verifyExpr(compiler, localEnv, currentClass);
@@ -52,8 +52,9 @@ public class Return extends AbstractInst {
     }
 
     public void decompile(IndentPrintStream s) {
-        s.print("return");
+        s.print("return ");
         expression.decompile(s);
+        s.print(";");
     }
 
     protected void iterChildren(TreeFunction f) {
