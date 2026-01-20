@@ -5,11 +5,24 @@
 class Math {
 
     
-    // Constantes mathématiques
+    // Constantes mathématiques + constantes pour calcul de ulp
     
     float PI = 3.14159265358979323846;
     float QUARTER_PI = 0.7853981633974483; // pi/ 4
+    
 
+    // Nombre de bits significatifs (mantisse + bit implicite)
+    int SIGNIFICAND_WIDTH = 24;
+
+    // Exposants réels min et max pour float normalisé
+    int MIN_EXPONENT = -126;
+    int MAX_EXPONENT = 127;
+
+    // Plus petit float strictement positif (subnormal)
+    float MIN_VALUE = 1.40129846 * _pow(10, -45);
+
+    // Plus grand float représentable
+    float MAX_VALUE = 3.40282347 * _pow(10, 38);
 
     
     // Fonctions internes utilitaires

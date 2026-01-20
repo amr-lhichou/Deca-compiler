@@ -1,15 +1,27 @@
 public class MathDeca { 
 
 
-    /* ===============================
-     * Constantes mathématiques
-     * =============================== */
+    
+    // Constantes mathématiques
+    
 
     private final float PI = 3.14159265358979323846f;
+    // Nombre de bits significatifs (mantisse + bit implicite)
+    int SIGNIFICAND_WIDTH = 24;
 
-    /* ===============================
-     * Fonctions utilitaires internes
-     * =============================== */
+    // Exposants réels min et max pour float normalisé
+    int MIN_EXPONENT = -126;
+    int MAX_EXPONENT = 127;
+
+    // Plus petit float strictement positif (subnormal)
+    float MIN_VALUE = 1.40129846e-45f;
+
+    // Plus grand float représentable
+    float MAX_VALUE = 3.40282347e38f;
+
+    
+     // Fonctions utilitaires internes
+     
 
     // Valeur absolue
     float _abs(float x) {
