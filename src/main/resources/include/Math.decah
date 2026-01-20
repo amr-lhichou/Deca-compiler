@@ -49,6 +49,29 @@ class Math {
         return result;
     }
 
+
+    // pow qui prend compte des puiss negatives 
+    float _pow2(int n) {
+        float result = 1.0;
+        int i;
+    
+        if (n >= 0) {
+            i = 0;
+            while (i < n) {
+                result = result * 2.0;
+                i = i + 1;
+            }
+        } else {
+            i = 0;
+            while (i < -n) {
+                result = result / 2.0;
+                i = i + 1;
+            }
+        }
+    
+        return result;
+    }
+
     // Factorielle simple : n!
     int _fact(int n) {
         int result = 1;
@@ -106,36 +129,33 @@ class Math {
     }
 
     // retourne exposant du float x sans passage binaire
+    
     int _getExponent(float x) {
-        float ax;
-        int e;
-
-        ax = _abs(x);
-        e = 0;
-
-    // Cas zéro ou subnormal
-        if (ax == 0.0 || ax < MIN_VALUE) {
+        float ax = _abs(x);
+        int e = 0;
+    
+        if (ax == 0.0f) {
             return MIN_EXPONENT - 1;
         }
-
-    // Overflow
+    
         if (ax >= MAX_VALUE) {
             return MAX_EXPONENT;
         }
-
-    // Nombre normalisé
-        if (ax >= 1.0) {
-            while (_pow(2.0, e + 1) <= ax) {
-                e = e + 1;
-            }
-        } else {
-            while (_pow(2.0, e) > ax) {
-                e = e - 1;
-            }
+    
+        // pas de _pow
+        while (ax >= 2.0) {
+            ax = ax / 2.0;
+            e = e + 1;
         }
-
+    
+        while (ax < 1.0) {
+            ax = ax * 2.0;
+            e = e - 1;
+        }
+    
         return e;
     }
+
 
 
 
@@ -454,23 +474,18 @@ class Math {
     }
 
 
+    // ULP 
+
     float ulp(float x) {
         int e;
-
-    // Zéro ou subnormal
-        if (x == 0.0 || _abs(x) < MIN_VALUE) {
+    
+        if (x == 0.0) {
             return MIN_VALUE;
         }
-
+    
         e = _getExponent(x);
-
-    // Overflow
-        if (e >= MAX_EXPONENT) {
-            return _abs(x);
-        }
-
-    // Nombre normalisé
-        return _pow(2.0, e - 23);
+    
+        return _pow2(e - 23);
     }
 
 
