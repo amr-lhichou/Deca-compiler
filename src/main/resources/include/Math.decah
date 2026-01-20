@@ -363,8 +363,49 @@ class Math {
 
     // Taylor direct
     return sign * _asinPoly(x);
-}
-    
+
+
+    }
+
+
+    // développement du arctan
+
+    float _atanPoly(float x) {
+        float result;
+
+        result = x;
+        result = result - (_pow(x, 3) / 3);
+        result = result + (_pow(x, 5) / 5);
+        result = result - (_pow(x, 7) / 7);
+
+        return result;
+    }
+
+    // focntion arctan 
+    float atan(float x) {
+
+        float eps = 0.000001;
+        int sign = 1;
+
+    // Cas particulier
+        if (_abs(x) < eps) {
+            return 0;
+        }
+
+    // Impairité
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+    // Réduction du domaine
+        if (x > 1) {
+            return sign * (PI / 2 - _atanPoly(1 / x));
+        }
+
+    // Approximation polynomiale
+        return sign * _atanPoly(x);
+    }
 
 
     

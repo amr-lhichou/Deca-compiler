@@ -298,6 +298,38 @@ public class MathDeca {
 
         return sign * asinPoly(x);
     }
+
+
+    float atanPoly(float x) {
+        float r = x;
+        r -= _pow(x, 3) / 3f;
+        r += _pow(x, 5) / 5f;
+        r -= _pow(x, 7) / 7f;
+        return r;
+    }
+
+
+
+    float atan(float x) {
+
+        float eps = 1e-6f;
+        int sign = 1;
+
+        if (_abs(x) < eps) {
+            return 0f;
+        }
+
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+        if (x > 1) {
+            return sign * (PI / 2f - atanPoly(1f / x));
+        }
+
+        return sign * atanPoly(x);
+    }
     
 
 
