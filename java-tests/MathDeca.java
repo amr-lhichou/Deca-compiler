@@ -42,6 +42,27 @@ public class MathDeca {
         }
         return result;
     }
+    // version de pow utilisable par ulp 
+    float _pow2(int n) {
+        float result = 1.0f;
+        int i;
+    
+        if (n >= 0) {
+            i = 0;
+            while (i < n) {
+                result = result * 2.0f;
+                i = i + 1;
+            }
+        } else {
+            i = 0;
+            while (i < -n) {
+                result = result / 2.0f;
+                i = i + 1;
+            }
+        }
+    
+        return result;
+    }
 
     // Factorielle simple : n!
     int _fact(int n) {
@@ -102,26 +123,29 @@ public class MathDeca {
     }
 
     // retourne l'exposant du float x sans passage binaire 
-    int getExponent(float x) {
-        int e = 0;
+    int _getExponent(float x) {
         float ax = _abs(x);
-
-        // Cas 1 : zéro ou subnormal
-        if (ax == 0.0f || ax < MIN_VALUE) {
+        int e = 0;
+    
+        if (ax == 0.0f) {
             return MIN_EXPONENT - 1;
         }
-
-        // Cas 2 : overflow
+    
         if (ax >= MAX_VALUE) {
             return MAX_EXPONENT;
         }
-
-        // Cas 3 : nombre normalisé
-        e = 0;
-        while (_pow(2.0f, e + 1) <= ax) {
-            e++;
+    
+        // pas de _pow
+        while (ax >= 2.0f) {
+            ax = ax / 2.0f;
+            e = e + 1;
         }
-
+    
+        while (ax < 1.0f) {
+            ax = ax * 2.0f;
+            e = e - 1;
+        }
+    
         return e;
     }
 
@@ -365,6 +389,19 @@ public class MathDeca {
         }
 
         return sign * atanPoly(x);
+    }
+
+    // ULP 
+    float ulp(float x) {
+        int e;
+    
+        if (x == 0.0f) {
+            return MIN_VALUE;
+        }
+    
+        e = _getExponent(x);
+    
+        return _pow2(e - 23);
     }
     
 

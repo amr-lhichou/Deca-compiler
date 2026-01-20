@@ -107,29 +107,36 @@ class Math {
 
     // retourne exposant du float x sans passage binaire
     int _getExponent(float x) {
-        int e = 0;
         float ax;
+        int e;
 
         ax = _abs(x);
+        e = 0;
 
-        // Cas 1 : zéro ou subnormal
-        if (ax == 0 || ax < MIN_VALUE) {
+    // Cas zéro ou subnormal
+        if (ax == 0.0 || ax < MIN_VALUE) {
             return MIN_EXPONENT - 1;
         }
 
-        // Cas 2 : overflow
+    // Overflow
         if (ax >= MAX_VALUE) {
             return MAX_EXPONENT;
         }
 
-        // Cas 3 : nombre normalisé
-        e = 0;
-        while (_pow(2.0, e + 1) <= ax) {
-            e = e + 1;
+    // Nombre normalisé
+        if (ax >= 1.0) {
+            while (_pow(2.0, e + 1) <= ax) {
+                e = e + 1;
+            }
+        } else {
+            while (_pow(2.0, e) > ax) {
+                e = e - 1;
+            }
         }
 
         return e;
     }
+
 
 
     
@@ -444,6 +451,26 @@ class Math {
 
     // Approximation polynomiale
         return sign * _atanPoly(x);
+    }
+
+
+    float ulp(float x) {
+        int e;
+
+    // Zéro ou subnormal
+        if (x == 0.0 || _abs(x) < MIN_VALUE) {
+            return MIN_VALUE;
+        }
+
+        e = _getExponent(x);
+
+    // Overflow
+        if (e >= MAX_EXPONENT) {
+            return _abs(x);
+        }
+
+    // Nombre normalisé
+        return _pow(2.0, e - 23);
     }
 
 
