@@ -101,6 +101,30 @@ public class MathDeca {
         return y;
     }
 
+    // retourne l'exposant du float x sans passage binaire 
+    int getExponent(float x) {
+        int e = 0;
+        float ax = _abs(x);
+
+        // Cas 1 : zéro ou subnormal
+        if (ax == 0.0f || ax < MIN_VALUE) {
+            return MIN_EXPONENT - 1;
+        }
+
+        // Cas 2 : overflow
+        if (ax >= MAX_VALUE) {
+            return MAX_EXPONENT;
+        }
+
+        // Cas 3 : nombre normalisé
+        e = 0;
+        while (_pow(2.0f, e + 1) <= ax) {
+            e++;
+        }
+
+        return e;
+    }
+
 
 
    // on etend notre cos a n'importe quel ordre 

@@ -105,6 +105,32 @@ class Math {
         return y;
     }
 
+    // retourne exposant du float x sans passage binaire
+    int _getExponent(float x) {
+        int e = 0;
+        float ax;
+
+        ax = _abs(x);
+
+        // Cas 1 : zéro ou subnormal
+        if (ax == 0 || ax < MIN_VALUE) {
+            return MIN_EXPONENT - 1;
+        }
+
+        // Cas 2 : overflow
+        if (ax >= MAX_VALUE) {
+            return MAX_EXPONENT;
+        }
+
+        // Cas 3 : nombre normalisé
+        e = 0;
+        while (_pow(2.0, e + 1) <= ax) {
+            e = e + 1;
+        }
+
+        return e;
+    }
+
 
     
     // Polynôme de Taylor du cosinus
