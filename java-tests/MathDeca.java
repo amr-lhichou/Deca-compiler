@@ -88,7 +88,7 @@ public class MathDeca {
     /**
      * Approximation de la racine carrée par la méthode de Newton–Raphson
      *
-     * On cherche y tel que y² = x
+     * On cherche y tel que y^2 = x
      *
      * @param x nombre positif
      * @return approximation de sqrt(x)
@@ -151,37 +151,34 @@ public class MathDeca {
 
 
 
-   // on etend notre cos a n'importe quel ordre 
+   // on etend notre cos a n'importe quel ordre ici récurrente avec critère d'arrêt de ulp 
 
-    float _cosinePoly(float x, int order) {
+
+    float _cosinePoly(float x) {
+
         float result = 1.0f;
+        float term = 1.0f;
         int k = 1;
 
-    // On s'assure que l'ordre est pair
-        if (order % 2 != 0) {
-            order = order - 1;
-        }
+        while (true) {
 
-        while (2 * k <= order) {
-            float term = _pow(x, 2 * k) / _fact(2 * k);
+            term = -term * x * x / ((2*k - 1) * (2*k));
 
-            if (k % 2 == 1) {
-                result = result - term;
-            } else {
-                result = result + term;
-            }
+            if (_abs(term) < ulp(result)) break;
 
-            k = k + 1;
+            result += term;
+            k++;
+
+            if (k > 10) break;
         }
 
         return result;
     }
 
-    /* ===============================
-     * Réduction de domaine
-     * =============================== */
 
-    // Ramène x dans [0 ; 2π[
+    
+
+    // Ramène x dans [0 ; 2pi[
     float _normalizeAngle(float x) {
         float twoPi = 2.0f * PI;
 
@@ -201,7 +198,7 @@ public class MathDeca {
 
         int sign = 1;
         float eps = 0.000001f;
-        int ORDER = 4;
+        
 
     // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
@@ -244,25 +241,39 @@ public class MathDeca {
         }
 
     // 5. Approximation polynomiale
-        return sign * _cosinePoly(x, ORDER);
+        return sign * _cosinePoly(x);
     }
     
     // développement du sinus Taylor en fct de l'ordre
 
-    float _sinePoly(float x, int order) {
+    float _sinePoly(float x) {
 
         float result = x;
-        int i = 3;
-        int sign = -1;
-
-        while (i <= order) {
-            result = result + sign * (_pow(x, i) / _fact(i));
-            sign = -sign;
-            i = i + 2;
+        float term = x;
+        int k = 0;
+    
+        while (true) {
+    
+            // terme suivant par récurrence
+            term = -term * x * x / ((2*k + 2) * (2*k + 3));
+    
+            // critère d'arrêt basé sur l'ULP
+            if (_abs(term) < ulp(result)) {
+                break;
+            }
+    
+            result += term;
+            k++;
+    
+            // sécurité anti-boucle infinie
+            if (k > 10) {
+                break;
+            }
         }
-
+    
         return result;
     }
+    
     // Puis la fonction avec restriction et cas et antisymétrie 
 
     float sin(float x) {
@@ -316,79 +327,139 @@ public class MathDeca {
         }
     
         // 6. Approximation polynomiale (Taylor)
-        return sign * _sinePoly(x, 7);
+        return sign * _sinePoly(x);
     }
 
 
 
-    static float asinPoly(float x) {
-        float x2 = x * x;
+    // developpent taylor de asin avec critère d'arrêt selon ulp 
 
-        float r = x;
-        r += (x * x2) / 6.0f;
-        r += (3.0f * x * x2 * x2) / 40.0f;
-        r += (5.0f * x * x2 * x2 * x2) / 112.0f;
+    float asinPolyULP(float x) {
 
-        return r;
+        float result = x;
+        float term;
+        int k = 1;
+    
+        while (true) {
+    
+            // coefficient : (2k)! / (4^k * (k!)^2 * (2k+1))
+            float num = _fact(2 * k);
+            float den = _pow(4.0f, k) * _pow(_fact(k), 2) * (2 * k + 1);
+            float coeff = num / den;
+    
+            term = coeff * _pow(x, 2 * k + 1);
+    
+            // critère d'arrêt ULP
+            if (_abs(term) < ulp(result)) {
+                break;
+            }
+    
+            result += term;
+            k++;
+    
+            // sécurité
+            if (k > 10) {
+                break;
+            }
+        }
+    
+        return result;
     }
 
 
-    public  float asin(float x) {
+    // fonction asin 
+
+    float asin(float x) {
 
         float eps = 1e-6f;
         int sign = 1;
-
+    
         if (x > 1.0f || x < -1.0f) {
             throw new IllegalArgumentException("asin hors domaine");
         }
-
-        if (_abs(x) < eps) return 0.0f;
-        if (_abs(x - 1.0f) < eps) return PI / 2;
-        if (_abs(x + 1.0f) < eps) return -PI / 2;
-
+    
+        if (_abs(x) < eps) {
+            return 0.0f;
+        }
+    
+        if (_abs(x - 1.0f) < eps) {
+            return PI / 2.0f;
+        }
+    
+        if (_abs(x + 1.0f) < eps) {
+            return -PI / 2.0f;
+        }
+    
         if (x < 0) {
             x = -x;
             sign = -1;
         }
-
+    
+        // réduction pour améliorer la convergence
         if (x > 0.5f) {
             float y = sqrt(1.0f - x * x);
-            return sign * (PI / 2 - asinPoly(y));
+            return sign * (PI / 2.0f - asinPolyULP(y));
         }
-
-        return sign * asinPoly(x);
+    
+        return sign * asinPolyULP(x);
     }
 
 
-    float atanPoly(float x) {
-        float r = x;
-        r -= _pow(x, 3) / 3f;
-        r += _pow(x, 5) / 5f;
-        r -= _pow(x, 7) / 7f;
-        return r;
+    // dev taylor de atan critère arrêt de ulp 
+
+    float atanPolyULP(float x) {
+
+        float result = x;
+        float term = x;
+        int k = 1;
+    
+        while (true) {
+    
+            // terme suivant : (-1)^k * x^(2k+1)
+            term = -term * x * x;
+            float current = term / (2 * k + 1);
+    
+            if (_abs(current) < ulp(result)) {
+                break;
+            }
+    
+            result += current;
+            k++;
+    
+            // sécurité
+            if (k > 10) {
+                break;
+            }
+        }
+    
+        return result;
     }
 
+
+
+    // fonction atan 
 
 
     float atan(float x) {
 
         float eps = 1e-6f;
         int sign = 1;
-
+    
         if (_abs(x) < eps) {
-            return 0f;
+            return 0.0f;
         }
-
+    
         if (x < 0) {
             x = -x;
             sign = -1;
         }
-
-        if (x > 1) {
-            return sign * (PI / 2f - atanPoly(1f / x));
+    
+        // réduction pour |x| > 1
+        if (x > 1.0f) {
+            return sign * (PI / 2.0f - atanPolyULP(1.0f / x));
         }
-
-        return sign * atanPoly(x);
+    
+        return sign * atanPolyULP(x);
     }
 
     // ULP 

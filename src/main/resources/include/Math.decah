@@ -162,32 +162,33 @@ class Math {
     
     // Polynôme de Taylor du cosinus
     
+    float _cosinePoly(float x) {
 
-    
-    float _cosinePoly(float x, int order) {
         float result = 1.0;
+        float term = 1.0;
         int k = 1;
 
-    // On s'assure que l'ordre est pair
-        if (order % 2 != 0) {
-            order = order - 1;
-        }
+        while (true) {
 
-        while (2 * k <= order) {
-            float term = _pow(x, 2 * k) / _fact(2 * k);
+        // t_k = -t_{k-1} * x^2 / ((2k-1)(2k))
+            term = -term * x * x / ((2*k - 1) * (2*k));
 
-            if (k % 2 == 1) {
-                result = result - term;
-            } else {
-                result = result + term;
+            if (_abs(term) < ulp(result)) {
+                break;
             }
 
+            result = result + term;
             k = k + 1;
+
+            if (k > 10) {
+                break;
+            }
         }
 
         return result;
     }
-
+    
+    
 
 
     // normalisation de l'angle entre 0 et 2pi
@@ -207,35 +208,7 @@ class Math {
         return x;
     }
 
-    // symétrie
-    float _reduceSymmetry(float x) {
-        if (x < 0) {
-            return -x;
-        } else {
-            return x;
-        }
-    }
-
-    // réduction successives pour arriver a [0 ; pi/4]
-
-    float _reduceCosPi(float x, int[] sign) {
     
-        if (x > PI) {
-            x = 2 * PI - x;
-        }
-    
-        return x;
-    }
-
-    float _reduceCosHalfPi(float x, int[] sign) {
-    
-        if (x > PI / 2) {
-            x = PI - x;
-            sign[0] = -sign[0];
-        }
-    
-    return x;
-    }
 
 
     // Fonction publique cos(x)
@@ -243,7 +216,7 @@ class Math {
 
         int sign = 1;
         float eps = 0.000001;
-        int ORDER = 4;
+        
 
     // 1. Périodicité : ramener dans [0 ; 2pi]
         x = _normalizeAngle(x);
@@ -286,7 +259,7 @@ class Math {
         }
 
     // 5. Approximation polynomiale
-        return sign * _cosinePoly(x, ORDER);
+        return sign * _cosinePoly(x);
     }
 
     
@@ -296,20 +269,38 @@ class Math {
 
     // développement du sinus Taylor en fct de l'ordre
 
-    float _sinePoly(float x, int order) {
+    float _sinePoly(float x) {
 
         float result = x;
-        int i = 3;
-        int sign = -1;
+        float term = x;
+        int k = 0;
 
-        while (i <= order) {
-            result = result + sign * (_pow(x, i) / _fact(i));
-            sign = -sign;
-            i = i + 2;
+        while (true) {
+
+        // t_{k+1} = -t_k * x^2 / ((2k+2)(2k+3))
+            term = -term * x * x / ((2*k + 2) * (2*k + 3));
+
+            if (_abs(term) < ulp(result)) {
+                break;
+            }
+
+            result = result + term;
+            k = k + 1;
+
+        // sécurité
+            if (k > 10) {
+                break;
+            }
         }
 
         return result;
     }
+
+
+
+
+
+
     // Puis la fonction avec restriction et cas et antisymétrie 
 
     float sin(float x) {
@@ -363,114 +354,144 @@ class Math {
         }
 
     // 6. Approximation polynomiale (Taylor)
-        return sign * _sinePoly(x, 7);
+        return sign * _sinePoly(x);
     }
 
 
-    float _asinPoly(float x) {
-        float x2;
-        float result;
+    // polynome dour asin avec critère ulp
 
-        x2 = x * x;
+    float _asinPolyULP(float x) {
 
-        result = x;
-        result = result + (x * x2) / 6.0;
-        result = result + (3.0 * x * x2 * x2) / 40.0;
-        result = result + (5.0 * x * x2 * x2 * x2) / 112.0;
+        float result = x;
+        float term;
+        int k = 1;
+
+    // terme initial : x^(2k+1)
+        term = x;
+
+        while (true) {
+
+        // coefficient du dev taylor de asin 
+            float num = _fact(2 * k);
+            float den = _pow(4.0, k) * _pow(_fact(k), 2) * (2 * k + 1);
+            float coeff = num / den;
+
+            term = coeff * _pow(x, 2 * k + 1);
+
+        // critère ULP
+            if (_abs(term) < ulp(result)) {
+                break;
+            }
+
+            result = result + term;
+            k = k + 1;
+
+            // sécurité
+            if (k > 10) {
+                break;
+            }
+        }
 
         return result;
     }
 
 
-
-
-
-
-
+    // focntion asin  en tenant compte de ulp 
     float asin(float x) {
 
-    float y;
-    int sign;
-    float eps;
-
-    eps = 0.000001;
-    sign = 1;
-
-    // Domaine de définition
-    if (x > 1.0 || x < -1.0) {
-        println("Erreur : asin hors domaine");
-        return 0;
-    }
-
-    // Cas particuliers
-    if (_abs(x) < eps) {
-        return 0;
-    }
-
-    if (_abs(x - 1.0) < eps) {
-        return PI / 2;
-    }
-
-    if (_abs(x + 1.0) < eps) {
-        return -PI / 2;
-    }
-
-    // Gestion du signe
-    if (x < 0) {
-        x = -x;
-        sign = -1;
-    }
-
-    // Réduction de domaine
-    if (x > 0.5) {
-        y = _sqrt(1.0 - x * x);
-        return sign * (PI / 2 - _asinPoly(y));
-    }
-
-    // Taylor direct
-    return sign * _asinPoly(x);
-
-
-    }
-
-
-    // développement du arctan
-
-    float _atanPoly(float x) {
-        float result;
-
-        result = x;
-        result = result - (_pow(x, 3) / 3);
-        result = result + (_pow(x, 5) / 5);
-        result = result - (_pow(x, 7) / 7);
-
-        return result;
-    }
-
-    // focntion arctan 
-    float atan(float x) {
-
-        float eps = 0.000001;
+        float eps = 1e-6;
         int sign = 1;
 
-    // Cas particulier
+        if (x > 1.0 || x < -1.0) {
+            return 0;
+        }
+
         if (_abs(x) < eps) {
             return 0;
         }
 
-    // Impairité
+        if (_abs(x - 1.0) < eps) {
+            return PI / 2;
+        }
+
+        if (_abs(x + 1.0) < eps) {
+            return -PI / 2;
+        }
+
         if (x < 0) {
             x = -x;
             sign = -1;
         }
 
-    // Réduction du domaine
-        if (x > 1) {
-            return sign * (PI / 2 - _atanPoly(1 / x));
+    // Réduction pour convergence
+        if (x > 0.5) {
+            float y = sqrt(1.0 - x * x);
+            return sign * (PI / 2 - _asinPolyULP(y));
         }
 
-    // Approximation polynomiale
-        return sign * _atanPoly(x);
+        return sign * _asinPolyULP(x);
+    }
+
+
+
+
+    
+
+
+    // développement du arctan avec ulp 
+
+    float _atanPolyULP(float x) {
+
+        float result = x;
+        float term = x;
+        int k = 1;
+
+        while (true) {
+
+            term = -term * x * x;
+
+            float current = term / (2 * k + 1);
+
+            if (_abs(current) < ulp(result)) {
+                break;
+            }
+
+            result = result + current;
+            k = k + 1;
+
+        // sécurité
+            if (k > 10) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+
+    // focntion arctan 
+    float atan(float x) {
+
+        float eps = 1e-6;
+        int sign = 1;
+
+        if (_abs(x) < eps) {
+            return 0;
+        }
+
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+        if (x > 1.0) {
+            return sign * (PI / 2 - _atanPolyULP(1.0 / x));
+        }
+
+        return sign * _atanPolyULP(x);
     }
 
 
