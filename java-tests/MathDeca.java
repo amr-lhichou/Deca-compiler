@@ -1,15 +1,27 @@
 public class MathDeca { 
 
 
-    /* ===============================
-     * Constantes mathématiques
-     * =============================== */
+    
+    // Constantes mathématiques
+    
 
     private final float PI = 3.14159265358979323846f;
+    // Nombre de bits significatifs (mantisse + bit implicite)
+    int SIGNIFICAND_WIDTH = 24;
 
-    /* ===============================
-     * Fonctions utilitaires internes
-     * =============================== */
+    // Exposants réels min et max pour float normalisé
+    int MIN_EXPONENT = -126;
+    int MAX_EXPONENT = 127;
+
+    // Plus petit float strictement positif (subnormal)
+    float MIN_VALUE = 1.40129846e-45f;
+
+    // Plus grand float représentable
+    float MAX_VALUE = 3.40282347e38f;
+
+    
+     // Fonctions utilitaires internes
+     
 
     // Valeur absolue
     float _abs(float x) {
@@ -28,6 +40,27 @@ public class MathDeca {
             result = result * x;
             i = i + 1;
         }
+        return result;
+    }
+    // version de pow utilisable par ulp 
+    float _pow2(int n) {
+        float result = 1.0f;
+        int i;
+    
+        if (n >= 0) {
+            i = 0;
+            while (i < n) {
+                result = result * 2.0f;
+                i = i + 1;
+            }
+        } else {
+            i = 0;
+            while (i < -n) {
+                result = result / 2.0f;
+                i = i + 1;
+            }
+        }
+    
         return result;
     }
 
@@ -87,6 +120,33 @@ public class MathDeca {
         }
 
         return y;
+    }
+
+    // retourne l'exposant du float x sans passage binaire 
+    int _getExponent(float x) {
+        float ax = _abs(x);
+        int e = 0;
+    
+        if (ax == 0.0f) {
+            return MIN_EXPONENT - 1;
+        }
+    
+        if (ax >= MAX_VALUE) {
+            return MAX_EXPONENT;
+        }
+    
+        // pas de _pow
+        while (ax >= 2.0f) {
+            ax = ax / 2.0f;
+            e = e + 1;
+        }
+    
+        while (ax < 1.0f) {
+            ax = ax * 2.0f;
+            e = e - 1;
+        }
+    
+        return e;
     }
 
 
@@ -257,6 +317,91 @@ public class MathDeca {
     
         // 6. Approximation polynomiale (Taylor)
         return sign * _sinePoly(x, 7);
+    }
+
+
+
+    static float asinPoly(float x) {
+        float x2 = x * x;
+
+        float r = x;
+        r += (x * x2) / 6.0f;
+        r += (3.0f * x * x2 * x2) / 40.0f;
+        r += (5.0f * x * x2 * x2 * x2) / 112.0f;
+
+        return r;
+    }
+
+
+    public  float asin(float x) {
+
+        float eps = 1e-6f;
+        int sign = 1;
+
+        if (x > 1.0f || x < -1.0f) {
+            throw new IllegalArgumentException("asin hors domaine");
+        }
+
+        if (_abs(x) < eps) return 0.0f;
+        if (_abs(x - 1.0f) < eps) return PI / 2;
+        if (_abs(x + 1.0f) < eps) return -PI / 2;
+
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+        if (x > 0.5f) {
+            float y = sqrt(1.0f - x * x);
+            return sign * (PI / 2 - asinPoly(y));
+        }
+
+        return sign * asinPoly(x);
+    }
+
+
+    float atanPoly(float x) {
+        float r = x;
+        r -= _pow(x, 3) / 3f;
+        r += _pow(x, 5) / 5f;
+        r -= _pow(x, 7) / 7f;
+        return r;
+    }
+
+
+
+    float atan(float x) {
+
+        float eps = 1e-6f;
+        int sign = 1;
+
+        if (_abs(x) < eps) {
+            return 0f;
+        }
+
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+        if (x > 1) {
+            return sign * (PI / 2f - atanPoly(1f / x));
+        }
+
+        return sign * atanPoly(x);
+    }
+
+    // ULP 
+    float ulp(float x) {
+        int e;
+    
+        if (x == 0.0f) {
+            return MIN_VALUE;
+        }
+    
+        e = _getExponent(x);
+    
+        return _pow2(e - 23);
     }
     
 

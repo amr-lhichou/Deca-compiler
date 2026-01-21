@@ -5,11 +5,24 @@
 class Math {
 
     
-    // Constantes mathématiques
+    // Constantes mathématiques + constantes pour calcul de ulp
     
     float PI = 3.14159265358979323846;
     float QUARTER_PI = 0.7853981633974483; // pi/ 4
+    
 
+    // Nombre de bits significatifs (mantisse + bit implicite)
+    int SIGNIFICAND_WIDTH = 24;
+
+    // Exposants réels min et max pour float normalisé
+    int MIN_EXPONENT = -126;
+    int MAX_EXPONENT = 127;
+
+    // Plus petit float strictement positif (subnormal)
+    float MIN_VALUE = 1.40129846 * _pow(10, -45);
+
+    // Plus grand float représentable
+    float MAX_VALUE = 3.40282347 * _pow(10, 38);
 
     
     // Fonctions internes utilitaires
@@ -36,6 +49,29 @@ class Math {
         return result;
     }
 
+
+    // pow qui prend compte des puiss negatives 
+    float _pow2(int n) {
+        float result = 1.0;
+        int i;
+    
+        if (n >= 0) {
+            i = 0;
+            while (i < n) {
+                result = result * 2.0;
+                i = i + 1;
+            }
+        } else {
+            i = 0;
+            while (i < -n) {
+                result = result / 2.0;
+                i = i + 1;
+            }
+        }
+    
+        return result;
+    }
+
     // Factorielle simple : n!
     int _fact(int n) {
         int result = 1;
@@ -55,6 +91,72 @@ class Math {
         }
         return result;
     }
+    /**
+     * Approximation de la racine carrée par la méthode de Newton–Raphson
+     *
+     * On cherche y tel que y^2 = x
+     *
+     * @param x nombre positif
+     * @return approximation de sqrt(x)
+     */
+    float _sqrt(float x) {
+
+        float y;
+        int i;
+        float eps = 0.000001;
+
+        // Cas particuliers
+        if (x < 0) {
+            println("Erreur : sqrt d'un nombre négatif");
+            return 0;
+        }
+
+        if (x == 0) {
+            return 0;
+        }
+
+        // Approximation initiale
+        y = x;
+        i = 0;
+
+        // Méthode de Newton : y_{n+1} = (y_n + x / y_n) / 2
+        while (i < 10) {
+            y = 0.5 * (y + x / y);
+            i = i + 1;
+        }
+
+        return y;
+    }
+
+    // retourne exposant du float x sans passage binaire
+    
+    int _getExponent(float x) {
+        float ax = _abs(x);
+        int e = 0;
+    
+        if (ax == 0.0f) {
+            return MIN_EXPONENT - 1;
+        }
+    
+        if (ax >= MAX_VALUE) {
+            return MAX_EXPONENT;
+        }
+    
+        // pas de _pow
+        while (ax >= 2.0) {
+            ax = ax / 2.0;
+            e = e + 1;
+        }
+    
+        while (ax < 1.0) {
+            ax = ax * 2.0;
+            e = e - 1;
+        }
+    
+        return e;
+    }
+
+
 
 
     
@@ -265,35 +367,126 @@ class Math {
     }
 
 
+    float _asinPoly(float x) {
+        float x2;
+        float result;
 
+        x2 = x * x;
 
+        result = x;
+        result = result + (x * x2) / 6.0;
+        result = result + (3.0 * x * x2 * x2) / 40.0;
+        result = result + (5.0 * x * x2 * x2 * x2) / 112.0;
 
-
-
-
-
-
-
-
-
-
-
-    // j protège contre la div par 0 ;)
-    float tan(float x) {
-        float c = cos(x);
-        float s = sin(x);
-        float eps = 0.000001;
-
-        if (_abs(c) <= eps) {
-            if (c < 0) {
-                return s / (c - eps);
-            } else {
-                return s / (c + eps);
-            }
-        }
-        return s / c;
+        return result;
     }
+
+
+
+
+
+
+
+    float asin(float x) {
+
+    float y;
+    int sign;
+    float eps;
+
+    eps = 0.000001;
+    sign = 1;
+
+    // Domaine de définition
+    if (x > 1.0 || x < -1.0) {
+        println("Erreur : asin hors domaine");
+        return 0;
+    }
+
+    // Cas particuliers
+    if (_abs(x) < eps) {
+        return 0;
+    }
+
+    if (_abs(x - 1.0) < eps) {
+        return PI / 2;
+    }
+
+    if (_abs(x + 1.0) < eps) {
+        return -PI / 2;
+    }
+
+    // Gestion du signe
+    if (x < 0) {
+        x = -x;
+        sign = -1;
+    }
+
+    // Réduction de domaine
+    if (x > 0.5) {
+        y = _sqrt(1.0 - x * x);
+        return sign * (PI / 2 - _asinPoly(y));
+    }
+
+    // Taylor direct
+    return sign * _asinPoly(x);
+
+
+    }
+
+
+    // développement du arctan
+
+    float _atanPoly(float x) {
+        float result;
+
+        result = x;
+        result = result - (_pow(x, 3) / 3);
+        result = result + (_pow(x, 5) / 5);
+        result = result - (_pow(x, 7) / 7);
+
+        return result;
+    }
+
+    // focntion arctan 
+    float atan(float x) {
+
+        float eps = 0.000001;
+        int sign = 1;
+
+    // Cas particulier
+        if (_abs(x) < eps) {
+            return 0;
+        }
+
+    // Impairité
+        if (x < 0) {
+            x = -x;
+            sign = -1;
+        }
+
+    // Réduction du domaine
+        if (x > 1) {
+            return sign * (PI / 2 - _atanPoly(1 / x));
+        }
+
+    // Approximation polynomiale
+        return sign * _atanPoly(x);
+    }
+
+
+    // ULP 
+
+    float ulp(float x) {
+        int e;
     
+        if (x == 0.0) {
+            return MIN_VALUE;
+        }
+    
+        e = _getExponent(x);
+    
+        return _pow2(e - 23);
+    }
 
 
     
