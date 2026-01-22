@@ -187,6 +187,21 @@ class Math {
 
         return result;
     }
+    // version optimi Horner 
+    float _cosinePolyHorner(float x) {
+
+        float x2 = x * x;
+        float p;
+
+        p = -1.0 / 720.0;
+        p =  1.0 / 24.0  + x2 * p;
+        p = -1.0 / 2.0   + x2 * p;
+        p =  1.0         + x2 * p;
+
+        return p;
+    }
+
+
     
     
 
@@ -260,6 +275,7 @@ class Math {
 
     // 5. Approximation polynomiale
         return sign * _cosinePoly(x);
+        // return sign * _cosinePolyHorner(x);
     }
 
     
@@ -294,6 +310,19 @@ class Math {
         }
 
         return result;
+    }
+    // developpement horner pour sin 
+    float _sinePolyHorner(float x) {
+
+        float x2 = x * x;
+        float p;
+
+        p = -1.0 / 5040.0;
+        p =  1.0 / 120.0 + x2 * p;
+        p = -1.0 / 6.0   + x2 * p;
+        p =  1.0         + x2 * p;
+
+        return x * p;
     }
 
 
@@ -355,6 +384,7 @@ class Math {
 
     // 6. Approximation polynomiale (Taylor)
         return sign * _sinePoly(x);
+        // return sign * _sinePolyHorner(x);
     }
 
 

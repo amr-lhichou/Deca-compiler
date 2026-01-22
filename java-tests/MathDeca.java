@@ -174,6 +174,20 @@ public class MathDeca {
 
         return result;
     }
+    // poly optimisé avec horner 
+    float _cosinePolyHorner(float x) {
+
+        float x2 = x * x;
+    
+        // Horner sur le polynôme en x²
+        float p =
+              -1.0f / 720.0f;
+        p =  1.0f / 24.0f  + x2 * p;
+        p = -1.0f / 2.0f   + x2 * p;
+        p =  1.0f          + x2 * p;
+    
+        return p;
+    }
 
 
     
@@ -242,6 +256,7 @@ public class MathDeca {
 
     // 5. Approximation polynomiale
         return sign * _cosinePoly(x);
+        //return sign * _cosinePolyHorner(x); //celle la pour Horner il faut juste décommenter
     }
     
     // développement du sinus Taylor en fct de l'ordre
@@ -272,6 +287,19 @@ public class MathDeca {
         }
     
         return result;
+    }
+    // dev sin version Horner 
+    float _sinePolyHorner(float x) {
+
+        float x2 = x * x;
+    
+        float p =
+              -1.0f / 5040.0f;
+        p =  1.0f / 120.0f + x2 * p;
+        p = -1.0f / 6.0f   + x2 * p;
+        p =  1.0f          + x2 * p;
+    
+        return x * p;
     }
     
     // Puis la fonction avec restriction et cas et antisymétrie 
@@ -328,6 +356,7 @@ public class MathDeca {
     
         // 6. Approximation polynomiale (Taylor)
         return sign * _sinePoly(x);
+        //return sign * _sinePolyHorner(x);
     }
 
 
