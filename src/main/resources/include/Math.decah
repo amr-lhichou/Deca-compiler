@@ -4,12 +4,12 @@
 
 class Math {
 
-    
+
     // Constantes mathématiques + constantes pour calcul de ulp
 
     float PI = 3.14159265358979323846;
     float QUARTER_PI = 0.7853981633974483; // pi/ 4
-    
+
 
     // Nombre de bits significatifs (mantisse + bit implicite)
     int SIGNIFICAND_WIDTH = 24;
@@ -24,9 +24,9 @@ class Math {
     // Plus grand float représentable
     float MAX_VALUE =  3.40282347E38;
 
-    
+
     // Fonctions internes utilitaires
-    
+
 
     // Valeur absolue
     float _abs(float x) {
@@ -50,11 +50,11 @@ class Math {
     }
 
 
-    // pow qui prend compte des puiss negatives 
+    // pow qui prend compte des puiss negatives
     float _pow2(int n) {
         float result = 1.0;
         int i;
-    
+
         if (n >= 0) {
             i = 0;
             while (i < n) {
@@ -68,7 +68,7 @@ class Math {
                 i = i + 1;
             }
         }
-    
+
         return result;
     }
 
@@ -129,39 +129,39 @@ class Math {
     }
 
     // retourne exposant du float x sans passage binaire
-    
+
     int _getExponent(float x){
         float ax = this._abs(x);
         int e = 0;
-    
+
         if (ax == 0.0) {
             return MIN_EXPONENT - 1;
         }
-    
+
         if (ax >= MAX_VALUE) {
             return MAX_EXPONENT;
         }
-    
+
         // pas de _pow
         while (ax >= 2.0) {
             ax = ax / 2.0;
             e = e + 1;
         }
-    
+
         while (ax < 1.0) {
             ax = ax * 2.0;
             e = e - 1;
         }
-    
+
         return e;
     }
 
 
 
 
-    
+
     // Polynôme de Taylor du cosinus
-    
+
 float _cosinePoly(float x) {
     float result = 1.0;
     float term = 1.0;
@@ -184,7 +184,7 @@ float _cosinePoly(float x) {
     return result;
 }
 
-    // version optimi Horner 
+    // version optimi Horner
     float _cosinePolyHorner(float x) {
 
         float x2 = x * x;
@@ -199,29 +199,35 @@ float _cosinePoly(float x) {
     }
 
 
-    
-    
+
+
 
 
     // normalisation de l'angle entre 0 et 2pi
 
     float _normalizeAngle(float x) {
-        float twoPi = 2.0 * PI;
+       float twoPi = 2.0 * PI;
+       float tours = x / twoPi;
+       float partieDecimale = tours - (float)((int)(tours));
+       float res = partieDecimale * twoPi;
+       if (x > -twoPi && x < twoPi) {
+                         return x;
+                     }
+       // Division pour savoir combien de tours
 
-        // ramener dans (-2pi, 2pi) grossièrement
-        while (x >= twoPi) {
-            x = x - twoPi;
-        }
-        while (x < 0.0) {
-            x = x + twoPi;
-        }
+       // On retire la partie entière (les tours complets)
+       // Note: Le cast (int) est crucial ici
 
-        return x;
+       if (res < 0.0) {
+            res = res + twoPi;
+       }
+
+       return res;
     }
 
 
 
-    
+
 
 
     // Fonction publique cos(x)
@@ -263,15 +269,19 @@ float _cosinePoly(float x) {
             x = PI - x;
             sign = -sign;
         }
+        if (sign <0.0){
+        return -this._cosinePoly(x);
+        }
 
-        //return sign * this._cosinePoly(x);
-        return sign * this._cosinePolyHorner(x);
+        return this._cosinePoly(x);
+
+        //return this._cosinePolyHorner(x);
     }
 
-    
 
-    
-    
+
+
+
 
     // développement du sinus Taylor en fct de l'ordre
 
@@ -298,7 +308,7 @@ float _cosinePoly(float x) {
     }
 
 
-    // developpement horner pour sin 
+    // developpement horner pour sin
     float _sinePolyHorner(float x) {
 
         float x2 = x * x;
@@ -317,7 +327,7 @@ float _cosinePoly(float x) {
 
 
 
-    // Puis la fonction avec restriction et cas et antisymétrie 
+    // Puis la fonction avec restriction et cas et antisymétrie
 
     float sin(float x) {
         float sign = 1.0;
@@ -392,7 +402,7 @@ float _cosinePoly(float x) {
 
 
 
-    // focntion asin  en tenant compte de ulp 
+    // focntion asin  en tenant compte de ulp
     float asin(float x) {
 
         float eps = 1e-6;
@@ -433,10 +443,10 @@ float _cosinePoly(float x) {
 
 
 
-    
 
 
-    // développement du arctan avec ulp 
+
+    // développement du arctan avec ulp
 float _atanPolyULP(float x) {
     float result = x;
     float term = x;
@@ -463,7 +473,7 @@ float _atanPolyULP(float x) {
 
 
 
-    // focntion arctan 
+    // focntion arctan
     float atan(float x) {
 
         float eps = 1e-6;
@@ -486,22 +496,22 @@ float _atanPolyULP(float x) {
     }
 
 
-    // ULP 
+    // ULP
 
     float ulp(float x) {
         int e;
-    
+
         if (x == 0.0) {
             return MIN_VALUE;
         }
-    
+
         e = this._getExponent(x);
-    
+
         return this._pow2(e - 23);
     }
 
 
-    
+
 
 
 
