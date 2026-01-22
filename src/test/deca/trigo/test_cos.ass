@@ -1,0 +1,49 @@
+	TSTO #3
+	BOV stack_overflow_error
+	ADDSP #3
+; start main program
+; Code des tables des méthodes
+code.Object.equals:
+; Code de la table des méthodes de Object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; Main program
+	HALT
+; ---- Class definitions ----
+; Début d'initialisation des Champs.
+; Définition des Methodes
+; end main program
+stack_overflow_error:
+	WSTR "Error: Stack Overflow"
+	WNL
+	ERROR
+arithmetic_overflow_error:
+	WSTR "Error: Arithmetic Overflow"
+	WNL
+	ERROR
+io_error:
+	WSTR "Error: Input/Output error"
+	WNL
+	ERROR
+division_zero_error:
+	WSTR "Error: Division by zero error"
+	WNL
+	ERROR
+heap_overflow:
+	WSTR "Error: Heap overflow"
+	WNL
+	ERROR
+null_pointer_error:
+	WSTR "Error: Null pointer exception"
+	WNL
+	ERROR
+missing_return:
+	WSTR "Error: Return statement missing from non-void method"
+	WNL
+	ERROR
+cast_error:
+	WSTR "Error: Invalid cast"
+	WNL
+	ERROR

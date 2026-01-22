@@ -1,0 +1,15 @@
+#include "Math.decah"
+{
+    Math m = new Math();
+
+    println(" Tests asin(x) ");
+
+    println("asin(0.0) = ", m.asin(0.0));
+    println("asin(0.5) = ", m.asin(0.5));
+    println("asin(-0.5) = ", m.asin(-0.5));
+
+    println("asin(1.0) = ", m.asin(1.0));
+    println("asin(-1.0) = ", m.asin(-1.0));
+
+    println("asin(0.707106) = ", m.asin(0.707106));
+}
