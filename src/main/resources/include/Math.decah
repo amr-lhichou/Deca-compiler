@@ -369,8 +369,10 @@ float _cosinePoly(float x) {
         if (x > (PI / 4.0)) {
             return sign * this.cos((PI / 2.0) - x);
         }
-
-        return sign * this._sinePoly(x);
+        if (sign <0.0){
+        return - this._sinePoly(x);
+        }
+        return this._sinePoly(x);
     }
 
 
@@ -386,18 +388,33 @@ float _cosinePoly(float x) {
        float den;
        float coeff;
 
-       while (k <= 10 && this._abs(term) >= this.ulp(result)) {
-           num = this._fact(2 * k); // int
-           den = this._pow(4.0, k) * (1.0 * this._fact(k) * this._fact(k)) * (2.0 * k + 1.0);
-           coeff = (1.0 * num) / den;   // force num en float
+       float a;
+       float b;
+       float c;
 
-           term = coeff * this._pow(x, 2 * k + 1);
-           result = result + term;
-           k = k + 1;
+       while (k <= 10) {
+           a = this._abs(term);
+           b = this.ulp(result);
+           c =this._fact(k);
+           if (a < b) {
+               k = 11; // stop
+           } else {
+               // coeff_k = (2k)! / ( 4^k * (k!)^2 * (2k+1) )
+               // term_k = coeff_k * x^(2k+1)
+               num = this._fact(2 * k); // int -> stocké en float
+               den = this._pow(4.0, k) * (1.0 * c * c) * (2.0 * k + 1.0);
+               coeff = (1.0 * num) / den;
+
+               term = coeff * this._pow(x, 2 * k + 1);
+               result = result + term;
+
+               k = k + 1;
+           }
        }
 
        return result;
    }
+
 
 
 
@@ -435,8 +452,10 @@ float _cosinePoly(float x) {
             y = this._sqrt(1.0 - x * x);
             return sign * (PI / 2 - this._asinPolyULP(y));
         }
-
-        return sign * this._asinPolyULP(x);
+        if (sign < 0) {
+        return  -this._asinPolyULP(x);
+        }
+        return  this._asinPolyULP(x);
     }
 
 
@@ -451,10 +470,13 @@ float _atanPolyULP(float x) {
     float result = x;
     float term = x;
     int k = 1;
+     float a;
+     float b;
     float current = 1.0; // important
-
     while (k <= 10) {
-        if (this._abs(current) < this.ulp(result)) {
+   a =  this._abs(current);
+  b = this.ulp(result);
+        if (a < b) {
             k = 11;
         } else {
             term = -term * x * x;
@@ -489,10 +511,12 @@ float _atanPolyULP(float x) {
         }
 
         if (x > 1.0) {
-            return sign * (PI / 2.0 - this._atanPolyULP(1.0 / x));
+            return  (PI / 2.0 - this._atanPolyULP(1.0 / x));
         }
-
-        return sign * this._atanPolyULP(x);
+        if (sign < 0){
+        return -this._atanPolyULP(x);
+        }
+        return this._atanPolyULP(x);
     }
 
 
