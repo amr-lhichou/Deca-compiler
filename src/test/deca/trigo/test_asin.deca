@@ -11,5 +11,5 @@
     println("asin(1.0) = ", m.asin(1.0));
     println("asin(-1.0) = ", m.asin(-1.0));
 
-    println("asin(0.707106) = ", m.asin(0.707106));
+    
 }
