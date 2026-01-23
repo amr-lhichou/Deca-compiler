@@ -66,7 +66,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             currentClass.setIndex_vtable(compiler.getCurrent_index());
             int index_parent;
             if (currentClass.getSuperClass() != null){
-                System.out.println("Class"+ dc.getName().getName().getName()+"extends" + dc.getSuperclass().getName().getName());
+                // System.out.println("Class"+ dc.getName().getName().getName()+"extends" + dc.getSuperclass().getName().getName());
                 index_parent=currentClass.getSuperClass().getIndex_vtable();
             } else {
                 // cette partie du else n est jamais activée -- à corriger par hossam/ insaf la superclass si A n'a pas de parent
