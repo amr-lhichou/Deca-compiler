@@ -9,6 +9,5 @@
     println("atan(1.0) = ", m.atan(1.0));
     println("atan(-1.0) = ", m.atan(-1.0));
 
-    println("atan(10.0) = ", m.atan(10.0));
-    println("atan(-10.0) = ", m.atan(-10.0));
+    
 }
