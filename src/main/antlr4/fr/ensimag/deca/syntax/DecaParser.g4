@@ -398,10 +398,10 @@ primary_expr returns[AbstractExpr tree]
     : ident {
             $tree = $ident.tree; // pour gerer println(i)
         }
-    /*| m=ident OPARENT args=list_expr CPARENT {
-            assert($args.tree != null);
-            assert($m.tree != null);
-        }*/
+    | m=ident OPARENT args=list_expr CPARENT {
+            $tree = new AppelMethode(null, $m.tree, $args.tree);
+            setLocation($tree, $m.start);
+        }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
             $tree = $expr.tree;
